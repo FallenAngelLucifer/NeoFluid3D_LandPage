@@ -1,0 +1,2627 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- Primary SEO Meta Tags -->
+  <title>NeoFluid3D : Motor de Simulación de Fluidos en Tiempo Real</title>
+  <meta name="title" content="NeoFluid3D : Motor de Simulación de Fluidos en Tiempo Real" />
+  <meta name="description" content="Plataforma fundacional de cálculo y dinámica de fluidos masivamente paralela en GPU sobre Vulkan 1.3. Soluciones avanzadas para gemelos digitales, ingeniería y medios interactivos." />
+  <meta name="keywords" content="NeoFluid3D, Vulkan, Fluid Simulation, SPH, Marching Cubes, GPU Compute, Real-time CFD, Digital Twins, VFX, Computer Graphics" />
+  <meta name="author" content="NeoFluid3D Core Team" />
+  <meta name="theme-color" content="#030708" />
+
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://neofluid3d.com/" />
+  <meta property="og:title" content="NeoFluid3D : Motor de Simulación de Fluidos en Tiempo Real" />
+  <meta property="og:description" content="Tecnología fundacional de simulación hidrodinámica 100% en GPU para gemelos digitales, industria 4.0 y experiencias interactivas." />
+  <meta property="og:image" content="https://neofluid3d.com/assets/og-preview.png" />
+
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content="NeoFluid3D : Motor de Simulación de Fluidos en Tiempo Real" />
+  <meta property="twitter:description" content="Tecnología fundacional de simulación hidrodinámica 100% en GPU para gemelos digitales, industria 4.0 y experiencias interactivas." />
+  <meta property="twitter:image" content="https://neofluid3d.com/assets/og-preview.png" />
+
+  <!-- Embedded SVG Favicon (Brand Drop) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 56'%3E%3Cdefs%3E%3CclipPath id='c'%3E%3Cpath d='M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d='M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z' fill='%23030708' stroke='%2300F0FF' stroke-width='2'/%3E%3Cpath d='M22 2C22 2 4 22 4 30L40 30C40 22 22 2 22 2Z' fill='%2300F0FF'/%3E%3Cg clip-path='url(%23c)' stroke='%2339FF14' stroke-width='1.5'%3E%3Cellipse cx='22' cy='36' rx='11' ry='3.5' fill='none'/%3E%3Cellipse cx='22' cy='43' rx='14' ry='5' fill='none'/%3E%3Cpath d='M14 30Q12 42 15 54'/%3E%3Cpath d='M22 30L22 54'/%3E%3Cpath d='M30 30Q32 42 29 54'/%3E%3C/g%3E%3C/svg%3E" />
+
+  <!-- Typography: Poppins (Sans) & JetBrains Mono (Monospace) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       1. DESIGN TOKENS & SYSTEM VARIABLES
+    ═══════════════════════════════════════════════════════════ */
+    :root {
+      --color-cyan:         #00F0FF;
+      --color-cyan-dim:     rgba(0, 240, 255, 0.7);
+      --color-cyan-glow:    rgba(0, 240, 255, 0.35);
+      --color-green:        #39FF14;
+      --color-green-dim:    rgba(57, 255, 20, 0.7);
+      --color-green-glow:   rgba(57, 255, 20, 0.35);
+
+      --color-bg:           #030708;
+      --color-bg-surface:   #061012;
+      --color-bg-card:      rgba(6, 18, 20, 0.75);
+      --color-bg-card-hover:rgba(8, 26, 30, 0.9);
+
+      --color-border:       rgba(0, 240, 255, 0.15);
+      --color-border-subtle:rgba(0, 240, 255, 0.08);
+      --color-border-hover: rgba(0, 240, 255, 0.45);
+      --color-border-green: rgba(57, 255, 20, 0.4);
+
+      --color-text:         #dcf6f9;
+      --color-text-muted:   #689399;
+      --color-text-dim:     #3e6368;
+
+      --glow-cyan-sm:       0 0 10px rgba(0, 240, 255, 0.6);
+      --glow-cyan:          0 0 10px #00F0FF, 0 0 28px rgba(0, 240, 255, 0.45), 0 0 70px rgba(0, 240, 255, 0.15);
+      --glow-green:         0 0 10px #39FF14, 0 0 28px rgba(57, 255, 20, 0.45), 0 0 70px rgba(57, 255, 20, 0.15);
+      --glow-text-cyan:     0 0 12px rgba(0, 240, 255, 0.8), 0 0 32px rgba(0, 240, 255, 0.4);
+      --glow-text-green:    0 0 12px rgba(57, 255, 20, 0.8), 0 0 32px rgba(57, 255, 20, 0.4);
+
+      --font-poppins:       'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono:          'JetBrains Mono', monospace;
+
+      --radius-sm:          6px;
+      --radius-md:          14px;
+      --radius-lg:          20px;
+      --section-spacing:    7.5rem 2rem;
+      --transition-smooth:  0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       2. RESET & ACCESSIBILITY FOUNDATIONS
+    ═══════════════════════════════════════════════════════════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background-color: var(--color-bg);
+    }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-mono);
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+      a, button, input { cursor: none; }
+    }
+
+    ::selection {
+      background: rgba(0, 240, 255, 0.3);
+      color: #ffffff;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-smooth);
+    }
+
+    button {
+      font-family: inherit;
+      border: none;
+      background: none;
+    }
+
+    a:focus-visible, button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--color-cyan);
+      outline-offset: 4px;
+    }
+
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: #030708; }
+    ::-webkit-scrollbar-thumb { background: #132a2e; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--color-cyan); box-shadow: var(--glow-cyan); }
+
+    /* ═══════════════════════════════════════════════════════════
+       3. INTERACTIVE HARDWARE-ACCELERATED CURSOR
+    ═══════════════════════════════════════════════════════════ */
+    #cursor-dot, #cursor-ring {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      will-change: transform, left, top;
+    }
+    #cursor-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--color-cyan);
+      box-shadow: var(--glow-cyan);
+      transition: opacity 0.2s ease, transform 0.1s ease;
+    }
+    #cursor-ring {
+      width: 34px;
+      height: 34px;
+      border: 1.5px solid rgba(0, 240, 255, 0.45);
+      transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  border-color 0.3s ease,
+                  background-color 0.3s ease;
+    }
+    body.hovered #cursor-ring {
+      width: 58px;
+      height: 58px;
+      border-color: var(--color-cyan);
+      background-color: rgba(0, 240, 255, 0.06);
+    }
+    body.hovered-green #cursor-ring {
+      width: 58px;
+      height: 58px;
+      border-color: var(--color-green);
+      background-color: rgba(57, 255, 20, 0.06);
+    }
+
+    @media (hover: none) or (pointer: coarse) {
+      #cursor-dot, #cursor-ring { display: none !important; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       4. BACKGROUND GRID & CRT OVERLAYS
+    ═══════════════════════════════════════════════════════════ */
+    #grid-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0, 240, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.035) 1px, transparent 1px);
+      background-size: 64px 64px;
+      animation: gridDrift 40s linear infinite;
+    }
+    @keyframes gridDrift {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 64px; }
+    }
+    #grid-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, transparent 20%, var(--color-bg) 80%);
+    }
+
+    #scanlines {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 4px
+      );
+      opacity: 0.5;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       5. NAVIGATION BAR
+    ═══════════════════════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 3.5rem;
+      backdrop-filter: blur(16px) saturate(1.8);
+      background: rgba(3, 7, 8, 0.72);
+      border-bottom: 1px solid var(--color-border-subtle);
+      transition: all var(--transition-smooth);
+    }
+    nav.scrolled {
+      background: rgba(3, 7, 8, 0.94);
+      border-bottom: 1px solid var(--color-border);
+      padding-top: 0.8rem;
+      padding-bottom: 0.8rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .nav-brand .neo {
+      font-family: var(--font-poppins);
+      font-weight: 900;
+      color: var(--color-cyan);
+      text-shadow: var(--glow-text-cyan);
+    }
+    .nav-brand .fluid3d {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--color-green);
+      text-shadow: var(--glow-text-green);
+    }
+    .nav-brand sup {
+      font-size: 0.6em;
+      color: var(--color-cyan);
+      vertical-align: super;
+      font-family: var(--font-mono);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      position: relative;
+      padding: 0.25rem 0;
+      transition: color var(--transition-smooth), text-shadow var(--transition-smooth);
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--color-cyan);
+      box-shadow: var(--glow-cyan);
+      transition: width var(--transition-smooth);
+    }
+    .nav-links a:hover {
+      color: var(--color-cyan);
+      text-shadow: var(--glow-text-cyan);
+    }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-btn {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      padding: 0.55rem 1.4rem;
+      border: 1px solid var(--color-green);
+      border-radius: var(--radius-sm);
+      color: var(--color-green);
+      background: rgba(57, 255, 20, 0.05);
+      text-shadow: var(--glow-text-green);
+      box-shadow: 0 0 16px rgba(57, 255, 20, 0.15);
+      transition: all var(--transition-smooth);
+    }
+    .nav-btn:hover {
+      background: rgba(57, 255, 20, 0.18);
+      box-shadow: var(--glow-green);
+      transform: translateY(-2px);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       6. HERO SECTION
+    ═══════════════════════════════════════════════════════════ */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .ambient-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      opacity: 0.22;
+      animation: pulseGlow 14s ease-in-out infinite alternate;
+    }
+    .glow-1 {
+      width: 480px; height: 480px;
+      background: var(--color-cyan);
+      top: 15%; left: 5%;
+    }
+    .glow-2 {
+      width: 420px; height: 420px;
+      background: var(--color-green);
+      bottom: 10%; right: 5%;
+      animation-delay: -6s;
+    }
+    @keyframes pulseGlow {
+      0% { transform: translate(0, 0) scale(1); opacity: 0.16; }
+      100% { transform: translate(30px, -30px) scale(1.15); opacity: 0.26; }
+    }
+
+    .hero-brand-symbol {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 1.8rem;
+      animation: floatSymbol 6s ease-in-out infinite;
+      filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.5)) drop-shadow(0 0 50px rgba(57, 255, 20, 0.2));
+    }
+    @keyframes floatSymbol {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .hero-badge-pill {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.35rem 1.1rem;
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.28);
+      border-radius: 999px;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-cyan);
+      margin-bottom: 1.6rem;
+      backdrop-filter: blur(8px);
+    }
+    .hero-badge-pill .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-green);
+      box-shadow: var(--glow-green);
+      animation: radarPulse 2s ease-in-out infinite;
+    }
+    @keyframes radarPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.4); }
+    }
+
+    .hero-title {
+      position: relative;
+      z-index: 2;
+      font-size: clamp(3rem, 7.5vw, 6.2rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.4rem;
+    }
+    .hero-title .neo {
+      font-family: var(--font-poppins);
+      font-weight: 900;
+      color: var(--color-cyan);
+      text-shadow: var(--glow-text-cyan);
+      display: inline-block;
+    }
+    .hero-title .fluid3d {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--color-green);
+      text-shadow: var(--glow-text-green);
+      display: inline-block;
+    }
+    .hero-title sup {
+      font-size: 45%;
+      vertical-align: super;
+      font-family: var(--font-mono);
+      color: var(--color-cyan);
+    }
+
+    .hero-tagline {
+      position: relative;
+      z-index: 2;
+      font-family: var(--font-poppins);
+      font-size: clamp(1.1rem, 2.4vw, 1.65rem);
+      font-weight: 600;
+      color: #ffffff;
+      max-width: 820px;
+      margin: 0 auto 1.4rem;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+    .hero-tagline span.cyan-text {
+      color: var(--color-cyan);
+      text-shadow: var(--glow-text-cyan);
+    }
+    .hero-tagline span.green-text {
+      color: var(--color-green);
+      text-shadow: var(--glow-text-green);
+    }
+
+    .hero-desc {
+      position: relative;
+      z-index: 2;
+      font-size: clamp(0.88rem, 1.5vw, 1.05rem);
+      color: var(--color-text-muted);
+      max-width: 680px;
+      margin: 0 auto 2.8rem;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .hero-desc strong {
+      color: var(--color-text);
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      gap: 1.4rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 4rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.95rem 2.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #030708;
+      background: linear-gradient(135deg, #00F0FF 0%, #39FF14 100%);
+      border-radius: var(--radius-sm);
+      border: 1px solid #00F0FF;
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.4), inset 0 0 10px rgba(255,255,255,0.4);
+      transition: all var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.7), 0 0 20px rgba(57, 255, 20, 0.5);
+      transform: translateY(-3px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.95rem 2.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-cyan);
+      background: rgba(0, 240, 255, 0.04);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      backdrop-filter: blur(8px);
+      transition: all var(--transition-smooth);
+    }
+    .btn-secondary:hover {
+      border-color: var(--color-cyan);
+      background: rgba(0, 240, 255, 0.1);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+      transform: translateY(-3px);
+    }
+
+    .hero-stat-ribbon {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 960px;
+      padding: 1.4rem 2rem;
+      background: rgba(6, 16, 18, 0.6);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-md);
+      backdrop-filter: blur(12px);
+    }
+    .ribbon-item {
+      text-align: center;
+    }
+    .ribbon-item .ribbon-val {
+      font-family: var(--font-poppins);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--color-cyan);
+      line-height: 1.1;
+      margin-bottom: 0.25rem;
+    }
+    .ribbon-item .ribbon-lbl {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       7. SECTION COMMONS
+    ═══════════════════════════════════════════════════════════ */
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--section-spacing);
+    }
+
+    .section-header {
+      margin-bottom: 3.8rem;
+    }
+    .section-header.center {
+      text-align: center;
+    }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-green);
+      text-shadow: var(--glow-text-green);
+      margin-bottom: 0.8rem;
+    }
+    .section-eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--color-green);
+      box-shadow: var(--glow-green);
+    }
+    .section-header.center .section-eyebrow::before {
+      display: none;
+    }
+
+    .section-title {
+      font-family: var(--font-poppins);
+      font-size: clamp(2rem, 3.8vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 1.1rem;
+    }
+    .section-title .hl-cyan {
+      color: var(--color-cyan);
+      text-shadow: var(--glow-text-cyan);
+    }
+    .section-title .hl-green {
+      color: var(--color-green);
+      text-shadow: var(--glow-text-green);
+    }
+
+    .section-desc {
+      font-size: 0.95rem;
+      color: var(--color-text-muted);
+      line-height: 1.85;
+      max-width: 680px;
+      font-weight: 300;
+    }
+    .section-header.center .section-desc {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-border), var(--color-border-green), transparent);
+      opacity: 0.6;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.22s; }
+    .reveal-d3 { transition-delay: 0.34s; }
+    .reveal-d4 { transition-delay: 0.46s; }
+
+    /* ═══════════════════════════════════════════════════════════
+       8. SECTION: VISIÓN & EL MOTOR BASE
+    ═══════════════════════════════════════════════════════════ */
+    #vision .section-inner {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 4.5rem;
+      align-items: center;
+    }
+
+    .vision-content p {
+      font-size: 0.92rem;
+      color: var(--color-text-muted);
+      line-height: 1.85;
+      margin-bottom: 1.4rem;
+    }
+    .vision-content strong {
+      color: var(--color-text);
+    }
+
+    .vision-callout {
+      margin-top: 2rem;
+      padding: 1.5rem 1.8rem;
+      background: rgba(0, 240, 255, 0.04);
+      border-left: 3px solid var(--color-cyan);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      border-top: 1px solid var(--color-border-subtle);
+      border-right: 1px solid var(--color-border-subtle);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .vision-callout h4 {
+      font-family: var(--font-poppins);
+      font-size: 1rem;
+      color: var(--color-cyan);
+      margin-bottom: 0.4rem;
+    }
+    .vision-callout p {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0;
+      line-height: 1.7;
+    }
+
+    .arch-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 2.2rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+    .arch-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 140px; height: 140px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.15), transparent 70%);
+      pointer-events: none;
+    }
+    .arch-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--color-border-subtle);
+      padding-bottom: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .arch-title {
+      font-family: var(--font-poppins);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #ffffff;
+    }
+    .arch-status {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      background: rgba(57, 255, 20, 0.1);
+      border: 1px solid rgba(57, 255, 20, 0.3);
+      border-radius: 99px;
+      color: var(--color-green);
+    }
+
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .arch-layer-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 0.9rem 1.1rem;
+      background: rgba(3, 7, 8, 0.6);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-sm);
+      transition: all var(--transition-smooth);
+    }
+    .arch-layer-item:hover {
+      border-color: var(--color-cyan);
+      background: rgba(0, 240, 255, 0.05);
+      transform: translateX(4px);
+    }
+    .layer-icon {
+      font-size: 1.2rem;
+      color: var(--color-cyan);
+      line-height: 1;
+    }
+    .layer-info h5 {
+      font-family: var(--font-poppins);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.15rem;
+    }
+    .layer-info p {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       9. SECTION: DEMOSTRACIONES EN VIDEO (SHOWCASE REELS)
+    ═══════════════════════════════════════════════════════════ */
+    #demos {
+      background: radial-gradient(ellipse 80% 50% at 50% 10%, rgba(0, 240, 255, 0.04) 0%, transparent 70%);
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+    }
+
+    .video-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all var(--transition-smooth);
+      position: relative;
+    }
+    .video-card:hover {
+      border-color: var(--color-cyan);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0, 240, 255, 0.12);
+    }
+
+    .video-frame-wrap {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: #020506;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .video-frame-wrap video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      z-index: 2;
+    }
+
+    .video-fallback-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .video-overlay-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      z-index: 5;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      background: rgba(3, 7, 8, 0.85);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-cyan);
+      backdrop-filter: blur(6px);
+    }
+    .video-overlay-badge .rec-dot {
+      width: 6px;
+      height: 6px;
+      background: #ff3366;
+      border-radius: 50%;
+      animation: blink 1.2s infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    .video-play-btn {
+      position: absolute;
+      z-index: 4;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: rgba(3, 7, 8, 0.75);
+      border: 1.5px solid var(--color-cyan);
+      color: var(--color-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+      backdrop-filter: blur(8px);
+      transition: all var(--transition-smooth);
+    }
+    .video-card:hover .video-play-btn {
+      transform: scale(1.15);
+      background: var(--color-cyan);
+      color: #030708;
+      box-shadow: var(--glow-cyan);
+    }
+    .video-play-btn.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .video-card-body {
+      padding: 1.6rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .video-card-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-green);
+      margin-bottom: 0.4rem;
+    }
+    .video-card-title {
+      font-family: var(--font-poppins);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.6rem;
+    }
+    .video-card-desc {
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+      line-height: 1.65;
+      margin-bottom: 1.2rem;
+      flex: 1;
+    }
+    .video-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--color-border-subtle);
+      padding-top: 0.9rem;
+      font-size: 0.72rem;
+      color: var(--color-text-dim);
+    }
+    .video-card-meta span {
+      color: var(--color-cyan);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       10. SECTION: POSIBILIDADES & MERCADO (DEEP DIVE)
+    ═══════════════════════════════════════════════════════════ */
+    #possibilities {
+      background: radial-gradient(ellipse 70% 60% at 10% 50%, rgba(57, 255, 20, 0.03) 0%, transparent 70%);
+    }
+
+    .possibilities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .pos-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 2.4rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      transition: all var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+    .pos-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition-smooth);
+    }
+    .pos-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--color-cyan);
+      box-shadow: 0 16px 45px rgba(0, 240, 255, 0.12);
+    }
+    .pos-card:hover::before {
+      opacity: 1;
+    }
+
+    .pos-card.featured {
+      border-color: var(--color-border-green);
+    }
+    .pos-card.featured::before {
+      background: linear-gradient(135deg, rgba(57, 255, 20, 0.06) 0%, transparent 60%);
+    }
+    .pos-card.featured:hover {
+      border-color: var(--color-green);
+      box-shadow: 0 16px 45px rgba(57, 255, 20, 0.12);
+    }
+
+    .pos-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.4rem;
+    }
+    .pos-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      border: 1px solid var(--color-border);
+      background: rgba(3, 7, 8, 0.8);
+    }
+    .pos-card.featured .pos-icon-box {
+      border-color: var(--color-border-green);
+    }
+    .pos-badge {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      background: rgba(0, 240, 255, 0.08);
+      color: var(--color-cyan);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+    }
+    .pos-card.featured .pos-badge {
+      background: rgba(57, 255, 20, 0.08);
+      color: var(--color-green);
+      border-color: rgba(57, 255, 20, 0.25);
+    }
+
+    .pos-title {
+      font-family: var(--font-poppins);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.8rem;
+      line-height: 1.3;
+    }
+    .pos-desc {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      line-height: 1.8;
+      margin-bottom: 1.6rem;
+      flex: 1;
+    }
+    .pos-desc strong {
+      color: var(--color-text);
+    }
+
+    .pos-usecases {
+      list-style: none;
+      border-top: 1px solid var(--color-border-subtle);
+      padding-top: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .pos-usecases li {
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .pos-usecases li::before {
+      content: '▹';
+      color: var(--color-cyan);
+      font-size: 0.85rem;
+    }
+    .pos-card.featured .pos-usecases li::before {
+      color: var(--color-green);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       11. SECTION: MODOS ANALÍTICOS Y VISUALIZACIÓN
+    ═══════════════════════════════════════════════════════════ */
+    #modes {
+      background: radial-gradient(ellipse 60% 60% at 90% 40%, rgba(0, 240, 255, 0.03) 0%, transparent 60%);
+    }
+
+    .modes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.8rem;
+    }
+    @media (max-width: 820px) {
+      .modes-grid { grid-template-columns: 1fr; }
+    }
+
+    .mode-card {
+      position: relative;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      background: #040a0c;
+      transition: all var(--transition-smooth);
+    }
+    .mode-card:hover {
+      border-color: var(--color-cyan);
+      box-shadow: 0 12px 35px rgba(0, 240, 255, 0.15);
+    }
+    .mode-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .mode-scanner {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
+      opacity: 0.35;
+      animation: scanBeam 4s ease-in-out infinite;
+    }
+    @keyframes scanBeam {
+      0% { top: 0%; opacity: 0; }
+      50% { opacity: 0.4; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    .mode-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.4rem 1.6rem;
+      background: linear-gradient(0deg, rgba(3, 7, 8, 0.95) 0%, rgba(3, 7, 8, 0.5) 70%, transparent 100%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .mode-caption-title {
+      font-family: var(--font-poppins);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.2rem;
+    }
+    .mode-caption-sub {
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+    }
+    .mode-tag {
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      padding: 0.25rem 0.75rem;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      color: var(--color-cyan);
+      background: rgba(0, 240, 255, 0.08);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       12. SECTION: ROADMAP & EVOLUCIÓN EMPRESARIAL
+    ═══════════════════════════════════════════════════════════ */
+    #roadmap .section-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 4.5rem;
+      align-items: start;
+    }
+
+    .roadmap-timeline {
+      position: relative;
+      padding-left: 2.8rem;
+    }
+    .roadmap-timeline::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      bottom: 10px;
+      width: 1.5px;
+      background: linear-gradient(180deg, var(--color-cyan), var(--color-green), rgba(57,255,20,0.1));
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    }
+
+    .roadmap-item {
+      position: relative;
+      margin-bottom: 2.8rem;
+    }
+    .roadmap-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .roadmap-dot {
+      position: absolute;
+      left: -2.35rem;
+      top: 0.25rem;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid;
+      background: var(--color-bg);
+      transition: all var(--transition-smooth);
+    }
+    .dot-done {
+      border-color: var(--color-green);
+      background: var(--color-green);
+      box-shadow: var(--glow-green);
+    }
+    .dot-wip {
+      border-color: var(--color-cyan);
+      background: var(--color-bg);
+      box-shadow: var(--glow-cyan);
+      animation: pulseDot 1.6s ease-in-out infinite;
+    }
+    .dot-future {
+      border-color: var(--color-text-dim);
+      background: var(--color-bg);
+    }
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 8px var(--color-cyan); }
+      50% { transform: scale(1.3); box-shadow: 0 0 18px var(--color-cyan); }
+    }
+
+    .roadmap-phase {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-cyan);
+      margin-bottom: 0.3rem;
+    }
+    .roadmap-heading {
+      font-family: var(--font-poppins);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+    }
+    .roadmap-desc {
+      font-size: 0.84rem;
+      color: var(--color-text-muted);
+      line-height: 1.75;
+      margin-bottom: 0.6rem;
+    }
+    .roadmap-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.7rem;
+      border-radius: 4px;
+    }
+    .tag-completed {
+      background: rgba(57, 255, 20, 0.1);
+      color: var(--color-green);
+      border: 1px solid rgba(57, 255, 20, 0.3);
+    }
+    .tag-active {
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--color-cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .tag-planned {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--color-text-muted);
+      border: 1px solid var(--color-border-subtle);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       13. SECTION: CONTACTO EMPRESARIAL & LICENCIAMIENTO
+    ═══════════════════════════════════════════════════════════ */
+    #contact {
+      background: radial-gradient(ellipse 80% 50% at 50% 90%, rgba(0, 240, 255, 0.06) 0%, transparent 70%);
+    }
+
+    .contact-container {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 4rem 3.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+    }
+    .contact-container::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.15), transparent 70%);
+      pointer-events: none;
+    }
+
+    .contact-info h3 {
+      font-family: var(--font-poppins);
+      font-size: 2rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .contact-info p {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .contact-perks {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .contact-perk-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+    }
+    .perk-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(57, 255, 20, 0.15);
+      border: 1px solid var(--color-green);
+      color: var(--color-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .perk-text h5 {
+      font-family: var(--font-poppins);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.1rem;
+    }
+    .perk-text p {
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0;
+      line-height: 1.5;
+    }
+
+    .contact-action-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
+      background: rgba(3, 7, 8, 0.7);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-group label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-cyan);
+    }
+    .form-input {
+      background: rgba(6, 18, 20, 0.8);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 0.8rem 1rem;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      transition: all var(--transition-smooth);
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--color-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       14. TOAST NOTIFICATION (ENTERPRISE FEEDBACK)
+    ═══════════════════════════════════════════════════════════ */
+    #ui-toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 10001;
+      padding: 1rem 1.6rem;
+      background: rgba(6, 18, 20, 0.95);
+      border: 1px solid var(--color-cyan);
+      border-radius: var(--radius-sm);
+      color: #ffffff;
+      font-size: 0.85rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--glow-cyan-sm);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transform: translateY(120%);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
+      pointer-events: none;
+    }
+    #ui-toast.active {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #ui-toast .toast-icon {
+      color: var(--color-cyan);
+      font-size: 1.1rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       15. FOOTER
+    ═══════════════════════════════════════════════════════════ */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--color-border);
+      background: #020506;
+      padding: 4.5rem 2rem 2.5rem;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.2rem;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1.6rem;
+    }
+    .footer-brand .neo {
+      font-family: var(--font-poppins);
+      font-weight: 900;
+      color: var(--color-cyan);
+      text-shadow: var(--glow-text-cyan);
+    }
+    .footer-brand .fluid3d {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--color-green);
+      text-shadow: var(--glow-text-green);
+    }
+
+    .footer-summary {
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+      text-align: center;
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .footer-nav a {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+    .footer-nav a:hover {
+      color: var(--color-cyan);
+      text-shadow: var(--glow-text-cyan);
+    }
+
+    .footer-bottom-bar {
+      width: 100%;
+      border-top: 1px solid var(--color-border-subtle);
+      padding-top: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.72rem;
+      color: var(--color-text-dim);
+    }
+    .footer-bottom-bar .brand-spec {
+      color: var(--color-text-muted);
+    }
+    .footer-bottom-bar .brand-spec span.c { color: var(--color-cyan); }
+    .footer-bottom-bar .brand-spec span.g { color: var(--color-green); }
+
+    /* ═══════════════════════════════════════════════════════════
+       16. RESPONSIVE BREAKPOINTS
+    ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 992px) {
+      nav { padding: 1rem 2rem; }
+      .nav-links { display: none; }
+      #vision .section-inner { grid-template-columns: 1fr; gap: 3rem; }
+      #roadmap .section-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-container { grid-template-columns: 1fr; padding: 2.5rem; gap: 2.5rem; }
+    }
+    @media (max-width: 640px) {
+      :root { --section-spacing: 5rem 1.4rem; }
+      .hero-actions { flex-direction: column; width: 100%; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      .hero-stat-ribbon { grid-template-columns: 1fr 1fr; }
+      .footer-bottom-bar { flex-direction: column; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Ambient Overlays -->
+<div id="scanlines" aria-hidden="true"></div>
+<div id="grid-bg" aria-hidden="true"></div>
+<div id="cursor-dot" aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+
+<!-- Toast Feedback Modal -->
+<div id="ui-toast" role="status" aria-live="polite">
+  <span class="toast-icon">⚡</span>
+  <span id="toast-message">Mensaje del sistema</span>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════════ -->
+<nav id="navbar" aria-label="Navegación principal">
+  <a href="#hero" class="nav-brand" aria-label="NeoFluid3D Inicio">
+    <svg width="24" height="30" viewBox="0 0 44 56" fill="none" aria-hidden="true">
+      <defs>
+        <clipPath id="navClip"><path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z"/></clipPath>
+      </defs>
+      <path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z" fill="rgba(0,240,255,0.12)" stroke="#00F0FF" stroke-width="1.5"/>
+      <path d="M22 2C22 2 4 22 4 30L40 30C40 22 22 2 22 2Z" fill="rgba(0,240,255,0.7)"/>
+      <line x1="4" y1="30" x2="40" y2="30" stroke="#00F0FF" stroke-width="1" opacity="0.6"/>
+      <g clip-path="url(#navClip)" stroke="#39FF14" stroke-width="0.9" opacity="0.85">
+        <ellipse cx="22" cy="36" rx="11.5" ry="3.5" fill="none"/>
+        <ellipse cx="22" cy="42" rx="14.5" ry="5" fill="none"/>
+        <path d="M14 30Q12 42 15 54"/><path d="M22 30L22 54"/><path d="M30 30Q32 42 29 54"/>
+      </g>
+    </svg>
+    <span><span class="neo">Neo</span><span class="fluid3d">Fluid<sup>3</sup>D</span></span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#vision">La Base</a></li>
+    <li><a href="#demos">Demostraciones</a></li>
+    <li><a href="#possibilities">Posibilidades</a></li>
+    <li><a href="#modes">Visualización</a></li>
+    <li><a href="#roadmap">Evolución</a></li>
+  </ul>
+
+  <a href="#contact" class="nav-btn">Contacto B2B →</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     HERO SECTION
+══════════════════════════════════════════════ -->
+<header id="hero">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="ambient-glow glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow glow-2" aria-hidden="true"></div>
+
+  <div class="hero-brand-symbol" aria-hidden="true">
+    <svg width="120" height="150" viewBox="0 0 44 56" fill="none">
+      <defs>
+        <clipPath id="heroDropClip"><path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z"/></clipPath>
+        <filter id="heroGlowCyan"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="heroGlowGreen"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <radialGradient id="heroCyanGrad" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#A5FFFF"/>
+          <stop offset="100%" stop-color="#00F0FF"/>
+        </radialGradient>
+      </defs>
+
+      <path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z"
+            fill="rgba(0,240,255,0.08)" stroke="#00F0FF" stroke-width="1.3" filter="url(#heroGlowCyan)"/>
+
+      <path d="M22 2C22 2 4 22 4 30L40 30C40 22 22 2 22 2Z" fill="url(#heroCyanGrad)" opacity="0.9"/>
+      <line x1="4" y1="30" x2="40" y2="30" stroke="#00F0FF" stroke-width="1" opacity="0.6"/>
+
+      <g clip-path="url(#heroDropClip)" stroke="#39FF14" stroke-width="0.95" opacity="0.95" filter="url(#heroGlowGreen)">
+        <ellipse cx="22" cy="36" rx="11.5" ry="3.5" fill="none"/>
+        <ellipse cx="22" cy="42" rx="14.5" ry="5" fill="none"/>
+        <ellipse cx="22" cy="48" rx="12" ry="4" fill="none"/>
+        <path d="M14 30Q12 42 15 54"/>
+        <path d="M22 30L22 54"/>
+        <path d="M30 30Q32 42 29 54"/>
+        <path d="M8.5 34Q10 50 18 54"/>
+        <path d="M35.5 34Q34 50 26 54"/>
+      </g>
+
+      <circle cx="8" cy="18" r="1.2" fill="#00F0FF"><animate attributeName="opacity" values="0.9;0.2;0.9" dur="2.2s" repeatCount="indefinite"/></circle>
+      <circle cx="36" cy="14" r="1" fill="#00F0FF"><animate attributeName="opacity" values="0.7;0.15;0.7" dur="1.8s" repeatCount="indefinite"/></circle>
+      <circle cx="38" cy="28" r="0.9" fill="#39FF14"><animate attributeName="opacity" values="0.85;0.2;0.85" dur="2.6s" repeatCount="indefinite"/></circle>
+    </svg>
+  </div>
+
+  <div class="hero-badge-pill">
+    <span class="pill-dot"></span>
+    <span>Núcleo Tecnológico en Desarrollo Activo</span>
+  </div>
+
+  <h1 class="hero-title">
+    <span class="neo">Neo</span><span class="fluid3d">Fluid<sup>3</sup>D</span>
+  </h1>
+
+  <h2 class="hero-tagline">
+    La tecnología base para la <span class="cyan-text">simulación de fluidos</span> y dinámica interactiva de <span class="green-text">próxima generación</span>.
+  </h2>
+
+  <p class="hero-desc">
+    Un motor de cálculo acelerado directamente en GPU concebido como <strong>plataforma fundacional</strong> para integrarse en soluciones industriales, gemelos digitales, simuladores interactivos y entornos de ingeniería avanzada.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#demos" class="btn-primary">Ver Demostraciones en Video</a>
+    <a href="#possibilities" class="btn-secondary">Explorar Posibilidades B2B</a>
+  </div>
+
+  <div class="hero-stat-ribbon">
+    <div class="ribbon-item">
+      <div class="ribbon-val">100% GPU</div>
+      <div class="ribbon-lbl">Cálculo Paralelo en VRAM</div>
+    </div>
+    <div class="ribbon-item">
+      <div class="ribbon-val">Tiempo Real</div>
+      <div class="ribbon-lbl">Respuesta Instantánea</div>
+    </div>
+    <div class="ribbon-item">
+      <div class="ribbon-val">Modular</div>
+      <div class="ribbon-lbl">Integrable en Pipelines</div>
+    </div>
+    <div class="ribbon-item">
+      <div class="ribbon-val">B2B Ready</div>
+      <div class="ribbon-lbl">Licenciamiento & Soluciones</div>
+    </div>
+  </div>
+</header>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: VISIÓN & EL NÚCLEO
+══════════════════════════════════════════════ -->
+<section id="vision">
+  <div class="section-inner">
+    <div class="vision-content">
+      <div class="section-eyebrow reveal">Nuestra Visión</div>
+      <h2 class="section-title reveal reveal-d1">
+        Un núcleo potente diseñado para <span class="hl-cyan">escalar</span>
+      </h2>
+      <p class="reveal reveal-d2">
+        La versión actual de <strong>NeoFluid3D</strong> no es el producto final: representa el <strong>motor de cálculo fundacional</strong>. Hemos consolidado una base matemática y gráfica de alto rendimiento ejecutada directamente sobre la GPU, demostrando que es posible simular comportamientos fluidos complejos en tiempo real sin requerir granjas de servidores tradicionales.
+      </p>
+      <p class="reveal reveal-d3">
+        Este núcleo constituye el cimiento para construir soluciones especializadas: desde módulos de validación hidrodinámica rápida para empresas de ingeniería hasta herramientas de visualización interactiva para gemelos digitales y producción digital.
+      </p>
+
+      <div class="vision-callout reveal reveal-d4">
+        <h4>De prototipo a plataforma comercial</h4>
+        <p>
+          Estamos evolucionando de la fase de investigación hacia un modelo de tecnología licenciable y desarrollos a medida para empresas que requieran procesamiento de fluidos en tiempo real con latencia mínima.
+        </p>
+      </div>
+    </div>
+
+    <div class="arch-card reveal reveal-d2">
+      <div class="arch-header">
+        <div class="arch-title">Arquitectura del Núcleo</div>
+        <span class="arch-status">Motor Base Operativo</span>
+      </div>
+
+      <div class="arch-layers">
+        <div class="arch-layer-item">
+          <div class="layer-icon" aria-hidden="true">⚡</div>
+          <div class="layer-info">
+            <h5>Cálculo Masivo en Paralelo</h5>
+            <p>La física SPH se resuelve íntegramente en la GPU, liberando los recursos de la CPU para lógica de negocio o aplicaciones host.</p>
+          </div>
+        </div>
+
+        <div class="arch-layer-item">
+          <div class="layer-icon" aria-hidden="true">🔄</div>
+          <div class="layer-info">
+            <h5>Reconstrucción Geométrica Continua</h5>
+            <p>Generación de superficies volumétricas fluidas en tiempo real, permitiendo renderizado fotorrealista y análisis morfológico.</p>
+          </div>
+        </div>
+
+        <div class="arch-layer-item">
+          <div class="layer-icon" aria-hidden="true">📐</div>
+          <div class="layer-info">
+            <h5>Interacción con Geometrías 3D</h5>
+            <p>Detección de colisiones con modelos CAD e interactivos para evaluar el comportamiento del flujo contra sólidos arbitrarios.</p>
+          </div>
+        </div>
+
+        <div class="arch-layer-item">
+          <div class="layer-icon" aria-hidden="true">🎛️</div>
+          <div class="layer-info">
+            <h5>Parametrización en Vivo</h5>
+            <p>Ajuste instantáneo de viscosidad, densidad, presiones y fuerzas externas para experimentación y calibración rápida.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: DEMOSTRACIONES EN VIDEO
+══════════════════════════════════════════════ -->
+<section id="demos">
+  <div class="section-inner">
+    <div class="section-header center">
+      <div class="section-eyebrow reveal">Demostraciones en Acción</div>
+      <h2 class="section-title reveal reveal-d1">
+        El simulador en <span class="hl-green">tiempo real</span>
+      </h2>
+      <p class="section-desc reveal reveal-d2">
+        Observa el comportamiento del núcleo en diferentes escenarios de dinámica de fluidos, interacción con obstáculos y reconstrucción visual.
+      </p>
+    </div>
+
+    <div class="video-grid">
+      
+      <!-- Video Showcase 1 -->
+      <article class="video-card reveal reveal-d1">
+        <div class="video-frame-wrap">
+          <span class="video-overlay-badge"><span class="rec-dot"></span> Demostración 01</span>
+          <video id="vid-1" loop muted playsinline preload="metadata">
+            <source src="videos/demo_mesh_reconstruction.mp4" type="video/mp4">
+          </video>
+          <canvas class="video-fallback-canvas" id="vfb-1" aria-hidden="true"></canvas>
+          <button class="video-play-btn" aria-label="Reproducir Demostración 01" onclick="handleVideoToggle('vid-1', this)">▶</button>
+        </div>
+        <div class="video-card-body">
+          <span class="video-card-tag">Reconstrucción Volumétrica</span>
+          <h3 class="video-card-title">Malla Fluida & Refracción</h3>
+          <p class="video-card-desc">
+            Visualización de la reconstrucción continua de la superficie del líquido en tiempo real, con sombreado de cristal y cálculo de gradientes.
+          </p>
+          <div class="video-card-meta">
+            <span>Resolución: 96³ Grid</span>
+            <span>60 FPS GPU</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Video Showcase 2 -->
+      <article class="video-card reveal reveal-d2">
+        <div class="video-frame-wrap">
+          <span class="video-overlay-badge"><span class="rec-dot"></span> Demostración 02</span>
+          <video id="vid-2" loop muted playsinline preload="metadata">
+            <source src="videos/demo_particle_dynamics.mp4" type="video/mp4">
+          </video>
+          <canvas class="video-fallback-canvas" id="vfb-2" aria-hidden="true"></canvas>
+          <button class="video-play-btn" aria-label="Reproducir Demostración 02" onclick="handleVideoToggle('vid-2', this)">▶</button>
+        </div>
+        <div class="video-card-body">
+          <span class="video-card-tag">Dinámica de Partículas</span>
+          <h3 class="video-card-title">Comportamiento Viscoso & Colisión</h3>
+          <p class="video-card-desc">
+            Simulación de miles de elementos interactuando entre sí y respondiendo a obstáculos sólidos con cálculo de presión y tensión superficial.
+          </p>
+          <div class="video-card-meta">
+            <span>65K+ Partículas</span>
+            <span>Spatial Hash O(1)</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Video Showcase 3 -->
+      <article class="video-card reveal reveal-d3">
+        <div class="video-frame-wrap">
+          <span class="video-overlay-badge"><span class="rec-dot"></span> Demostración 03</span>
+          <video id="vid-3" loop muted playsinline preload="metadata">
+            <source src="videos/demo_vector_fields.mp4" type="video/mp4">
+          </video>
+          <canvas class="video-fallback-canvas" id="vfb-3" aria-hidden="true"></canvas>
+          <button class="video-play-btn" aria-label="Reproducir Demostración 03" onclick="handleVideoToggle('vid-3', this)">▶</button>
+        </div>
+        <div class="video-card-body">
+          <span class="video-card-tag">Análisis Paramétrico</span>
+          <h3 class="video-card-title">Campos Vectoriales & Velocidades</h3>
+          <p class="video-card-desc">
+            Mapeo analítico de la dirección y magnitud de las velocidades del flujo, facilitando la inspección de turbulencias y corrientes.
+          </p>
+          <div class="video-card-meta">
+            <span>Flujo Euleriano</span>
+            <span>Inspección en Vivo</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: POSIBILIDADES & MERCADO (DEEP DIVE)
+══════════════════════════════════════════════ -->
+<section id="possibilities">
+  <div class="section-inner">
+    <div class="section-header center">
+      <div class="section-eyebrow reveal">Hacia Dónde Vamos</div>
+      <h2 class="section-title reveal reveal-d1">
+        Posibilidades y <span class="hl-cyan">aplicaciones comerciales</span>
+      </h2>
+      <p class="section-desc reveal reveal-d2">
+        La base técnica actual está proyectada para evolucionar en módulos de alto valor agregado para diversas industrias que requieren simulación de fluidos ágil, precisa y visualmente convincente.
+      </p>
+    </div>
+
+    <div class="possibilities-grid">
+
+      <!-- Posibilidad 1: Gemelos Digitales & Monitoreo -->
+      <article class="pos-card featured reveal reveal-d1">
+        <div class="pos-header-row">
+          <div class="pos-icon-box" aria-hidden="true">🏭</div>
+          <span class="pos-badge">Industria 4.0</span>
+        </div>
+        <h3 class="pos-title">Gemelos Digitales & Plantas Industriales</h3>
+        <p class="pos-desc">
+          Integración en plataformas de <strong>monitoreo visual e interactivo</strong> de depósitos, plantas de tratamiento, sistemas de bombeo y tuberías. Permite a los operadores visualizar el comportamiento interno del líquido y simular escenarios de desborde o llenado en tiempo real sin cálculos lentos fuera de línea.
+        </p>
+        <ul class="pos-usecases">
+          <li>Visualización de niveles y flujos en tanques y contenedores</li>
+          <li>Predicción visual de tiempos de vaciado y presiones</li>
+          <li>Paneles de control SCADA interactivos con feedback 3D</li>
+        </ul>
+      </article>
+
+      <!-- Posibilidad 2: Prototipado en Ingeniería Hidráulica & Mecánica -->
+      <article class="pos-card reveal reveal-d2">
+        <div class="pos-header-row">
+          <div class="pos-icon-box" aria-hidden="true">📐</div>
+          <span class="pos-badge">Ingeniería</span>
+        </div>
+        <h3 class="pos-title">Prototipado Rápido & Validación Pre-CFD</h3>
+        <p class="pos-desc">
+          Los paquetes CFD tradicionales tardan horas o días en calcular un solo escenario. NeoFluid3D ofrece un <strong>entorno de prueba rápida</strong> para validar conceptos preliminares, observar turbulencias y probar geometrías antes de enviar a cómputo de alta precisión.
+        </p>
+        <ul class="pos-usecases">
+          <li>Inspección preliminar de vertederos y compuertas</li>
+          <li>Evaluación de impacto de fluidos contra componentes mecánicos</li>
+          <li>Iteración de diseño CAD con respuesta inmediata</li>
+        </ul>
+      </article>
+
+      <!-- Posibilidad 3: Simuladores de Entrenamiento & Capacitación -->
+      <article class="pos-card reveal reveal-d3">
+        <div class="pos-header-row">
+          <div class="pos-icon-box" aria-hidden="true">🥽</div>
+          <span class="pos-badge">Entrenamiento</span>
+        </div>
+        <h3 class="pos-title">Simuladores de Operación & Realidad Virtual</h3>
+        <p class="pos-desc">
+          Entornos de capacitación técnica inmersivos (VR/AR) donde operarios, bomberos o personal médico deben interactuar con líquidos con <strong>latencia cero</strong> y respuesta física verosímil ante manipulaciones con mandos o sensores.
+        </p>
+        <ul class="pos-usecases">
+          <li>Entrenamiento en manejo de materiales peligrosos y derrames</li>
+          <li>Simuladores quirúrgicos con dinámica de fluidos corporales</li>
+          <li>Capacitación en control de incendios y dispersión hidráulica</li>
+        </ul>
+      </article>
+
+      <!-- Posibilidad 4: Efectos Visuales & Producción Virtual -->
+      <article class="pos-card reveal reveal-d1">
+        <div class="pos-header-row">
+          <div class="pos-icon-box" aria-hidden="true">🎬</div>
+          <span class="pos-badge">VFX & Media</span>
+        </div>
+        <h3 class="pos-title">Middleware para Motores Gráficos & VFX</h3>
+        <p class="pos-desc">
+          Empaquetado como plugin o SDK nativo para integrarse en pipelines de <strong>producción virtual, Unreal Engine, Unity o motores propietarios</strong>, permitiendo a los directores y creadores previsualizar e interactuar con fluidos dinámicos en el set en tiempo real.
+        </p>
+        <ul class="pos-usecases">
+          <li>Previsualización en sets de rodaje con producción virtual</li>
+          <li>Física de líquidos reactiva en videojuegos y simuladores</li>
+          <li>Generación interactiva de mallas para exportación a DCCs</li>
+        </ul>
+      </article>
+
+      <!-- Posibilidad 5: Instalaciones Interactivas & Museografía -->
+      <article class="pos-card reveal reveal-d2">
+        <div class="pos-header-row">
+          <div class="pos-icon-box" aria-hidden="true">✨</div>
+          <span class="pos-badge">Experiencias</span>
+        </div>
+        <h3 class="pos-title">Experiencias Interactivas & Exhibiciones</h3>
+        <p class="pos-desc">
+          Soluciones visuales de alto impacto para centros de ciencia, museos y pabellones corporativos donde el público interactúa con el fluido mediante sensores de movimiento (Kinect, cámaras de profundidad o pantallas táctiles).
+        </p>
+        <ul class="pos-usecases">
+          <li>Kioscos interactivos de divulgación científica</li>
+          <li>Instalaciones de arte generativo y branding espacial</li>
+          <li>Visualizadores de fluidodinámica para ferias y congresos</li>
+        </ul>
+      </article>
+
+      <!-- Posibilidad 6: Soluciones a Medida & Licenciamiento B2B -->
+      <article class="pos-card featured reveal reveal-d3">
+        <div class="pos-header-row">
+          <div class="pos-icon-box" aria-hidden="true">🤝</div>
+          <span class="pos-badge">B2B Custom</span>
+        </div>
+        <h3 class="pos-title">Desarrollo a Medida & Licencia del Motor</h3>
+        <p class="pos-desc">
+          Adaptamos el núcleo a los requisitos particulares de hardware, restricciones de memoria y modelos matemáticos específicos de su empresa, garantizando <strong>propiedad intelectual y soporte técnico especializado</strong>.
+        </p>
+        <ul class="pos-usecases">
+          <li>Licenciamiento del código fuente del motor de cálculo</li>
+          <li>Desarrollo de módulos de física personalizados</li>
+          <li>Consultoría e integración en software corporativo existente</li>
+        </ul>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: MODOS DE VISUALIZACIÓN
+══════════════════════════════════════════════ -->
+<section id="modes">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow reveal">Capacidades Analíticas</div>
+      <h2 class="section-title reveal reveal-d1">
+        Inspección visual <span class="hl-green">multicapa</span>
+      </h2>
+      <p class="section-desc reveal reveal-d2">
+        El motor permite alternar instantáneamente entre diferentes modos de análisis para examinar tanto la estética volumétrica como la coherencia física subyacente.
+      </p>
+    </div>
+
+    <div class="modes-grid">
+      
+      <!-- Mode 1 -->
+      <div class="mode-card reveal reveal-d1">
+        <canvas class="mode-canvas" id="mc-p1" aria-hidden="true"></canvas>
+        <div class="mode-scanner" aria-hidden="true"></div>
+        <div class="mode-caption">
+          <div>
+            <div class="mode-caption-title">Malla Volumétrica Fotorrealista</div>
+            <div class="mode-caption-sub">Reconstrucción de superficie continua con refracción</div>
+          </div>
+          <span class="mode-tag">Isosuperficie</span>
+        </div>
+      </div>
+
+      <!-- Mode 2 -->
+      <div class="mode-card reveal reveal-d2">
+        <canvas class="mode-canvas" id="mc-p2" aria-hidden="true"></canvas>
+        <div class="mode-scanner" style="animation-delay: -1.5s;" aria-hidden="true"></div>
+        <div class="mode-caption">
+          <div>
+            <div class="mode-caption-title">Nube de Elementos Discretos</div>
+            <div class="mode-caption-sub">Seguimiento individual de partículas SPH y densidades</div>
+          </div>
+          <span class="mode-tag">Partículas</span>
+        </div>
+      </div>
+
+      <!-- Mode 3 -->
+      <div class="mode-card reveal reveal-d3">
+        <canvas class="mode-canvas" id="mc-p3" aria-hidden="true"></canvas>
+        <div class="mode-scanner" style="animation-delay: -0.7s;" aria-hidden="true"></div>
+        <div class="mode-caption">
+          <div>
+            <div class="mode-caption-title">Red de Tensión Superficial</div>
+            <div class="mode-caption-sub">Grafo de interacciones y cohesión entre vecinos cercanos</div>
+          </div>
+          <span class="mode-tag">Plexus Graph</span>
+        </div>
+      </div>
+
+      <!-- Mode 4 -->
+      <div class="mode-card reveal reveal-d4">
+        <canvas class="mode-canvas" id="mc-p4" aria-hidden="true"></canvas>
+        <div class="mode-scanner" style="animation-delay: -2.2s;" aria-hidden="true"></div>
+        <div class="mode-caption">
+          <div>
+            <div class="mode-caption-title">Campo Vectorial de Velocidades</div>
+            <div class="mode-caption-sub">Dirección, aceleración y magnitud de las corrientes</div>
+          </div>
+          <span class="mode-tag">Vectores</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: ROADMAP & EVOLUCIÓN
+══════════════════════════════════════════════ -->
+<section id="roadmap">
+  <div class="section-inner">
+    <div>
+      <div class="section-eyebrow reveal">Hoja de Ruta</div>
+      <h2 class="section-title reveal reveal-d1">
+        Rumbo a la <span class="hl-cyan">madurez comercial</span>
+      </h2>
+      <p class="section-desc reveal reveal-d2">
+        Avanzamos con una estrategia clara: consolidar la robustez del motor fundacional para luego abrir canales de integración directa y licenciamiento para el sector empresarial.
+      </p>
+
+      <div style="margin-top: 2rem;" class="reveal reveal-d3">
+        <a href="#contact" class="btn-primary">Solicitar Información Técnica</a>
+      </div>
+    </div>
+
+    <div class="roadmap-timeline">
+      
+      <div class="roadmap-item reveal reveal-d1">
+        <div class="roadmap-dot dot-done" aria-hidden="true"></div>
+        <div class="roadmap-phase">Fase 01 : Consolidada</div>
+        <h3 class="roadmap-heading">Motor Fundacional en GPU</h3>
+        <p class="roadmap-desc">
+          Arquitectura base en Vulkan 1.3, pipeline de cómputo paralelo masivo, física SPH en VRAM y spatial hashing en tiempo O(1).
+        </p>
+        <span class="roadmap-tag tag-completed">✓ Completado</span>
+      </div>
+
+      <div class="roadmap-item reveal reveal-d2">
+        <div class="roadmap-dot dot-done" aria-hidden="true"></div>
+        <div class="roadmap-phase">Fase 02 : Consolidada</div>
+        <h3 class="roadmap-heading">Generación Dinámica de Mallas</h3>
+        <p class="roadmap-desc">
+          Algoritmo de Marching Cubes paralelo en GPU con resolución de 96³ para producir superficies lisas en tiempo real con más de 1.5M de vértices.
+        </p>
+        <span class="roadmap-tag tag-completed">✓ Completado</span>
+      </div>
+
+      <div class="roadmap-item reveal reveal-d3">
+        <div class="roadmap-dot dot-wip" aria-hidden="true"></div>
+        <div class="roadmap-phase">Fase 03 : En Desarrollo Activo</div>
+        <h3 class="roadmap-heading">Capa de Control & Colisiones Dinámicas</h3>
+        <p class="roadmap-desc">
+          Integración de consola paramétrica en vivo y carga de geometrías de colisión con generación asíncrona de campos de distancia (SDF).
+        </p>
+        <span class="roadmap-tag tag-active">● En Progreso</span>
+      </div>
+
+      <div class="roadmap-item reveal reveal-d4">
+        <div class="roadmap-dot dot-future" aria-hidden="true"></div>
+        <div class="roadmap-phase">Fase 04 : Próxima Etapa</div>
+        <h3 class="roadmap-heading">SDK Modular & API de Integración B2B</h3>
+        <p class="roadmap-desc">
+          Empaquetado de bibliotecas dinámicas (DLL/Shared Lib) con interfaces C/C++ limpias para incrustar el motor en aplicaciones y visores de terceros.
+        </p>
+        <span class="roadmap-tag tag-planned">○ Planeado</span>
+      </div>
+
+      <div class="roadmap-item reveal reveal-d4">
+        <div class="roadmap-dot dot-future" aria-hidden="true"></div>
+        <div class="roadmap-phase">Fase 05 : Escalado Comercial</div>
+        <h3 class="roadmap-heading">Soluciones Llave en Mano para Empresas</h3>
+        <p class="roadmap-desc">
+          Soporte comercial, licenciamiento por puesto/proyecto y adaptaciones personalizadas para gemelos digitales y sistemas de simulación industrial.
+        </p>
+        <span class="roadmap-tag tag-planned">○ Planeado</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: CONTACTO B2B & LICENCIAMIENTO
+══════════════════════════════════════════════ -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-container reveal">
+      
+      <div class="contact-info">
+        <div class="section-eyebrow">Alianzas & Negocios</div>
+        <h3>¿Le interesa integrar esta tecnología?</h3>
+        <p>
+          Estamos abiertos a conversaciones con empresas de ingeniería, estudios de desarrollo y socios estratégicos que deseen explorar el potencial de NeoFluid3D para sus productos.
+        </p>
+
+        <ul class="contact-perks">
+          <li class="contact-perk-item">
+            <div class="perk-check" aria-hidden="true">✓</div>
+            <div class="perk-text">
+              <h5>Demostraciones Técnicas Privadas</h5>
+              <p>Presentaciones en vivo adaptadas a sus casos de uso específicos.</p>
+            </div>
+          </li>
+
+          <li class="contact-perk-item">
+            <div class="perk-check" aria-hidden="true">✓</div>
+            <div class="perk-text">
+              <h5>Licenciamiento & Acceso Temprano</h5>
+              <p>Opciones flexibles para evaluación tecnológica y prototipado inicial.</p>
+            </div>
+          </li>
+
+          <li class="contact-perk-item">
+            <div class="perk-check" aria-hidden="true">✓</div>
+            <div class="perk-text">
+              <h5>Desarrollo e Integración a Medida</h5>
+              <p>Adaptación del motor a sus estándares de software y hardware.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Action Form Box -->
+      <form class="contact-action-box" id="contact-form" onsubmit="handleContactSubmit(event)">
+        <div class="form-group">
+          <label for="contact-name">Nombre o Empresa</label>
+          <input type="text" id="contact-name" class="form-input" placeholder="Ej. HydroTech Solutions" required />
+        </div>
+        <div class="form-group">
+          <label for="contact-email">Correo Electrónico de Contacto</label>
+          <input type="email" id="contact-email" class="form-input" placeholder="contacto@empresa.com" required />
+        </div>
+        <div class="form-group">
+          <label for="contact-interest">Área de Interés</label>
+          <input type="text" id="contact-interest" class="form-input" placeholder="Gemelos Digitales / VFX / Licencia / Otro" required />
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          Solicitar Contacto / Demo
+        </button>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg width="28" height="34" viewBox="0 0 44 56" fill="none" aria-hidden="true">
+        <defs><clipPath id="ftClip"><path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z"/></clipPath></defs>
+        <path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z" fill="rgba(0,240,255,0.08)" stroke="#00F0FF" stroke-width="1.4"/>
+        <path d="M22 2C22 2 4 22 4 30L40 30C40 22 22 2 22 2Z" fill="rgba(0,240,255,0.65)"/>
+        <g clip-path="url(#ftClip)" stroke="#39FF14" stroke-width="0.9" opacity="0.85">
+          <ellipse cx="22" cy="36" rx="11.5" ry="3.5" fill="none"/>
+          <ellipse cx="22" cy="42" rx="14.5" ry="5" fill="none"/>
+          <path d="M14 30Q12 42 15 54"/><path d="M22 30L22 54"/><path d="M30 30Q32 42 29 54"/>
+        </g>
+      </svg>
+      <span><span class="neo">Neo</span><span class="fluid3d">Fluid<sup>3</sup>D</span></span>
+    </div>
+
+    <p class="footer-summary">
+      Plataforma y motor de cálculo de dinámica de fluidos en tiempo real sobre Vulkan.<br>
+      Tecnología de simulación acelerada en GPU para aplicaciones industriales, gemelos digitales y medios interactivos.
+    </p>
+
+    <ul class="footer-nav">
+      <li><a href="#vision">La Base</a></li>
+      <li><a href="#demos">Demostraciones</a></li>
+      <li><a href="#possibilities">Posibilidades</a></li>
+      <li><a href="#modes">Visualización</a></li>
+      <li><a href="#roadmap">Evolución</a></li>
+      <li><a href="#contact">Contacto B2B</a></li>
+    </ul>
+
+    <div class="footer-bottom-bar">
+      <span>© 2025–2026 NeoFluid3D : Todos los derechos reservados</span>
+      <span class="brand-spec">
+        Tipografía: <span class="c">Neo (Poppins Bold)</span> : <span class="g">Fluid³D (JetBrains Mono)</span>
+      </span>
+      <span>Identidad: <span style="color:#00F0FF">#00F0FF</span> &amp; <span style="color:#39FF14">#39FF14</span></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════
+     SCRIPTS & STATE CONTROLLER
+══════════════════════════════════════════════ -->
+<script>
+/**
+ * NeoFluid3D : Core Application Controller
+ * Handles cursor tracking, scroll reveals, responsive state, canvas simulations,
+ * video fallbacks, and UI toast feedback.
+ */
+
+/* ── 1. Interactive Cursor Subsystem ── */
+(function setupCursor() {
+  const cursorDot = document.getElementById('cursor-dot');
+  const cursorRing = document.getElementById('cursor-ring');
+  if (!cursorDot || !cursorRing) return;
+
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  let isMoving = false;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    isMoving = true;
+  }, { passive: true });
+
+  function renderCursor() {
+    if (isMoving) {
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
+
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top = ringY + 'px';
+    }
+    requestAnimationFrame(renderCursor);
+  }
+  renderCursor();
+
+  document.querySelectorAll('a, button, .pos-card, .video-card, .mode-card, .arch-layer-item, .form-input').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      if (el.classList.contains('featured') || el.classList.contains('btn-primary')) {
+        document.body.classList.add('hovered-green');
+      } else {
+        document.body.classList.add('hovered');
+      }
+    });
+    el.addEventListener('mouseleave', () => {
+      document.body.classList.remove('hovered');
+      document.body.classList.remove('hovered-green');
+    });
+  });
+})();
+
+/* ── 2. Navigation Header Scroll State ── */
+(function setupNavbar() {
+  const nav = document.getElementById('navbar');
+  if (!nav) return;
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+})();
+
+/* ── 3. Intersection Observer (Scroll Reveal) ── */
+(function setupScrollReveal() {
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+})();
+
+/* ── 4. Hero Background Particle Simulation ── */
+(function setupHeroCanvas() {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+  const N = 90;
+  const CYAN = '#00F0FF', GREEN = '#39FF14';
+
+  function resize() {
+    w = canvas.width = canvas.offsetWidth;
+    h = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', () => { resize(); createParticles(); }, { passive: true });
+
+  class FluidParticle {
+    constructor() { this.init(); }
+    init() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.vx = (Math.random() - 0.5) * 0.35;
+      this.vy = (Math.random() - 0.5) * 0.35;
+      this.radius = Math.random() * 1.8 + 0.5;
+      this.color = Math.random() > 0.45 ? CYAN : GREEN;
+      this.alpha = Math.random() * 0.5 + 0.15;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.init();
+    }
+    draw() {
+      ctx.save();
+      ctx.globalAlpha = this.alpha;
+      ctx.fillStyle = this.color;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = this.color;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function createParticles() {
+    particles = Array.from({ length: N }, () => new FluidParticle());
+  }
+  createParticles();
+
+  function drawSprings() {
+    const maxDist = 120;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < maxDist) {
+          ctx.save();
+          ctx.globalAlpha = (1 - dist / maxDist) * 0.12;
+          ctx.strokeStyle = CYAN;
+          ctx.lineWidth = 0.6;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+  }
+
+  (function loop() {
+    ctx.clearRect(0, 0, w, h);
+    drawSprings();
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(loop);
+  })();
+})();
+
+/* ── 5. Canvas Engine Pipeline Factory ── */
+function setupDynamicCanvas(id, renderCallback) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const ctx = el.getContext('2d');
+  let w, h;
+  function updateSize() {
+    w = el.width = el.offsetWidth;
+    h = el.height = el.offsetHeight;
+  }
+  updateSize();
+  new ResizeObserver(updateSize).observe(el);
+  let time = Math.random() * 100;
+  (function frame() {
+    ctx.clearRect(0, 0, w, h);
+    renderCallback(ctx, w, h, time);
+    time += 0.015;
+    requestAnimationFrame(frame);
+  })();
+}
+
+/* ── Video Fallback Canvases (Simulation Previews) ── */
+setupDynamicCanvas('vfb-1', (ctx, w, h, t) => {
+  ctx.fillStyle = '#030809';
+  ctx.fillRect(0, 0, w, h);
+  const cx = w / 2, cy = h / 2;
+  for (let i = 1; i <= 8; i++) {
+    const r = (i / 9) * Math.min(w, h) * 0.48;
+    ctx.save();
+    ctx.globalAlpha = 0.08 + (i / 9) * 0.28;
+    ctx.strokeStyle = i % 2 === 0 ? '#00F0FF' : '#39FF14';
+    ctx.lineWidth = 1.4;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = i % 2 === 0 ? '#00F0FF' : '#39FF14';
+    ctx.beginPath();
+    for (let p = 0; p <= 64; p++) {
+      const a = (p / 64) * Math.PI * 2;
+      const noise = 1 + Math.sin(a * 3 + t * 0.8 + i) * 0.1 + Math.cos(a * 5 - t * 0.6 + i * 0.8) * 0.06;
+      const px = cx + Math.cos(a) * r * noise;
+      const py = cy + Math.sin(a) * r * noise * 0.75;
+      p === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+  }
+});
+
+setupDynamicCanvas('vfb-2', (ctx, w, h, t) => {
+  ctx.fillStyle = '#020607';
+  ctx.fillRect(0, 0, w, h);
+  for (let i = 0; i < 70; i++) {
+    const s = i * 137.5;
+    const x = (Math.sin(s + t * 0.25) * 0.5 + 0.5) * w;
+    const y = (Math.cos(s * 0.7 + t * 0.2) * 0.5 + 0.5) * h;
+    const r = 1.8 + Math.sin(s + t) * 0.8;
+    const a = 0.35 + Math.sin(s * 2 + t * 0.4) * 0.35;
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.fillStyle = '#00F0FF';
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = '#00F0FF';
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+});
+
+setupDynamicCanvas('vfb-3', (ctx, w, h, t) => {
+  ctx.fillStyle = '#020708';
+  ctx.fillRect(0, 0, w, h);
+  const cols = 14, rows = 8;
+  const dx = w / cols, dy = h / rows;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = dx * (c + 0.5), y = dy * (r + 0.5);
+      const angle = Math.sin(x * 0.04 + t * 0.5) * Math.PI + Math.cos(y * 0.04 - t * 0.3) * 0.6;
+      const spd = Math.abs(Math.sin(x * 0.05 + y * 0.04 + t));
+      const len = 6 + spd * 12;
+      const ex = x + Math.cos(angle) * len;
+      const ey = y + Math.sin(angle) * len;
+      const color = spd > 0.5 ? '#00F0FF' : '#39FF14';
+      ctx.save();
+      ctx.globalAlpha = 0.45 + spd * 0.45;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = color;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(ex, ey);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+});
+
+/* ── Mode Canvases (Analytical Previews) ── */
+setupDynamicCanvas('mc-p1', (ctx, w, h, t) => {
+  ctx.fillStyle = '#030809';
+  ctx.fillRect(0, 0, w, h);
+  const cx = w / 2, cy = h / 2;
+  for (let i = 1; i <= 9; i++) {
+    const r = (i / 10) * Math.min(w, h) * 0.5;
+    ctx.save();
+    ctx.globalAlpha = 0.08 + (i / 10) * 0.3;
+    ctx.strokeStyle = '#00F0FF';
+    ctx.lineWidth = 1.4;
+    ctx.shadowBlur = 14;
+    ctx.shadowColor = '#00F0FF';
+    ctx.beginPath();
+    for (let p = 0; p <= 90; p++) {
+      const a = (p / 90) * Math.PI * 2;
+      const n1 = Math.sin(a * 4 + t * 0.7 + i) * 0.1;
+      const n2 = Math.cos(a * 6 - t * 0.5 + i * 1.2) * 0.06;
+      const px = cx + Math.cos(a) * r * (1 + n1 + n2);
+      const py = cy + Math.sin(a) * r * (1 + n1 + n2) * 0.72;
+      p === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+  }
+});
+
+setupDynamicCanvas('mc-p2', (ctx, w, h, t) => {
+  ctx.fillStyle = '#020607';
+  ctx.fillRect(0, 0, w, h);
+  for (let i = 0; i < 90; i++) {
+    const s = i * 53.7 + 11;
+    const x = (Math.sin(s + t * 0.22) * 0.5 + 0.5) * w;
+    const y = (Math.cos(s * 0.6 + t * 0.18) * 0.5 + 0.5) * h;
+    const r = 1.5 + Math.sin(s + t) * 0.8;
+    const a = 0.35 + Math.sin(s * 2 + t * 0.4) * 0.35;
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.fillStyle = '#00F0FF';
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = '#00F0FF';
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+});
+
+setupDynamicCanvas('mc-p3', (ctx, w, h, t) => {
+  ctx.fillStyle = '#020708';
+  ctx.fillRect(0, 0, w, h);
+  const pts = [];
+  for (let i = 0; i < 35; i++) {
+    const s = i * 137.5;
+    pts.push({
+      x: (Math.sin(s + t * 0.22) * 0.5 + 0.5) * w,
+      y: (Math.cos(s * 0.75 + t * 0.16) * 0.5 + 0.5) * h
+    });
+  }
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = i + 1; j < pts.length; j++) {
+      const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+      const th = Math.min(w, h) * 0.42;
+      if (d < th) {
+        ctx.save();
+        ctx.globalAlpha = (1 - d / th) * 0.6;
+        ctx.strokeStyle = '#39FF14';
+        ctx.lineWidth = 0.8;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#39FF14';
+        ctx.beginPath();
+        ctx.moveTo(pts[i].x, pts[i].y);
+        ctx.lineTo(pts[j].x, pts[j].y);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+  }
+  pts.forEach(p => {
+    ctx.save();
+    ctx.globalAlpha = 0.85;
+    ctx.fillStyle = '#00F0FF';
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = '#00F0FF';
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+});
+
+setupDynamicCanvas('mc-p4', (ctx, w, h, t) => {
+  ctx.fillStyle = '#020608';
+  ctx.fillRect(0, 0, w, h);
+  const cols = 16, rows = 9;
+  const dx = w / cols, dy = h / rows;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = dx * (c + 0.5), y = dy * (r + 0.5);
+      const angle = Math.sin(x * 0.05 + t * 0.6) * Math.PI + Math.cos(y * 0.05 - t * 0.4) * 0.8;
+      const spd = Math.abs(Math.sin(x * 0.06 + y * 0.05 + t));
+      const len = 6 + spd * 14;
+      const ex = x + Math.cos(angle) * len;
+      const ey = y + Math.sin(angle) * len;
+      const color = spd > 0.45 ? '#00F0FF' : '#39FF14';
+      ctx.save();
+      ctx.globalAlpha = 0.4 + spd * 0.5;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = color;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(ex, ey);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+});
+
+/* ── 6. UI Toast Subsystem ── */
+function showToast(message, duration = 4000) {
+  const toast = document.getElementById('ui-toast');
+  const msgEl = document.getElementById('toast-message');
+  if (!toast || !msgEl) return;
+  msgEl.textContent = message;
+  toast.classList.add('active');
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => {
+    toast.classList.remove('active');
+  }, duration);
+}
+
+/* ── 7. Video Showcase Playback Controller ── */
+function handleVideoToggle(videoId, buttonEl) {
+  const vid = document.getElementById(videoId);
+  if (!vid) return;
+
+  if (vid.readyState >= 2 || (vid.src && vid.src !== window.location.href)) {
+    if (vid.paused) {
+      vid.play();
+      buttonEl.classList.add('hidden');
+    } else {
+      vid.pause();
+      buttonEl.classList.remove('hidden');
+    }
+  } else {
+    showToast('Añade tu archivo .mp4 a la carpeta videos/ para activar este clip.');
+  }
+
+  vid.addEventListener('ended', () => {
+    buttonEl.classList.remove('hidden');
+  });
+}
+
+/* ── 8. Form Submission Feedback ── */
+function handleContactSubmit(e) {
+  e.preventDefault();
+  const name = document.getElementById('contact-name').value;
+  showToast(`Solicitud de ${name || 'contacto'} recibida con éxito.`);
+  e.target.reset();
+}
+</script>
+</body>
+</html>
