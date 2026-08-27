@@ -1,1665 +1,168 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-  <!-- Primary SEO Meta Tags -->
-  <title>NeoFluid3D : Motor de Simulación de Fluidos en Tiempo Real</title>
-  <meta name="title" content="NeoFluid3D : Motor de Simulación de Fluidos en Tiempo Real" />
-  <meta name="description" content="Plataforma fundacional de cálculo y dinámica de fluidos masivamente paralela en GPU sobre Vulkan 1.3. Soluciones avanzadas para gemelos digitales, ingeniería y medios interactivos." />
-  <meta name="keywords" content="NeoFluid3D, Vulkan, Fluid Simulation, SPH, Marching Cubes, GPU Compute, Real-time CFD, Digital Twins, VFX, Computer Graphics" />
-  <meta name="author" content="NeoFluid3D Core Team" />
   <meta name="theme-color" content="#030708" />
+  <title>NeoFluid3D - Motor de Simulación de Fluidos en Tiempo Real</title>
+  <meta name="description" content="Motor de cálculo acelerado en GPU para dinámica de fluidos en tiempo real, gemelos digitales y software avanzado." />
 
-  <!-- Open Graph / Facebook / LinkedIn -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://neofluid3d.com/" />
-  <meta property="og:title" content="NeoFluid3D : Motor de Simulación de Fluidos en Tiempo Real" />
-  <meta property="og:description" content="Tecnología fundacional de simulación hidrodinámica 100% en GPU para gemelos digitales, industria 4.0 y experiencias interactivas." />
-  <meta property="og:image" content="https://neofluid3d.com/assets/og-preview.png" />
-
-  <!-- Twitter Card -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:title" content="NeoFluid3D : Motor de Simulación de Fluidos en Tiempo Real" />
-  <meta property="twitter:description" content="Tecnología fundacional de simulación hidrodinámica 100% en GPU para gemelos digitales, industria 4.0 y experiencias interactivas." />
-  <meta property="twitter:image" content="https://neofluid3d.com/assets/og-preview.png" />
-
-  <!-- Embedded SVG Favicon (Brand Drop) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 56'%3E%3Cdefs%3E%3CclipPath id='c'%3E%3Cpath d='M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d='M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z' fill='%23030708' stroke='%2300F0FF' stroke-width='2'/%3E%3Cpath d='M22 2C22 2 4 22 4 30L40 30C40 22 22 2 22 2Z' fill='%2300F0FF'/%3E%3Cg clip-path='url(%23c)' stroke='%2339FF14' stroke-width='1.5'%3E%3Cellipse cx='22' cy='36' rx='11' ry='3.5' fill='none'/%3E%3Cellipse cx='22' cy='43' rx='14' ry='5' fill='none'/%3E%3Cpath d='M14 30Q12 42 15 54'/%3E%3Cpath d='M22 30L22 54'/%3E%3Cpath d='M30 30Q32 42 29 54'/%3E%3C/g%3E%3C/svg%3E" />
-
-  <!-- Typography: Poppins (Sans) & JetBrains Mono (Monospace) -->
+  <!-- Fonts & Math Stylesheets -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
 
-  <style>
-    /* ═══════════════════════════════════════════════════════════
-       1. DESIGN TOKENS & SYSTEM VARIABLES
-    ═══════════════════════════════════════════════════════════ */
-    :root {
-      --color-cyan:         #00F0FF;
-      --color-cyan-dim:     rgba(0, 240, 255, 0.7);
-      --color-cyan-glow:    rgba(0, 240, 255, 0.35);
-      --color-green:        #39FF14;
-      --color-green-dim:    rgba(57, 255, 20, 0.7);
-      --color-green-glow:   rgba(57, 255, 20, 0.35);
+  <!-- High-Contrast Vector Isotype Favicon (Canonical High-Contrast Genesis Projection) -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
-      --color-bg:           #030708;
-      --color-bg-surface:   #061012;
-      --color-bg-card:      rgba(6, 18, 20, 0.75);
-      --color-bg-card-hover:rgba(8, 26, 30, 0.9);
-
-      --color-border:       rgba(0, 240, 255, 0.15);
-      --color-border-subtle:rgba(0, 240, 255, 0.08);
-      --color-border-hover: rgba(0, 240, 255, 0.45);
-      --color-border-green: rgba(57, 255, 20, 0.4);
-
-      --color-text:         #dcf6f9;
-      --color-text-muted:   #689399;
-      --color-text-dim:     #3e6368;
-
-      --glow-cyan-sm:       0 0 10px rgba(0, 240, 255, 0.6);
-      --glow-cyan:          0 0 10px #00F0FF, 0 0 28px rgba(0, 240, 255, 0.45), 0 0 70px rgba(0, 240, 255, 0.15);
-      --glow-green:         0 0 10px #39FF14, 0 0 28px rgba(57, 255, 20, 0.45), 0 0 70px rgba(57, 255, 20, 0.15);
-      --glow-text-cyan:     0 0 12px rgba(0, 240, 255, 0.8), 0 0 32px rgba(0, 240, 255, 0.4);
-      --glow-text-green:    0 0 12px rgba(57, 255, 20, 0.8), 0 0 32px rgba(57, 255, 20, 0.4);
-
-      --font-poppins:       'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono:          'JetBrains Mono', monospace;
-
-      --radius-sm:          6px;
-      --radius-md:          14px;
-      --radius-lg:          20px;
-      --section-spacing:    7.5rem 2rem;
-      --transition-smooth:  0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       2. RESET & ACCESSIBILITY FOUNDATIONS
-    ═══════════════════════════════════════════════════════════ */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
-      background-color: var(--color-bg);
-    }
-
-    body {
-      background: var(--color-bg);
-      color: var(--color-text);
-      font-family: var(--font-mono);
-      overflow-x: hidden;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      body { cursor: none; }
-      a, button, input { cursor: none; }
-    }
-
-    ::selection {
-      background: rgba(0, 240, 255, 0.3);
-      color: #ffffff;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-      transition: color var(--transition-smooth);
-    }
-
-    button {
-      font-family: inherit;
-      border: none;
-      background: none;
-    }
-
-    a:focus-visible, button:focus-visible, input:focus-visible {
-      outline: 2px solid var(--color-cyan);
-      outline-offset: 4px;
-    }
-
-    ::-webkit-scrollbar { width: 7px; }
-    ::-webkit-scrollbar-track { background: #030708; }
-    ::-webkit-scrollbar-thumb { background: #132a2e; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--color-cyan); box-shadow: var(--glow-cyan); }
-
-    /* ═══════════════════════════════════════════════════════════
-       3. INTERACTIVE HARDWARE-ACCELERATED CURSOR
-    ═══════════════════════════════════════════════════════════ */
-    #cursor-dot, #cursor-ring {
-      position: fixed;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 10000;
-      transform: translate(-50%, -50%);
-      will-change: transform, left, top;
-    }
-    #cursor-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--color-cyan);
-      box-shadow: var(--glow-cyan);
-      transition: opacity 0.2s ease, transform 0.1s ease;
-    }
-    #cursor-ring {
-      width: 34px;
-      height: 34px;
-      border: 1.5px solid rgba(0, 240, 255, 0.45);
-      transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-                  height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-                  border-color 0.3s ease,
-                  background-color 0.3s ease;
-    }
-    body.hovered #cursor-ring {
-      width: 58px;
-      height: 58px;
-      border-color: var(--color-cyan);
-      background-color: rgba(0, 240, 255, 0.06);
-    }
-    body.hovered-green #cursor-ring {
-      width: 58px;
-      height: 58px;
-      border-color: var(--color-green);
-      background-color: rgba(57, 255, 20, 0.06);
-    }
-
-    @media (hover: none) or (pointer: coarse) {
-      #cursor-dot, #cursor-ring { display: none !important; }
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       4. BACKGROUND GRID & CRT OVERLAYS
-    ═══════════════════════════════════════════════════════════ */
-    #grid-bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(0, 240, 255, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 240, 255, 0.035) 1px, transparent 1px);
-      background-size: 64px 64px;
-      animation: gridDrift 40s linear infinite;
-    }
-    @keyframes gridDrift {
-      0% { background-position: 0 0; }
-      100% { background-position: 0 64px; }
-    }
-    #grid-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 30%, transparent 20%, var(--color-bg) 80%);
-    }
-
-    #scanlines {
-      pointer-events: none;
-      position: fixed;
-      inset: 0;
-      z-index: 999;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.15) 2px,
-        rgba(0, 0, 0, 0.15) 4px
-      );
-      opacity: 0.5;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       5. NAVIGATION BAR
-    ═══════════════════════════════════════════════════════════ */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 500;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.1rem 3.5rem;
-      backdrop-filter: blur(16px) saturate(1.8);
-      background: rgba(3, 7, 8, 0.72);
-      border-bottom: 1px solid var(--color-border-subtle);
-      transition: all var(--transition-smooth);
-    }
-    nav.scrolled {
-      background: rgba(3, 7, 8, 0.94);
-      border-bottom: 1px solid var(--color-border);
-      padding-top: 0.8rem;
-      padding-bottom: 0.8rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-    }
-
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-    .nav-brand .neo {
-      font-family: var(--font-poppins);
-      font-weight: 900;
-      color: var(--color-cyan);
-      text-shadow: var(--glow-text-cyan);
-    }
-    .nav-brand .fluid3d {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      color: var(--color-green);
-      text-shadow: var(--glow-text-green);
-    }
-    .nav-brand sup {
-      font-size: 0.6em;
-      color: var(--color-cyan);
-      vertical-align: super;
-      font-family: var(--font-mono);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.2rem;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 0.78rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--color-text-muted);
-      position: relative;
-      padding: 0.25rem 0;
-      transition: color var(--transition-smooth), text-shadow var(--transition-smooth);
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      height: 1.5px;
-      background: var(--color-cyan);
-      box-shadow: var(--glow-cyan);
-      transition: width var(--transition-smooth);
-    }
-    .nav-links a:hover {
-      color: var(--color-cyan);
-      text-shadow: var(--glow-text-cyan);
-    }
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .nav-btn {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      padding: 0.55rem 1.4rem;
-      border: 1px solid var(--color-green);
-      border-radius: var(--radius-sm);
-      color: var(--color-green);
-      background: rgba(57, 255, 20, 0.05);
-      text-shadow: var(--glow-text-green);
-      box-shadow: 0 0 16px rgba(57, 255, 20, 0.15);
-      transition: all var(--transition-smooth);
-    }
-    .nav-btn:hover {
-      background: rgba(57, 255, 20, 0.18);
-      box-shadow: var(--glow-green);
-      transform: translateY(-2px);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       6. HERO SECTION
-    ═══════════════════════════════════════════════════════════ */
-    #hero {
-      position: relative;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 8rem 2rem 5rem;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    #hero-canvas {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      width: 100%;
-      height: 100%;
-    }
-
-    .ambient-glow {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      pointer-events: none;
-      opacity: 0.22;
-      animation: pulseGlow 14s ease-in-out infinite alternate;
-    }
-    .glow-1 {
-      width: 480px; height: 480px;
-      background: var(--color-cyan);
-      top: 15%; left: 5%;
-    }
-    .glow-2 {
-      width: 420px; height: 420px;
-      background: var(--color-green);
-      bottom: 10%; right: 5%;
-      animation-delay: -6s;
-    }
-    @keyframes pulseGlow {
-      0% { transform: translate(0, 0) scale(1); opacity: 0.16; }
-      100% { transform: translate(30px, -30px) scale(1.15); opacity: 0.26; }
-    }
-
-    .hero-brand-symbol {
-      position: relative;
-      z-index: 2;
-      margin-bottom: 1.8rem;
-      animation: floatSymbol 6s ease-in-out infinite;
-      filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.5)) drop-shadow(0 0 50px rgba(57, 255, 20, 0.2));
-    }
-    @keyframes floatSymbol {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
-    }
-
-    .hero-badge-pill {
-      position: relative;
-      z-index: 2;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.35rem 1.1rem;
-      background: rgba(0, 240, 255, 0.06);
-      border: 1px solid rgba(0, 240, 255, 0.28);
-      border-radius: 999px;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--color-cyan);
-      margin-bottom: 1.6rem;
-      backdrop-filter: blur(8px);
-    }
-    .hero-badge-pill .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--color-green);
-      box-shadow: var(--glow-green);
-      animation: radarPulse 2s ease-in-out infinite;
-    }
-    @keyframes radarPulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(1.4); }
-    }
-
-    .hero-title {
-      position: relative;
-      z-index: 2;
-      font-size: clamp(3rem, 7.5vw, 6.2rem);
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.4rem;
-    }
-    .hero-title .neo {
-      font-family: var(--font-poppins);
-      font-weight: 900;
-      color: var(--color-cyan);
-      text-shadow: var(--glow-text-cyan);
-      display: inline-block;
-    }
-    .hero-title .fluid3d {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      color: var(--color-green);
-      text-shadow: var(--glow-text-green);
-      display: inline-block;
-    }
-    .hero-title sup {
-      font-size: 45%;
-      vertical-align: super;
-      font-family: var(--font-mono);
-      color: var(--color-cyan);
-    }
-
-    .hero-tagline {
-      position: relative;
-      z-index: 2;
-      font-family: var(--font-poppins);
-      font-size: clamp(1.1rem, 2.4vw, 1.65rem);
-      font-weight: 600;
-      color: #ffffff;
-      max-width: 820px;
-      margin: 0 auto 1.4rem;
-      line-height: 1.4;
-      letter-spacing: -0.01em;
-    }
-    .hero-tagline span.cyan-text {
-      color: var(--color-cyan);
-      text-shadow: var(--glow-text-cyan);
-    }
-    .hero-tagline span.green-text {
-      color: var(--color-green);
-      text-shadow: var(--glow-text-green);
-    }
-
-    .hero-desc {
-      position: relative;
-      z-index: 2;
-      font-size: clamp(0.88rem, 1.5vw, 1.05rem);
-      color: var(--color-text-muted);
-      max-width: 680px;
-      margin: 0 auto 2.8rem;
-      line-height: 1.8;
-      font-weight: 300;
-    }
-    .hero-desc strong {
-      color: var(--color-text);
-      font-weight: 600;
-    }
-
-    .hero-actions {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      gap: 1.4rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 4rem;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.95rem 2.4rem;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #030708;
-      background: linear-gradient(135deg, #00F0FF 0%, #39FF14 100%);
-      border-radius: var(--radius-sm);
-      border: 1px solid #00F0FF;
-      box-shadow: 0 0 24px rgba(0, 240, 255, 0.4), inset 0 0 10px rgba(255,255,255,0.4);
-      transition: all var(--transition-smooth);
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-primary:hover {
-      box-shadow: 0 0 40px rgba(0, 240, 255, 0.7), 0 0 20px rgba(57, 255, 20, 0.5);
-      transform: translateY(-3px);
-    }
-
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.95rem 2.2rem;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--color-cyan);
-      background: rgba(0, 240, 255, 0.04);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      backdrop-filter: blur(8px);
-      transition: all var(--transition-smooth);
-    }
-    .btn-secondary:hover {
-      border-color: var(--color-cyan);
-      background: rgba(0, 240, 255, 0.1);
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
-      transform: translateY(-3px);
-    }
-
-    .hero-stat-ribbon {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.5rem;
-      width: 100%;
-      max-width: 960px;
-      padding: 1.4rem 2rem;
-      background: rgba(6, 16, 18, 0.6);
-      border: 1px solid var(--color-border-subtle);
-      border-radius: var(--radius-md);
-      backdrop-filter: blur(12px);
-    }
-    .ribbon-item {
-      text-align: center;
-    }
-    .ribbon-item .ribbon-val {
-      font-family: var(--font-poppins);
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--color-cyan);
-      line-height: 1.1;
-      margin-bottom: 0.25rem;
-    }
-    .ribbon-item .ribbon-lbl {
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--color-text-muted);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       7. SECTION COMMONS
-    ═══════════════════════════════════════════════════════════ */
-    section {
-      position: relative;
-      z-index: 1;
-    }
-
-    .section-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: var(--section-spacing);
-    }
-
-    .section-header {
-      margin-bottom: 3.8rem;
-    }
-    .section-header.center {
-      text-align: center;
-    }
-
-    .section-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--color-green);
-      text-shadow: var(--glow-text-green);
-      margin-bottom: 0.8rem;
-    }
-    .section-eyebrow::before {
-      content: '';
-      display: block;
-      width: 24px;
-      height: 1.5px;
-      background: var(--color-green);
-      box-shadow: var(--glow-green);
-    }
-    .section-header.center .section-eyebrow::before {
-      display: none;
-    }
-
-    .section-title {
-      font-family: var(--font-poppins);
-      font-size: clamp(2rem, 3.8vw, 3.2rem);
-      font-weight: 800;
-      line-height: 1.18;
-      letter-spacing: -0.02em;
-      color: #ffffff;
-      margin-bottom: 1.1rem;
-    }
-    .section-title .hl-cyan {
-      color: var(--color-cyan);
-      text-shadow: var(--glow-text-cyan);
-    }
-    .section-title .hl-green {
-      color: var(--color-green);
-      text-shadow: var(--glow-text-green);
-    }
-
-    .section-desc {
-      font-size: 0.95rem;
-      color: var(--color-text-muted);
-      line-height: 1.85;
-      max-width: 680px;
-      font-weight: 300;
-    }
-    .section-header.center .section-desc {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--color-border), var(--color-border-green), transparent);
-      opacity: 0.6;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(35px);
-      transition: opacity 0.75s ease, transform 0.75s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-d1 { transition-delay: 0.1s; }
-    .reveal-d2 { transition-delay: 0.22s; }
-    .reveal-d3 { transition-delay: 0.34s; }
-    .reveal-d4 { transition-delay: 0.46s; }
-
-    /* ═══════════════════════════════════════════════════════════
-       8. SECTION: VISIÓN & EL MOTOR BASE
-    ═══════════════════════════════════════════════════════════ */
-    #vision .section-inner {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 4.5rem;
-      align-items: center;
-    }
-
-    .vision-content p {
-      font-size: 0.92rem;
-      color: var(--color-text-muted);
-      line-height: 1.85;
-      margin-bottom: 1.4rem;
-    }
-    .vision-content strong {
-      color: var(--color-text);
-    }
-
-    .vision-callout {
-      margin-top: 2rem;
-      padding: 1.5rem 1.8rem;
-      background: rgba(0, 240, 255, 0.04);
-      border-left: 3px solid var(--color-cyan);
-      border-radius: 0 var(--radius-md) var(--radius-md) 0;
-      border-top: 1px solid var(--color-border-subtle);
-      border-right: 1px solid var(--color-border-subtle);
-      border-bottom: 1px solid var(--color-border-subtle);
-    }
-    .vision-callout h4 {
-      font-family: var(--font-poppins);
-      font-size: 1rem;
-      color: var(--color-cyan);
-      margin-bottom: 0.4rem;
-    }
-    .vision-callout p {
-      font-size: 0.85rem;
-      color: var(--color-text-muted);
-      margin-bottom: 0;
-      line-height: 1.7;
-    }
-
-    .arch-card {
-      background: var(--color-bg-card);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: 2.2rem;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-      position: relative;
-      overflow: hidden;
-    }
-    .arch-card::before {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 140px; height: 140px;
-      background: radial-gradient(circle, rgba(0, 240, 255, 0.15), transparent 70%);
-      pointer-events: none;
-    }
-    .arch-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--color-border-subtle);
-      padding-bottom: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-    .arch-title {
-      font-family: var(--font-poppins);
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: #ffffff;
-    }
-    .arch-status {
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.75rem;
-      background: rgba(57, 255, 20, 0.1);
-      border: 1px solid rgba(57, 255, 20, 0.3);
-      border-radius: 99px;
-      color: var(--color-green);
-    }
-
-    .arch-layers {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .arch-layer-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      padding: 0.9rem 1.1rem;
-      background: rgba(3, 7, 8, 0.6);
-      border: 1px solid var(--color-border-subtle);
-      border-radius: var(--radius-sm);
-      transition: all var(--transition-smooth);
-    }
-    .arch-layer-item:hover {
-      border-color: var(--color-cyan);
-      background: rgba(0, 240, 255, 0.05);
-      transform: translateX(4px);
-    }
-    .layer-icon {
-      font-size: 1.2rem;
-      color: var(--color-cyan);
-      line-height: 1;
-    }
-    .layer-info h5 {
-      font-family: var(--font-poppins);
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: #ffffff;
-      margin-bottom: 0.15rem;
-    }
-    .layer-info p {
-      font-size: 0.75rem;
-      color: var(--color-text-muted);
-      line-height: 1.5;
-      margin-bottom: 0;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       9. SECTION: DEMOSTRACIONES EN VIDEO (SHOWCASE REELS)
-    ═══════════════════════════════════════════════════════════ */
-    #demos {
-      background: radial-gradient(ellipse 80% 50% at 50% 10%, rgba(0, 240, 255, 0.04) 0%, transparent 70%);
-    }
-
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 2rem;
-    }
-
-    .video-card {
-      background: var(--color-bg-card);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: all var(--transition-smooth);
-      position: relative;
-    }
-    .video-card:hover {
-      border-color: var(--color-cyan);
-      transform: translateY(-6px);
-      box-shadow: 0 16px 40px rgba(0, 240, 255, 0.12);
-    }
-
-    .video-frame-wrap {
-      position: relative;
-      aspect-ratio: 16/9;
-      background: #020506;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .video-frame-wrap video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      z-index: 2;
-    }
-
-    .video-fallback-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-
-    .video-overlay-badge {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      z-index: 5;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.25rem 0.75rem;
-      background: rgba(3, 7, 8, 0.85);
-      border: 1px solid var(--color-border);
-      border-radius: 4px;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--color-cyan);
-      backdrop-filter: blur(6px);
-    }
-    .video-overlay-badge .rec-dot {
-      width: 6px;
-      height: 6px;
-      background: #ff3366;
-      border-radius: 50%;
-      animation: blink 1.2s infinite;
-    }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
-
-    .video-play-btn {
-      position: absolute;
-      z-index: 4;
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      background: rgba(3, 7, 8, 0.75);
-      border: 1.5px solid var(--color-cyan);
-      color: var(--color-cyan);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
-      backdrop-filter: blur(8px);
-      transition: all var(--transition-smooth);
-    }
-    .video-card:hover .video-play-btn {
-      transform: scale(1.15);
-      background: var(--color-cyan);
-      color: #030708;
-      box-shadow: var(--glow-cyan);
-    }
-    .video-play-btn.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .video-card-body {
-      padding: 1.6rem 1.8rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    .video-card-tag {
-      font-size: 0.65rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--color-green);
-      margin-bottom: 0.4rem;
-    }
-    .video-card-title {
-      font-family: var(--font-poppins);
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 0.6rem;
-    }
-    .video-card-desc {
-      font-size: 0.82rem;
-      color: var(--color-text-muted);
-      line-height: 1.65;
-      margin-bottom: 1.2rem;
-      flex: 1;
-    }
-    .video-card-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid var(--color-border-subtle);
-      padding-top: 0.9rem;
-      font-size: 0.72rem;
-      color: var(--color-text-dim);
-    }
-    .video-card-meta span {
-      color: var(--color-cyan);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       10. SECTION: POSIBILIDADES & MERCADO (DEEP DIVE)
-    ═══════════════════════════════════════════════════════════ */
-    #possibilities {
-      background: radial-gradient(ellipse 70% 60% at 10% 50%, rgba(57, 255, 20, 0.03) 0%, transparent 70%);
-    }
-
-    .possibilities-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 1.8rem;
-    }
-
-    .pos-card {
-      background: var(--color-bg-card);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: 2.4rem 2.2rem;
-      display: flex;
-      flex-direction: column;
-      transition: all var(--transition-smooth);
-      position: relative;
-      overflow: hidden;
-    }
-    .pos-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity var(--transition-smooth);
-    }
-    .pos-card:hover {
-      transform: translateY(-8px);
-      border-color: var(--color-cyan);
-      box-shadow: 0 16px 45px rgba(0, 240, 255, 0.12);
-    }
-    .pos-card:hover::before {
-      opacity: 1;
-    }
-
-    .pos-card.featured {
-      border-color: var(--color-border-green);
-    }
-    .pos-card.featured::before {
-      background: linear-gradient(135deg, rgba(57, 255, 20, 0.06) 0%, transparent 60%);
-    }
-    .pos-card.featured:hover {
-      border-color: var(--color-green);
-      box-shadow: 0 16px 45px rgba(57, 255, 20, 0.12);
-    }
-
-    .pos-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.4rem;
-    }
-    .pos-icon-box {
-      width: 52px;
-      height: 52px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      border: 1px solid var(--color-border);
-      background: rgba(3, 7, 8, 0.8);
-    }
-    .pos-card.featured .pos-icon-box {
-      border-color: var(--color-border-green);
-    }
-    .pos-badge {
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.3rem 0.8rem;
-      border-radius: 4px;
-      background: rgba(0, 240, 255, 0.08);
-      color: var(--color-cyan);
-      border: 1px solid rgba(0, 240, 255, 0.25);
-    }
-    .pos-card.featured .pos-badge {
-      background: rgba(57, 255, 20, 0.08);
-      color: var(--color-green);
-      border-color: rgba(57, 255, 20, 0.25);
-    }
-
-    .pos-title {
-      font-family: var(--font-poppins);
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 0.8rem;
-      line-height: 1.3;
-    }
-    .pos-desc {
-      font-size: 0.85rem;
-      color: var(--color-text-muted);
-      line-height: 1.8;
-      margin-bottom: 1.6rem;
-      flex: 1;
-    }
-    .pos-desc strong {
-      color: var(--color-text);
-    }
-
-    .pos-usecases {
-      list-style: none;
-      border-top: 1px solid var(--color-border-subtle);
-      padding-top: 1.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-    .pos-usecases li {
-      font-size: 0.78rem;
-      color: var(--color-text-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .pos-usecases li::before {
-      content: '▹';
-      color: var(--color-cyan);
-      font-size: 0.85rem;
-    }
-    .pos-card.featured .pos-usecases li::before {
-      color: var(--color-green);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       11. SECTION: MODOS ANALÍTICOS Y VISUALIZACIÓN
-    ═══════════════════════════════════════════════════════════ */
-    #modes {
-      background: radial-gradient(ellipse 60% 60% at 90% 40%, rgba(0, 240, 255, 0.03) 0%, transparent 60%);
-    }
-
-    .modes-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.8rem;
-    }
-    @media (max-width: 820px) {
-      .modes-grid { grid-template-columns: 1fr; }
-    }
-
-    .mode-card {
-      position: relative;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--color-border);
-      overflow: hidden;
-      aspect-ratio: 16/9;
-      background: #040a0c;
-      transition: all var(--transition-smooth);
-    }
-    .mode-card:hover {
-      border-color: var(--color-cyan);
-      box-shadow: 0 12px 35px rgba(0, 240, 255, 0.15);
-    }
-    .mode-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .mode-scanner {
-      position: absolute;
-      left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
-      opacity: 0.35;
-      animation: scanBeam 4s ease-in-out infinite;
-    }
-    @keyframes scanBeam {
-      0% { top: 0%; opacity: 0; }
-      50% { opacity: 0.4; }
-      100% { top: 100%; opacity: 0; }
-    }
-
-    .mode-caption {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 1.4rem 1.6rem;
-      background: linear-gradient(0deg, rgba(3, 7, 8, 0.95) 0%, rgba(3, 7, 8, 0.5) 70%, transparent 100%);
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-    }
-    .mode-caption-title {
-      font-family: var(--font-poppins);
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 0.2rem;
-    }
-    .mode-caption-sub {
-      font-size: 0.72rem;
-      color: var(--color-text-muted);
-    }
-    .mode-tag {
-      font-size: 0.7rem;
-      font-family: var(--font-mono);
-      padding: 0.25rem 0.75rem;
-      border: 1px solid var(--color-border);
-      border-radius: 4px;
-      color: var(--color-cyan);
-      background: rgba(0, 240, 255, 0.08);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       12. SECTION: ROADMAP & EVOLUCIÓN EMPRESARIAL
-    ═══════════════════════════════════════════════════════════ */
-    #roadmap .section-inner {
-      display: grid;
-      grid-template-columns: 1fr 1.3fr;
-      gap: 4.5rem;
-      align-items: start;
-    }
-
-    .roadmap-timeline {
-      position: relative;
-      padding-left: 2.8rem;
-    }
-    .roadmap-timeline::before {
-      content: '';
-      position: absolute;
-      left: 10px;
-      top: 10px;
-      bottom: 10px;
-      width: 1.5px;
-      background: linear-gradient(180deg, var(--color-cyan), var(--color-green), rgba(57,255,20,0.1));
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
-    }
-
-    .roadmap-item {
-      position: relative;
-      margin-bottom: 2.8rem;
-    }
-    .roadmap-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .roadmap-dot {
-      position: absolute;
-      left: -2.35rem;
-      top: 0.25rem;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: 2px solid;
-      background: var(--color-bg);
-      transition: all var(--transition-smooth);
-    }
-    .dot-done {
-      border-color: var(--color-green);
-      background: var(--color-green);
-      box-shadow: var(--glow-green);
-    }
-    .dot-wip {
-      border-color: var(--color-cyan);
-      background: var(--color-bg);
-      box-shadow: var(--glow-cyan);
-      animation: pulseDot 1.6s ease-in-out infinite;
-    }
-    .dot-future {
-      border-color: var(--color-text-dim);
-      background: var(--color-bg);
-    }
-    @keyframes pulseDot {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 8px var(--color-cyan); }
-      50% { transform: scale(1.3); box-shadow: 0 0 18px var(--color-cyan); }
-    }
-
-    .roadmap-phase {
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--color-cyan);
-      margin-bottom: 0.3rem;
-    }
-    .roadmap-heading {
-      font-family: var(--font-poppins);
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 0.4rem;
-    }
-    .roadmap-desc {
-      font-size: 0.84rem;
-      color: var(--color-text-muted);
-      line-height: 1.75;
-      margin-bottom: 0.6rem;
-    }
-    .roadmap-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.7rem;
-      border-radius: 4px;
-    }
-    .tag-completed {
-      background: rgba(57, 255, 20, 0.1);
-      color: var(--color-green);
-      border: 1px solid rgba(57, 255, 20, 0.3);
-    }
-    .tag-active {
-      background: rgba(0, 240, 255, 0.1);
-      color: var(--color-cyan);
-      border: 1px solid rgba(0, 240, 255, 0.3);
-    }
-    .tag-planned {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--color-text-muted);
-      border: 1px solid var(--color-border-subtle);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       13. SECTION: CONTACTO EMPRESARIAL & LICENCIAMIENTO
-    ═══════════════════════════════════════════════════════════ */
-    #contact {
-      background: radial-gradient(ellipse 80% 50% at 50% 90%, rgba(0, 240, 255, 0.06) 0%, transparent 70%);
-    }
-
-    .contact-container {
-      background: var(--color-bg-card);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: 4rem 3.5rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
-    }
-    .contact-container::before {
-      content: '';
-      position: absolute;
-      top: -100px; right: -100px;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(0, 240, 255, 0.15), transparent 70%);
-      pointer-events: none;
-    }
-
-    .contact-info h3 {
-      font-family: var(--font-poppins);
-      font-size: 2rem;
-      font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 1rem;
-      line-height: 1.2;
-    }
-    .contact-info p {
-      font-size: 0.9rem;
-      color: var(--color-text-muted);
-      line-height: 1.8;
-      margin-bottom: 2rem;
-    }
-
-    .contact-perks {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .contact-perk-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.9rem;
-    }
-    .perk-check {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: rgba(57, 255, 20, 0.15);
-      border: 1px solid var(--color-green);
-      color: var(--color-green);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      flex-shrink: 0;
-      margin-top: 0.1rem;
-    }
-    .perk-text h5 {
-      font-family: var(--font-poppins);
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #ffffff;
-      margin-bottom: 0.1rem;
-    }
-    .perk-text p {
-      font-size: 0.78rem;
-      color: var(--color-text-muted);
-      margin-bottom: 0;
-      line-height: 1.5;
-    }
-
-    .contact-action-box {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 1.5rem;
-      background: rgba(3, 7, 8, 0.7);
-      border: 1px solid var(--color-border-subtle);
-      border-radius: var(--radius-md);
-      padding: 2.5rem;
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-    .form-group label {
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--color-cyan);
-    }
-    .form-input {
-      background: rgba(6, 18, 20, 0.8);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      padding: 0.8rem 1rem;
-      color: #ffffff;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      transition: all var(--transition-smooth);
-    }
-    .form-input:focus {
-      outline: none;
-      border-color: var(--color-cyan);
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       14. TOAST NOTIFICATION (ENTERPRISE FEEDBACK)
-    ═══════════════════════════════════════════════════════════ */
-    #ui-toast {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 10001;
-      padding: 1rem 1.6rem;
-      background: rgba(6, 18, 20, 0.95);
-      border: 1px solid var(--color-cyan);
-      border-radius: var(--radius-sm);
-      color: #ffffff;
-      font-size: 0.85rem;
-      backdrop-filter: blur(12px);
-      box-shadow: var(--glow-cyan-sm);
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      transform: translateY(120%);
-      opacity: 0;
-      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
-      pointer-events: none;
-    }
-    #ui-toast.active {
-      transform: translateY(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
-    #ui-toast .toast-icon {
-      color: var(--color-cyan);
-      font-size: 1.1rem;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       15. FOOTER
-    ═══════════════════════════════════════════════════════════ */
-    footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid var(--color-border);
-      background: #020506;
-      padding: 4.5rem 2rem 2.5rem;
-    }
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2.2rem;
-    }
-
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      font-size: 1.6rem;
-    }
-    .footer-brand .neo {
-      font-family: var(--font-poppins);
-      font-weight: 900;
-      color: var(--color-cyan);
-      text-shadow: var(--glow-text-cyan);
-    }
-    .footer-brand .fluid3d {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      color: var(--color-green);
-      text-shadow: var(--glow-text-green);
-    }
-
-    .footer-summary {
-      font-size: 0.82rem;
-      color: var(--color-text-muted);
-      text-align: center;
-      max-width: 520px;
-      line-height: 1.7;
-    }
-
-    .footer-nav {
-      display: flex;
-      gap: 2.2rem;
-      list-style: none;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .footer-nav a {
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--color-text-muted);
-    }
-    .footer-nav a:hover {
-      color: var(--color-cyan);
-      text-shadow: var(--glow-text-cyan);
-    }
-
-    .footer-bottom-bar {
-      width: 100%;
-      border-top: 1px solid var(--color-border-subtle);
-      padding-top: 1.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-      font-size: 0.72rem;
-      color: var(--color-text-dim);
-    }
-    .footer-bottom-bar .brand-spec {
-      color: var(--color-text-muted);
-    }
-    .footer-bottom-bar .brand-spec span.c { color: var(--color-cyan); }
-    .footer-bottom-bar .brand-spec span.g { color: var(--color-green); }
-
-    /* ═══════════════════════════════════════════════════════════
-       16. RESPONSIVE BREAKPOINTS
-    ═══════════════════════════════════════════════════════════ */
-    @media (max-width: 992px) {
-      nav { padding: 1rem 2rem; }
-      .nav-links { display: none; }
-      #vision .section-inner { grid-template-columns: 1fr; gap: 3rem; }
-      #roadmap .section-inner { grid-template-columns: 1fr; gap: 3rem; }
-      .contact-container { grid-template-columns: 1fr; padding: 2.5rem; gap: 2.5rem; }
-    }
-    @media (max-width: 640px) {
-      :root { --section-spacing: 5rem 1.4rem; }
-      .hero-actions { flex-direction: column; width: 100%; }
-      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
-      .hero-stat-ribbon { grid-template-columns: 1fr 1fr; }
-      .footer-bottom-bar { flex-direction: column; text-align: center; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css?v=3" />
 </head>
 <body>
 
-<!-- Ambient Overlays -->
-<div id="scanlines" aria-hidden="true"></div>
-<div id="grid-bg" aria-hidden="true"></div>
-<div id="cursor-dot" aria-hidden="true"></div>
-<div id="cursor-ring" aria-hidden="true"></div>
+  <!-- Cyberpunk Background Atmosphere Overlays -->
+  <div id="scanlines" aria-hidden="true"></div>
+  <div id="grid-bg" aria-hidden="true"></div>
 
-<!-- Toast Feedback Modal -->
-<div id="ui-toast" role="status" aria-live="polite">
-  <span class="toast-icon">⚡</span>
-  <span id="toast-message">Mensaje del sistema</span>
-</div>
+  <!-- Hardware-Accelerated Interactive Glow Cursor -->
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
 
-<!-- ══════════════════════════════════════════════
-     NAVIGATION
-══════════════════════════════════════════════ -->
-<nav id="navbar" aria-label="Navegación principal">
-  <a href="#hero" class="nav-brand" aria-label="NeoFluid3D Inicio">
-    <svg width="24" height="30" viewBox="0 0 44 56" fill="none" aria-hidden="true">
-      <defs>
-        <clipPath id="navClip"><path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z"/></clipPath>
-      </defs>
-      <path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z" fill="rgba(0,240,255,0.12)" stroke="#00F0FF" stroke-width="1.5"/>
-      <path d="M22 2C22 2 4 22 4 30L40 30C40 22 22 2 22 2Z" fill="rgba(0,240,255,0.7)"/>
-      <line x1="4" y1="30" x2="40" y2="30" stroke="#00F0FF" stroke-width="1" opacity="0.6"/>
-      <g clip-path="url(#navClip)" stroke="#39FF14" stroke-width="0.9" opacity="0.85">
-        <ellipse cx="22" cy="36" rx="11.5" ry="3.5" fill="none"/>
-        <ellipse cx="22" cy="42" rx="14.5" ry="5" fill="none"/>
-        <path d="M14 30Q12 42 15 54"/><path d="M22 30L22 54"/><path d="M30 30Q32 42 29 54"/>
-      </g>
-    </svg>
-    <span><span class="neo">Neo</span><span class="fluid3d">Fluid<sup>3</sup>D</span></span>
-  </a>
+  <!-- Top Scroll Progress Indicator -->
+  <div id="scroll-progress"></div>
 
-  <ul class="nav-links">
-    <li><a href="#vision">La Base</a></li>
-    <li><a href="#demos">Demostraciones</a></li>
-    <li><a href="#possibilities">Posibilidades</a></li>
-    <li><a href="#modes">Visualización</a></li>
-    <li><a href="#roadmap">Evolución</a></li>
-  </ul>
-
-  <a href="#contact" class="nav-btn">Contacto B2B →</a>
-</nav>
-
-<!-- ══════════════════════════════════════════════
-     HERO SECTION
-══════════════════════════════════════════════ -->
-<header id="hero">
-  <canvas id="hero-canvas" aria-hidden="true"></canvas>
-  <div class="ambient-glow glow-1" aria-hidden="true"></div>
-  <div class="ambient-glow glow-2" aria-hidden="true"></div>
-
-  <div class="hero-brand-symbol" aria-hidden="true">
-    <svg width="120" height="150" viewBox="0 0 44 56" fill="none">
-      <defs>
-        <clipPath id="heroDropClip"><path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z"/></clipPath>
-        <filter id="heroGlowCyan"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <filter id="heroGlowGreen"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <radialGradient id="heroCyanGrad" cx="50%" cy="40%" r="60%">
-          <stop offset="0%" stop-color="#A5FFFF"/>
-          <stop offset="100%" stop-color="#00F0FF"/>
-        </radialGradient>
-      </defs>
-
-      <path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z"
-            fill="rgba(0,240,255,0.08)" stroke="#00F0FF" stroke-width="1.3" filter="url(#heroGlowCyan)"/>
-
-      <path d="M22 2C22 2 4 22 4 30L40 30C40 22 22 2 22 2Z" fill="url(#heroCyanGrad)" opacity="0.9"/>
-      <line x1="4" y1="30" x2="40" y2="30" stroke="#00F0FF" stroke-width="1" opacity="0.6"/>
-
-      <g clip-path="url(#heroDropClip)" stroke="#39FF14" stroke-width="0.95" opacity="0.95" filter="url(#heroGlowGreen)">
-        <ellipse cx="22" cy="36" rx="11.5" ry="3.5" fill="none"/>
-        <ellipse cx="22" cy="42" rx="14.5" ry="5" fill="none"/>
-        <ellipse cx="22" cy="48" rx="12" ry="4" fill="none"/>
-        <path d="M14 30Q12 42 15 54"/>
-        <path d="M22 30L22 54"/>
-        <path d="M30 30Q32 42 29 54"/>
-        <path d="M8.5 34Q10 50 18 54"/>
-        <path d="M35.5 34Q34 50 26 54"/>
-      </g>
-
-      <circle cx="8" cy="18" r="1.2" fill="#00F0FF"><animate attributeName="opacity" values="0.9;0.2;0.9" dur="2.2s" repeatCount="indefinite"/></circle>
-      <circle cx="36" cy="14" r="1" fill="#00F0FF"><animate attributeName="opacity" values="0.7;0.15;0.7" dur="1.8s" repeatCount="indefinite"/></circle>
-      <circle cx="38" cy="28" r="0.9" fill="#39FF14"><animate attributeName="opacity" values="0.85;0.2;0.85" dur="2.6s" repeatCount="indefinite"/></circle>
-    </svg>
-  </div>
-
-  <div class="hero-badge-pill">
-    <span class="pill-dot"></span>
-    <span>Núcleo Tecnológico en Desarrollo Activo</span>
-  </div>
-
-  <h1 class="hero-title">
-    <span class="neo">Neo</span><span class="fluid3d">Fluid<sup>3</sup>D</span>
-  </h1>
-
-  <h2 class="hero-tagline">
-    La tecnología base para la <span class="cyan-text">simulación de fluidos</span> y dinámica interactiva de <span class="green-text">próxima generación</span>.
-  </h2>
-
-  <p class="hero-desc">
-    Un motor de cálculo acelerado directamente en GPU concebido como <strong>plataforma fundacional</strong> para integrarse en soluciones industriales, gemelos digitales, simuladores interactivos y entornos de ingeniería avanzada.
-  </p>
-
-  <div class="hero-actions">
-    <a href="#demos" class="btn-primary">Ver Demostraciones en Video</a>
-    <a href="#possibilities" class="btn-secondary">Explorar Posibilidades B2B</a>
-  </div>
-
-  <div class="hero-stat-ribbon">
-    <div class="ribbon-item">
-      <div class="ribbon-val">100% GPU</div>
-      <div class="ribbon-lbl">Cálculo Paralelo en VRAM</div>
-    </div>
-    <div class="ribbon-item">
-      <div class="ribbon-val">Tiempo Real</div>
-      <div class="ribbon-lbl">Respuesta Instantánea</div>
-    </div>
-    <div class="ribbon-item">
-      <div class="ribbon-val">Modular</div>
-      <div class="ribbon-lbl">Integrable en Pipelines</div>
-    </div>
-    <div class="ribbon-item">
-      <div class="ribbon-val">B2B Ready</div>
-      <div class="ribbon-lbl">Licenciamiento & Soluciones</div>
+  <!-- Right Vertical Plexus 3D Navigator -->
+  <!-- Sleek Vertical Plexus 3D Navigation System -->
+  <div id="vertical-plexus-container">
+    <canvas id="vertical-plexus-canvas"></canvas>
+    <div class="plexus-nodes-overlay">
+      <a href="#hero" class="plexus-node-item active" data-sec="hero" title="Inicio / Portada"><div class="plexus-node-dot">00</div></a>
+      <a href="#vision" class="plexus-node-item" data-sec="vision" title="01 Visión"><div class="plexus-node-dot">01</div></a>
+      <a href="#demos" class="plexus-node-item" data-sec="demos" title="02 Demos"><div class="plexus-node-dot">02</div></a>
+      <a href="#isotype" class="plexus-node-item" data-sec="isotype" title="03 Isotipo"><div class="plexus-node-dot">03</div></a>
+      <a href="#logotype" class="plexus-node-item" data-sec="logotype" title="04 Logotipo"><div class="plexus-node-dot">04</div></a>
+      <a href="#imagotype" class="plexus-node-item" data-sec="imagotype" title="05 Imagotipo"><div class="plexus-node-dot">05</div></a>
+      <a href="#possibilities" class="plexus-node-item" data-sec="possibilities" title="06 Posibilidades"><div class="plexus-node-dot">06</div></a>
+      <a href="#modes" class="plexus-node-item" data-sec="modes" title="07 Modos"><div class="plexus-node-dot">07</div></a>
+      <a href="#roadmap" class="plexus-node-item" data-sec="roadmap" title="08 Roadmap"><div class="plexus-node-dot">08</div></a>
+      <a href="#contact" class="plexus-node-item" data-sec="contact" title="09 Contacto"><div class="plexus-node-dot">09</div></a>
     </div>
   </div>
-</header>
 
-<div class="divider" aria-hidden="true"></div>
+  <!-- Global UI Toast Subsystem -->
+  <div id="ui-toast" role="status" aria-live="polite">
+    <span class="toast-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
+    <span id="toast-message">Mensaje del sistema</span>
+  </div>
 
-<!-- ══════════════════════════════════════════════
-     SECTION: VISIÓN & EL NÚCLEO
-══════════════════════════════════════════════ -->
+  <!-- ═══════════════════════════════════════════════════════════
+       NAVIGATION HEADER
+       ═══════════════════════════════════════════════════════════ -->
+  <nav id="navbar" class="navbar" aria-label="Navegación principal">
+    <a href="#hero" class="navbar-brand" aria-label="NeoFluid3D Inicio">
+      <svg class="navbar-brand-logo" width="28" height="36" viewBox="4 4 92 143.83" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <!-- NeoFluid3D Principal High-Contrast Isotype (Canonical Genesis Projection) -->
+  <defs>
+    <clipPath id="navDropClip">
+      <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" />
+    </clipPath>
+  </defs>
+
+  <!-- 1. Full Drop Solid Black Base -->
+  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#000000" />
+
+  <!-- 2. Lower Sphere Grid (Neon Green #39FF14) -->
+  <g clip-path="url(#navDropClip)" stroke="#39FF14" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Ring 1 -->
+    <path d="M 55.76 84.40 L 57.82 84.38 L 60.11 84.36 L 62.36 84.34 L 64.57 84.31 L 66.71 84.27 L 68.79 84.23 L 70.80 84.19 L 72.72 84.14 L 74.55 84.09 L 76.29 84.03 L 77.92 83.97 L 79.45 83.91 L 80.85 83.84 L 82.14 83.77 L 83.30 83.70 L 84.32 83.62 L 85.21 83.55 L 85.97 83.47 L 86.58 83.39 L 87.04 83.31 L 87.36 83.22 L 87.56 83.14" />
+    <!-- Ring 2 -->
+    <path d="M 35.37 102.12 L 39.14 102.16 L 43.01 102.19 L 46.94 102.21 L 50.89 102.21 L 54.84 102.20 L 58.74 102.18 L 62.57 102.15 L 66.28 102.10 L 69.85 102.04 L 73.24 101.97 L 76.43 101.88 L 79.38 101.79 L 82.07 101.69 L 84.48 101.58 L 86.58 101.46 L 88.36 101.33 L 89.80 101.20 L 90.88 101.07 L 91.60 100.93 L 91.95 100.79" />
+    <!-- Ring 3 -->
+    <path d="M 14.41 118.91 L 17.19 119.10 L 20.78 119.27 L 25.09 119.42 L 30.01 119.54 L 35.42 119.64 L 41.19 119.70 L 47.18 119.74 L 53.24 119.74 L 59.22 119.70 L 64.97 119.63 L 70.35 119.54 L 75.24 119.41 L 79.50 119.26 L 83.03 119.08 L 85.75 118.89 L 87.59 118.69 L 88.58 118.43" />
+    <!-- Ring 4 -->
+    <path d="M 25.64 136.07 L 27.51 136.36 L 30.12 136.52 L 33.68 136.66 L 38.03 136.77 L 42.95 136.85 L 48.22 136.88 L 53.57 136.88 L 58.75 136.83 L 63.51 136.74 L 67.61 136.62 L 70.87 136.47 L 73.12 136.30 L 74.38 136.06" />
+    <!-- Meridians -->
+    <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+    <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+    <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+    <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+  </g>
+
+  <!-- 3. Upper Fluid Solid Fill (Cyan #00F0FF) -->
+  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
+
+  <!-- 4. Front Cut Curve Contour (Cyan #00F0FF) -->
+  <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" />
+
+  <!-- 5A. Lower Sphere Outer Border (Neon Green #39FF14) -->
+  <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- 5B. Upper Fluid Cone Outer Border (Cyan #00F0FF) -->
+  <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+      <span class="brand-text"><span class="brand-neo">Neo</span><span class="brand-fluid3d" style="color: var(--color-green); font-family: var(--font-mono); font-weight: 700;"><span class="brand-fluid" style="color: var(--color-green);">Fluid</span><span class="brand-3d" style="color: var(--color-green);"><span class="brand-exp" style="color: var(--color-green);">³</span><span class="brand-d" style="color: var(--color-green);">D</span></span></span></span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#vision">01 Visión</a></li>
+      <li><a href="#demos">02 Demos</a></li>
+      <li><a href="#isotype">03 Isotipo</a></li>
+      <li><a href="#logotype">04 Logotipo</a></li>
+      <li><a href="#imagotype">05 Imagotipo</a></li>
+      <li><a href="#possibilities">06 Posibilidades</a></li>
+      <li><a href="#modes">07 Modos</a></li>
+      <li><a href="#roadmap">08 Roadmap</a></li>
+      <li><a href="#contact" class="nav-cta">09 Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HERO SECTION : BRAND CORE & 3D ROTATING ISOTYPE
+       ═══════════════════════════════════════════════════════════ -->
+  <header id="hero" class="hero-section">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="ambient-glow glow-1" aria-hidden="true"></div>
+    <div class="ambient-glow glow-2" aria-hidden="true"></div>
+
+    <!-- Centered Rotating 3D Drop with Ambient Radial Glow & Float Animation -->
+    <div class="hero-brand-symbol" aria-hidden="true">
+      <div class="hero-symbol-ambient-glow"></div>
+      <canvas id="hero-drop-3d" width="340" height="350"></canvas>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="neo">Neo</span><span class="fluid3d">Fluid³D</span>
+    </h1>
+
+    <p class="hero-desc">
+      Un motor de cálculo acelerado directamente en GPU concebido como <strong>plataforma fundacional</strong> para integrarse en soluciones industriales, gemelos digitales, simuladores interactivos y entornos de ingeniería avanzada.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#demos" class="btn-primary">Ver Demostraciones en Video</a>
+      <a href="#possibilities" class="btn-secondary">Explorar Posibilidades B2B</a>
+    </div>
+
+    <div class="hero-stat-ribbon">
+      <div class="ribbon-item">
+        <div class="ribbon-val">100% GPU</div>
+        <div class="ribbon-lbl">Cálculo Paralelo en VRAM</div>
+      </div>
+      <div class="ribbon-item">
+        <div class="ribbon-val">Tiempo Real</div>
+        <div class="ribbon-lbl">Respuesta Instantánea</div>
+      </div>
+      <div class="ribbon-item">
+        <div class="ribbon-val">Modular</div>
+        <div class="ribbon-lbl">Integrable en Pipelines</div>
+      </div>
+      <div class="ribbon-item">
+        <div class="ribbon-val">B2B Ready</div>
+        <div class="ribbon-lbl">Licenciamiento & Soluciones</div>
+      </div>
+    </div>
+  </header>
+
 <section id="vision">
   <div class="section-inner">
     <div class="vision-content">
@@ -1668,7 +171,7 @@
         Un núcleo potente diseñado para <span class="hl-cyan">escalar</span>
       </h2>
       <p class="reveal reveal-d2">
-        La versión actual de <strong>NeoFluid3D</strong> no es el producto final: representa el <strong>motor de cálculo fundacional</strong>. Hemos consolidado una base matemática y gráfica de alto rendimiento ejecutada directamente sobre la GPU, demostrando que es posible simular comportamientos fluidos complejos en tiempo real sin requerir granjas de servidores tradicionales.
+        <strong>NeoFluid3D</strong> representa una tecnología fundacional de simulación de fluidos de última generación. Hemos consolidado una arquitectura matemática y gráfica de ultra-alto rendimiento ejecutada directamente en GPU, permitiendo simular dinámicas de fluidos complejas en tiempo real con máxima fidelidad visual y sin requerir infraestructura pesada.
       </p>
       <p class="reveal reveal-d3">
         Este núcleo constituye el cimiento para construir soluciones especializadas: desde módulos de validación hidrodinámica rápida para empresas de ingeniería hasta herramientas de visualización interactiva para gemelos digitales y producción digital.
@@ -1690,15 +193,15 @@
 
       <div class="arch-layers">
         <div class="arch-layer-item">
-          <div class="layer-icon" aria-hidden="true">⚡</div>
+          <div class="layer-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="15" x2="23" y2="15"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="15" x2="4" y2="15"></line></svg></div>
           <div class="layer-info">
             <h5>Cálculo Masivo en Paralelo</h5>
-            <p>La física SPH se resuelve íntegramente en la GPU, liberando los recursos de la CPU para lógica de negocio o aplicaciones host.</p>
+            <p>La dinámica de fluidos se procesa íntegramente en la GPU, liberando los recursos del sistema para la lógica de negocio y aplicaciones interactivas.</p>
           </div>
         </div>
 
         <div class="arch-layer-item">
-          <div class="layer-icon" aria-hidden="true">🔄</div>
+          <div class="layer-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg></div>
           <div class="layer-info">
             <h5>Reconstrucción Geométrica Continua</h5>
             <p>Generación de superficies volumétricas fluidas en tiempo real, permitiendo renderizado fotorrealista y análisis morfológico.</p>
@@ -1706,7 +209,7 @@
         </div>
 
         <div class="arch-layer-item">
-          <div class="layer-icon" aria-hidden="true">📐</div>
+          <div class="layer-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><ellipse cx="12" cy="12" rx="10" ry="4"></ellipse><line x1="12" y1="2" x2="12" y2="22"></line></svg></div>
           <div class="layer-info">
             <h5>Interacción con Geometrías 3D</h5>
             <p>Detección de colisiones con modelos CAD e interactivos para evaluar el comportamiento del flujo contra sólidos arbitrarios.</p>
@@ -1714,7 +217,7 @@
         </div>
 
         <div class="arch-layer-item">
-          <div class="layer-icon" aria-hidden="true">🎛️</div>
+          <div class="layer-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></div>
           <div class="layer-info">
             <h5>Parametrización en Vivo</h5>
             <p>Ajuste instantáneo de viscosidad, densidad, presiones y fuerzas externas para experimentación y calibración rápida.</p>
@@ -1725,11 +228,6 @@
   </div>
 </section>
 
-<div class="divider" aria-hidden="true"></div>
-
-<!-- ══════════════════════════════════════════════
-     SECTION: DEMOSTRACIONES EN VIDEO
-══════════════════════════════════════════════ -->
 <section id="demos">
   <div class="section-inner">
     <div class="section-header center">
@@ -1748,7 +246,7 @@
       <article class="video-card reveal reveal-d1">
         <div class="video-frame-wrap">
           <span class="video-overlay-badge"><span class="rec-dot"></span> Demostración 01</span>
-          <video id="vid-1" loop muted playsinline preload="metadata">
+          <video id="vid-1" loop muted playsinline preload="none">
             <source src="videos/demo_mesh_reconstruction.mp4" type="video/mp4">
           </video>
           <canvas class="video-fallback-canvas" id="vfb-1" aria-hidden="true"></canvas>
@@ -1771,7 +269,7 @@
       <article class="video-card reveal reveal-d2">
         <div class="video-frame-wrap">
           <span class="video-overlay-badge"><span class="rec-dot"></span> Demostración 02</span>
-          <video id="vid-2" loop muted playsinline preload="metadata">
+          <video id="vid-2" loop muted playsinline preload="none">
             <source src="videos/demo_particle_dynamics.mp4" type="video/mp4">
           </video>
           <canvas class="video-fallback-canvas" id="vfb-2" aria-hidden="true"></canvas>
@@ -1785,7 +283,7 @@
           </p>
           <div class="video-card-meta">
             <span>65K+ Partículas</span>
-            <span>Spatial Hash O(1)</span>
+            <span>Aceleración por GPU</span>
           </div>
         </div>
       </article>
@@ -1794,7 +292,7 @@
       <article class="video-card reveal reveal-d3">
         <div class="video-frame-wrap">
           <span class="video-overlay-badge"><span class="rec-dot"></span> Demostración 03</span>
-          <video id="vid-3" loop muted playsinline preload="metadata">
+          <video id="vid-3" loop muted playsinline preload="none">
             <source src="videos/demo_vector_fields.mp4" type="video/mp4">
           </video>
           <canvas class="video-fallback-canvas" id="vfb-3" aria-hidden="true"></canvas>
@@ -1807,7 +305,7 @@
             Mapeo analítico de la dirección y magnitud de las velocidades del flujo, facilitando la inspección de turbulencias y corrientes.
           </p>
           <div class="video-card-meta">
-            <span>Flujo Euleriano</span>
+            <span>Dinámica Continua</span>
             <span>Inspección en Vivo</span>
           </div>
         </div>
@@ -1817,11 +315,608 @@
   </div>
 </section>
 
-<div class="divider" aria-hidden="true"></div>
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 3 : ISOTYPE - GENESIS & CONSTRUCCIÓN ℝ³ -> ℝ²
+       ═══════════════════════════════════════════════════════════ -->
+  <section id="isotype">
+    <div class="section-inner">
+      <div class="section-eyebrow reveal">Identidad Visual Matemática</div>
+      <h2 class="section-title reveal reveal-d1">
+        El <span class="hl-cyan">Isotipo</span>: Génesis & Construcción ℝ³ → ℝ²
+      </h2>
+      <p class="section-desc reveal reveal-d2">
+        La identidad visual de NeoFluid3D no es una ilustración arbitraria: es una construcción matemática rigurosa que evoluciona desde superficies paramétricas continuas en el espacio euclidiano tridimensional ℝ³ hasta su proyección canónica bidimensional ℝ².
+      </p>
 
-<!-- ══════════════════════════════════════════════
-     SECTION: POSIBILIDADES & MERCADO (DEEP DIVE)
-══════════════════════════════════════════════ -->
+      <div id="genesis-panel" class="reveal reveal-d3">
+        <!-- Genesis Top HUD -->
+        <div class="genesis-hud-top">
+          <div class="genesis-step-counter">
+            <span id="step-counter">Paso 01 / 19</span>
+          </div>
+          <div class="genesis-phase-pill">
+            <span id="step-phase-text">FASE 1: PARÁMETROS BASE</span>
+          </div>
+        </div>
+
+        <!-- Genesis Main Workspace (Viewport + Info Pane) -->
+        <div class="genesis-workspace">
+          <!-- 3D/2D Interactive Canvas Viewport -->
+          <div class="genesis-viewport-wrap">
+            <div class="viewport-overlay-telemetry">
+              <div id="vp-dim-badge" class="viewport-dim-badge">
+                <span id="vp-dim-text">DIMENSIÓN: ℝ³</span>
+              </div>
+            </div>
+            <div class="viewport-hint">Arrastra para rotar la cámara 3D • Rueda para zoom</div>
+            
+            <canvas id="genesis-canvas" width="650" height="520"></canvas>
+
+            <div class="viewport-actions">
+              <button id="btn-auto-rotate" class="vp-tool-btn" title="Activar/Desactivar auto-rotación">
+                <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>Auto-Rotación</span>
+              </button>
+              <button id="btn-reset-cam" class="vp-tool-btn" title="Restablecer posición de cámara">
+                <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line></svg>Reset Cámara</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step Info & Mathematical Formula Pane -->
+          <div class="genesis-info-pane">
+            <div>
+              <h3 id="step-title" class="step-header-title">Superficie Paramétrica Base</h3>
+              <div id="step-math-alias" class="step-math-alias">S(u, v) ∈ ℝ³</div>
+              <div id="step-desc" class="step-desc-box">
+                Definición del dominio paramétrico de la gota tridimensional mediante ecuaciones diferenciales y superficies de revolución.
+              </div>
+
+              <div class="step-formula-card">
+                <div class="formula-tag">Formulación Matemática KaTeX</div>
+                <div id="step-math-formula" class="formula-content">$$S(u,v) = \begin{pmatrix} x(u,v) \\ y(u,v) \\ z(u,v) \end{pmatrix}$$</div>
+              </div>
+
+              <div id="step-note" class="step-note-box">
+                Nota de diseño: Delimitación de la geometría base paramétrica tridimensional.
+              </div>
+            </div>
+
+            <!-- Interactive Step Navigation Controls -->
+            <div class="genesis-controls">
+              <div style="display: flex; gap: 0.4rem;">
+                <button id="btn-step-first" class="genesis-ctrl-btn" title="Primer paso">|◀</button>
+                <button id="btn-step-prev" class="genesis-ctrl-btn" title="Paso anterior">◀ Anterior</button>
+              </div>
+              <div style="display: flex; gap: 0.4rem;">
+                <button id="btn-step-next" class="genesis-ctrl-btn btn-primary-step" title="Siguiente paso">Siguiente ▶</button>
+                <button id="btn-step-last" class="genesis-ctrl-btn" title="Último paso">▶|</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. FUNDAMENTOS CONCEPTUALES & ANATOMÍA DEL ISOTIPO (COMPACT BENTO) -->
+      <div class="isotype-concept-card reveal reveal-d2">
+        <div class="concept-card-header">
+          <div class="concept-header-left">
+            <span class="stage-dot"></span>
+            <span class="concept-card-badge">FUNDAMENTOS DE DISEÑO &amp; SEMÁNTICA DEL ISOTIPO</span>
+          </div>
+          <span class="concept-card-spec">INSPIRACIÓN 80-90 • MATEMÁTICAS • CÓMPUTO GPU</span>
+        </div>
+
+        <!-- 4 Inspiration Pillars Row -->
+        <div class="isotype-compact-pillars">
+          
+          <div class="compact-pillar-item">
+            <div class="compact-pillar-top">
+              <span class="cp-tag tag-green">01 / TERMINAL</span>
+              <span class="cp-code">#39FF14 • CRT</span>
+            </div>
+            <h4 class="cp-title">Cultura Hacker &amp; Consola</h4>
+            <p class="cp-desc">Monitores de fósforo verde monocromático. Evoca el código en bajo nivel, shaders paralelos y cálculo matricial.</p>
+          </div>
+
+          <div class="compact-pillar-item">
+            <div class="compact-pillar-top">
+              <span class="cp-tag tag-green">02 / GRÁFICOS 3D</span>
+              <span class="cp-code">WIREFRAME</span>
+            </div>
+            <h4 class="cp-title">Mallas de Triangulación</h4>
+            <p class="cp-desc">Computación gráfica clásica (80-90). La base de alambre simboliza la discretización espacial poligonal.</p>
+          </div>
+
+          <div class="compact-pillar-item">
+            <div class="compact-pillar-top">
+              <span class="cp-tag tag-cyan">03 / FÍSICA PURA</span>
+              <span class="cp-code">#00F0FF • CFD</span>
+            </div>
+            <h4 class="cp-title">Dinámica Navier-Stokes</h4>
+            <p class="cp-desc">La cúpula sólida representa el agua continua, la tensión superficial y el comportamiento hidrodinámico macroscópico.</p>
+          </div>
+
+          <div class="compact-pillar-item">
+            <div class="compact-pillar-top">
+              <span class="cp-tag tag-cyan">04 / ALTO CONTRASTE</span>
+              <span class="cp-code">#000000 • HUD</span>
+            </div>
+            <h4 class="cp-title">Entorno Oscuro Vulkan</h4>
+            <p class="cp-desc">Fondo negro de la UI del simulador, maximizando el contraste y la luminancia de vectores y partículas neón.</p>
+          </div>
+
+        </div>
+
+        <!-- Dual Anatomy Split Bar -->
+        <div class="isotype-compact-anatomy">
+          <div class="anatomy-block anatomy-upper">
+            <div class="fusion-dot cyan"></div>
+            <div>
+              <span class="anatomy-lbl text-cyan">Cúpula Superior ($y > 0$) — Masa Líquida (Agua)</span>
+              <p class="anatomy-txt">Fluido continuo, materia orgánica y flujo hidrodinámico en estado puro.</p>
+            </div>
+          </div>
+
+          <div class="anatomy-divider">
+            <span class="anatomy-cut-tag">CORTE CANÓNICO A $30^\circ$</span>
+          </div>
+
+          <div class="anatomy-block anatomy-lower">
+            <div class="fusion-dot green"></div>
+            <div>
+              <span class="anatomy-lbl text-green">Base Inferior ($y \le 0$) — Malla Discreta (GPU)</span>
+              <p class="anatomy-txt">Red de elementos finitos y matriz computacional que calcula la física en tiempo real.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+<!-- SECTION 4: LOGOTIPO, MORFOLOGÍA, TIPOGRAFÍA & PALETA CROMÁTICA (#logotype) -->
+  <section id="logotype">
+    <div class="section-inner">
+      <div class="section-eyebrow reveal">Identidad Gráfica & Sistema Visual</div>
+      <h2 class="section-title reveal reveal-d1">
+        El <span class="hl-cyan">Logotipo</span>: Morfología, Tipografía & Paleta
+      </h2>
+      <p class="section-desc reveal reveal-d2">
+        Arquitectura tipográfica biconceptual de alta precisión, notación dimensional inspirada en la computación gráfica clásica y formulación cromática oficial de alto contraste tecnológico.
+      </p>
+
+      <!-- 1. OFFICIAL HORIZONTAL LOGOTYPE SHOWCASE STAGE -->
+      <div class="brand-stage-card reveal reveal-d2">
+        <div class="brand-stage-header">
+          <div class="stage-tag-left">
+            <span class="stage-dot"></span>
+            <span class="brand-spec-label" style="color: #FFFFFF; font-size: 0.85rem; letter-spacing: 0.08em;">LOCKUP HORIZONTAL CANÓNICO • ESCALA 1:1</span>
+          </div>
+          <div class="stage-tag-right">
+            <span class="brand-spec-val">FONDO NEGRO PURO #000000</span>
+          </div>
+        </div>
+
+        <!-- Center Logo Workbench Display -->
+        <div class="brand-display-workbench">
+          <div class="workbench-grid-bg" aria-hidden="true"></div>
+          <div class="workbench-crosshair top-left" aria-hidden="true"></div>
+          <div class="workbench-crosshair top-right" aria-hidden="true"></div>
+          <div class="workbench-crosshair bottom-left" aria-hidden="true"></div>
+          <div class="workbench-crosshair bottom-right" aria-hidden="true"></div>
+          
+          <!-- Live Brand Logotype Lockup -->
+          <div class="brand-master-lockup">
+            <span class="lockup-neo">Neo</span><span class="lockup-fluid3d"><span class="lockup-fluid">Fluid</span><span class="lockup-3d"><span class="lockup-exp">³</span><span class="lockup-d">D</span></span></span>
+          </div>
+
+          <!-- Baseline Guide Visual Overlay -->
+          <div class="lockup-baseline-guide" aria-hidden="true">
+            <span class="baseline-tag">LÍNEA BASE CONTINUA UNIFICADA ($y = 0$)</span>
+          </div>
+        </div>
+
+        <!-- Technical Metas Grid below Workbench -->
+        <div class="stage-metrics-bar">
+          <div class="metric-badge">
+            <span class="metric-lbl">JERARQUÍA</span>
+            <span class="metric-val text-cyan">Primaria / Principal</span>
+          </div>
+          <div class="metric-badge">
+            <span class="metric-lbl">KERNING INTERNO</span>
+            <span class="metric-val text-green">Óptico Continuo ($0\,\text{px}$)</span>
+          </div>
+          <div class="metric-badge">
+            <span class="metric-lbl">ESTRUCTURA ³D</span>
+            <span class="metric-val text-white">Superíndice + Base Unificada</span>
+          </div>
+          <div class="metric-badge">
+            <span class="metric-lbl">POLARIDAD</span>
+            <span class="metric-val text-cyan">Alto Contraste Tecnológico</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. MORPHOLOGY & CONCEPTUAL BREAKDOWN (NEO + UNIFIED FLUID³D CONTAINER) -->
+      <div class="morpho-cards-grid reveal reveal-d3">
+        
+        <!-- Card 1: Neo (Prefijo Conceptual) -->
+        <div class="morpho-card morpho-neo">
+          <div class="morpho-header">
+            <span class="morpho-step-badge">01 / PREFIJO</span>
+            <span class="morpho-font-tag">POPPINS 900 BLACK</span>
+          </div>
+          <div class="morpho-visual">
+            <span class="morpho-glyph glyph-neo">Neo</span>
+          </div>
+          <h3 class="morpho-title">Impacto & Fluidez Dinámica</h3>
+          <p class="morpho-desc">
+            Tipografía geométrica sans-serif masiva. Adopta el color <strong>Cian (#00F0FF)</strong> como referencia directa al agua, la fluidez y la adaptabilidad hidrodinámica.
+          </p>
+          <div class="morpho-specs-table">
+            <div class="morpho-spec-row">
+              <span class="spec-k">Color Oficial:</span>
+              <span class="spec-v color-cyan-tag">Cian Fluido (#00F0FF) ➔ Agua</span>
+            </div>
+            <div class="morpho-spec-row">
+              <span class="spec-k">Tracking:</span>
+              <span class="spec-v">-0.03em (Condensado)</span>
+            </div>
+            <div class="morpho-spec-row">
+              <span class="spec-k">Semántica:</span>
+              <span class="spec-v">Vanguardia & Flujo Activo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Fluid³D (Palabra Unificada con Fluid + ³D integrados) -->
+        <div class="morpho-card morpho-fluid3d">
+          <div class="morpho-header">
+            <span class="morpho-step-badge">02 / PALABRA COMPUESTA</span>
+            <span class="morpho-font-tag">JETBRAINS MONO 700</span>
+          </div>
+          <div class="morpho-visual">
+            <span class="morpho-glyph glyph-fluid3d">
+              <span class="glyph-fluid-part">Fluid</span><span class="glyph-3d-part"><span class="exp-sub">³</span><span class="d-sub">D</span></span>
+            </span>
+          </div>
+          <h3 class="morpho-title">Cómputo Físico & Profundidad Plana</h3>
+          <p class="morpho-desc">
+            Palabra unificada en tipografía de código. Adopta el color <strong>Verde GPU (#39FF14)</strong> como referencia a la terminal hacker y a la computación gráfica 3D:
+          </p>
+
+          <!-- Internal Sub-blocks: Separating Fluid and ³D inside the single word container -->
+          <div class="morpho-subblocks-grid">
+            
+            <!-- Sub-block A: Fluid -->
+            <div class="morpho-subblock">
+              <div class="subblock-header">
+                <span class="subblock-badge">02.A / RAÍZ FÍSICA</span>
+                <span class="subblock-token">#39FF14</span>
+              </div>
+              <h4 class="subblock-title">Fluid (Cómputo CFD)</h4>
+              <p class="subblock-desc">
+                Ecuaciones de Navier-Stokes discretizadas y cálculo paralelo masivo en shaders de GPU.
+              </p>
+              <div class="subblock-meta">
+                <span>Tipografía: Monospace</span>
+                <span>Rol: Física de Fluidos</span>
+              </div>
+            </div>
+
+            <!-- Sub-block B: ³D -->
+            <div class="morpho-subblock">
+              <div class="subblock-header">
+                <span class="subblock-badge">02.B / RETRO 80-90</span>
+                <span class="subblock-token">U+00B3 + U+0044</span>
+              </div>
+              <h4 class="subblock-title">³D (Profundidad Plana)</h4>
+              <p class="subblock-desc">
+                Homenaje a la informática gráfica 80-90. El superíndice <code style="color:#39FF14;">³</code> y la <code style="color:#39FF14;">D</code> en línea base crean un efecto <em>flat-depth</em>.
+              </p>
+              <div class="subblock-meta">
+                <span>Base: $y = 0$ unificada</span>
+                <span>Efecto: Profundidad Plana</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Integrated Color Crossover Note -->
+          <div class="morpho-crossover-note">
+            <strong>Cruce Semántico de Color:</strong> <em>Neo</em> adopta el cian del agua y <em>Fluid³D</em> el verde de la terminal para simbolizar que la física de fluidos y la computación gráfica se fusionan en una sola entidad.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 3. BRAND DETAILS & PALETTE SYSTEM (2 CARDS) -->
+      <div class="brand-details-grid reveal reveal-d3">
+        
+        <!-- Card: Anatomía & Reglas de Construcción -->
+        <div class="brand-id-card">
+          <div class="brand-card-header">
+            <span class="brand-spec-label" style="color: #FFFFFF;">ANATOMÍA & REGLAS DE CONSTRUCCIÓN</span>
+            <span class="brand-spec-val">CRITERIOS TÉCNICOS</span>
+          </div>
+
+          <div class="rules-spec-list">
+            <div class="rule-spec-item">
+              <div class="rule-icon-box">
+                <span class="rule-num">01</span>
+              </div>
+              <div class="rule-info">
+                <h4 class="rule-heading">Línea Base Unificada ($y = 0$)</h4>
+                <p class="rule-detail">
+                  El prefijo <strong class="text-cyan">Neo</strong>, <strong class="text-green">Fluid</strong> y la letra <strong class="text-green">D</strong> comparten exactamente la misma línea base horizontal. La 'D' no se eleva; el exponente '³' actúa como modulador superior.
+                </p>
+              </div>
+            </div>
+
+            <div class="rule-spec-item">
+              <div class="rule-icon-box">
+                <span class="rule-num">02</span>
+              </div>
+              <div class="rule-info">
+                <h4 class="rule-heading">Kerning Óptico Continuo ($0\,\text{px}$)</h4>
+                <p class="rule-detail">
+                  Contacto óptico directo y continuo entre <span class="text-cyan">Neo</span> y <span class="text-green">Fluid³D</span> sin espacios artificiales, simbolizando integración fluida sin fisuras.
+                </p>
+              </div>
+            </div>
+
+            <div class="rule-spec-item">
+              <div class="rule-icon-box">
+                <span class="rule-num">03</span>
+              </div>
+              <div class="rule-info">
+                <h4 class="rule-heading">Profundidad Plana (Flat-Depth)</h4>
+                <p class="rule-detail">
+                  El superíndice cúbico <span class="text-green">³</span> y la <span class="text-green">D</span> anclada a la base proyectan sensación de volumen ortográfico en un plano bidimensional.
+                </p>
+              </div>
+            </div>
+
+            <div class="rule-spec-item">
+              <div class="rule-icon-box">
+                <span class="rule-num">04</span>
+              </div>
+              <div class="rule-info">
+                <h4 class="rule-heading">Área de Reserva ($1u = H/4$)</h4>
+                <p class="rule-detail">
+                  Margen de protección perimetral mínimo de $1u = H/4$ libre de otros elementos para garantizar máxima legibilidad en cualquier soporte.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: Paleta Cromática Oficial -->
+        <div class="brand-id-card">
+          <div class="brand-card-header">
+            <span class="brand-spec-label" style="color: #FFFFFF;">PALETA CROMÁTICA OFICIAL</span>
+            <span class="brand-spec-val">4 VALORES HEX / RGB / HSL</span>
+          </div>
+
+          <div class="palette-swatches-grid">
+            
+            <!-- Swatch 1: Cian Fluido -->
+            <div class="swatch-card">
+              <div class="swatch-color-box" style="background: #00F0FF; box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), inset 0 0 10px rgba(255,255,255,0.4);">
+                <span class="swatch-badge" style="color: #000;">CYAN</span>
+              </div>
+              <div class="swatch-meta">
+                <div class="swatch-name-row">
+                  <span class="swatch-name">Cian Fluido</span>
+                  <span class="swatch-hex">#00F0FF</span>
+                </div>
+                <div class="swatch-codes">
+                  <span>RGB: 0, 240, 255</span> • <span>HSL: 184°, 100%, 50%</span>
+                </div>
+                <div class="swatch-role">
+                  <strong style="color: var(--color-cyan);">Uso:</strong> Masa de fluido continuo, prefijo Neo y cúpula superior.
+                </div>
+              </div>
+            </div>
+
+            <!-- Swatch 2: Verde GPU -->
+            <div class="swatch-card">
+              <div class="swatch-color-box" style="background: #39FF14; box-shadow: 0 0 20px rgba(57, 255, 20, 0.4), inset 0 0 10px rgba(255,255,255,0.4);">
+                <span class="swatch-badge" style="color: #000;">GREEN</span>
+              </div>
+              <div class="swatch-meta">
+                <div class="swatch-name-row">
+                  <span class="swatch-name">Verde GPU</span>
+                  <span class="swatch-hex">#39FF14</span>
+                </div>
+                <div class="swatch-codes">
+                  <span>RGB: 57, 255, 20</span> • <span>HSL: 111°, 100%, 54%</span>
+                </div>
+                <div class="swatch-role">
+                  <strong style="color: var(--color-green);">Uso:</strong> Malla 3D, sufijo Fluid³D y ejecución de cómputo GPU.
+                </div>
+              </div>
+            </div>
+
+            <!-- Swatch 3: Negro Abisal -->
+            <div class="swatch-card">
+              <div class="swatch-color-box" style="background: #000000; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.1);">
+                <span class="swatch-badge" style="color: #fff;">BASE</span>
+              </div>
+              <div class="swatch-meta">
+                <div class="swatch-name-row">
+                  <span class="swatch-name">Negro Abisal</span>
+                  <span class="swatch-hex">#000000</span>
+                </div>
+                <div class="swatch-codes">
+                  <span>RGB: 0, 0, 0</span> • <span>HSL: 0°, 0%, 0%</span>
+                </div>
+                <div class="swatch-role">
+                  <strong style="color: #FFFFFF;">Uso:</strong> Base esférica sólida y entorno de alto contraste.
+                </div>
+              </div>
+            </div>
+
+            <!-- Swatch 4: Gris Técnico -->
+            <div class="swatch-card">
+              <div class="swatch-color-box" style="background: #689399; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);">
+                <span class="swatch-badge" style="color: #000;">HUD</span>
+              </div>
+              <div class="swatch-meta">
+                <div class="swatch-name-row">
+                  <span class="swatch-name">Gris Técnico</span>
+                  <span class="swatch-hex">#689399</span>
+                </div>
+                <div class="swatch-codes">
+                  <span>RGB: 104, 147, 153</span> • <span>HSL: 187°, 19%, 50%</span>
+                </div>
+                <div class="swatch-role">
+                  <strong style="color: #689399;">Uso:</strong> Cotas analíticas, guías de blueprint y etiquetas HUD.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+<!-- SECTION 5: IMAGOTIPO: CONSTRUCCIÓN CANÓNICA 4X (#imagotype) -->
+  <section id="imagotype">
+    <div class="section-inner">
+      <div class="section-eyebrow reveal">Proporciones & Construcción</div>
+      <h2 class="section-title reveal reveal-d1">
+        El <span class="hl-cyan">Imagotipo</span>: Construcción Canónica
+      </h2>
+      <p class="section-desc reveal reveal-d2">
+        Regla de las 4 partes ($u = H/4$): alineación óptica, separación áurea y proporción dimensional exacta del imagotipo.
+      </p>
+
+      <div class="imagotype-blueprint-card reveal reveal-d3">
+        <div class="blueprint-svg-wrap">
+          <svg viewBox="0 0 1060 260" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="bp-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0, 240, 255, 0.08)" stroke-width="0.75"/>
+              </pattern>
+            </defs>
+            <rect x="0" y="0" width="1060" height="260" fill="url(#bp-grid)" rx="8"/>
+
+            <!-- 4 Quarters Horizontal Guides (H = 4u = 200px, 1u = 50px = 1/4 H) -->
+            <line x1="20" y1="30" x2="960" y2="30" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="3 3"/>
+            <text x="968" y="34" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5">ÁPICE (0/4)</text>
+
+            <line x1="20" y1="80" x2="960" y2="80" stroke="rgba(255, 255, 255, 0.45)" stroke-dasharray="4 4"/>
+            <text x="968" y="84" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5">1/4 H (TOPE COTA)</text>
+
+            <line x1="20" y1="130" x2="960" y2="130" stroke="rgba(255, 255, 255, 0.2)" stroke-dasharray="2 2"/>
+            <text x="968" y="134" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5">2/4 H (CENTRO)</text>
+
+            <line x1="20" y1="180" x2="960" y2="180" stroke="rgba(255, 255, 255, 0.45)" stroke-dasharray="4 4"/>
+            <text x="968" y="184" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5">3/4 H (BASE COTA)</text>
+
+            <line x1="20" y1="230" x2="960" y2="230" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="3 3"/>
+            <text x="968" y="234" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5">BASE (4/4)</text>
+
+            <!-- Caliper 1: Drop Height H = 4u (Left) -->
+            <line x1="26" y1="30" x2="26" y2="230" stroke="#FFFFFF" stroke-width="1.5"/>
+            <path d="M 21 30 L 31 30 M 21 230 L 31 230" stroke="#FFFFFF" stroke-width="1.5"/>
+            <text x="12" y="130" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="11" transform="rotate(-90 12 130)" text-anchor="middle">H = 4u</text>
+
+            <!-- CANONICAL ISOTYPE: USO GENERAL (BAJO CONTRASTE) DESDE EL GÉNESIS MATEMÁTICO -->
+            <svg id="isotype-uso-general" x="37.43" y="24.11" width="135.46" height="211.78" viewBox="4 4 92 143.83" fill="none" overflow="visible">
+              <defs>
+                <clipPath id="imagotypeDropClip">
+                  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" />
+                </clipPath>
+              </defs>
+
+              <!-- 1. Full Drop Solid Base -->
+              <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#010408" />
+
+              <!-- 2. Lower Sphere Grid in Neon Green (#39FF14) -->
+              <g clip-path="url(#imagotypeDropClip)" stroke="#39FF14" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <!-- Ring 1 -->
+                <path d="M 55.76 84.40 L 57.82 84.38 L 60.11 84.36 L 62.36 84.34 L 64.57 84.31 L 66.71 84.27 L 68.79 84.23 L 70.80 84.19 L 72.72 84.14 L 74.55 84.09 L 76.29 84.03 L 77.92 83.97 L 79.45 83.91 L 80.85 83.84 L 82.14 83.77 L 83.30 83.70 L 84.32 83.62 L 85.21 83.55 L 85.97 83.47 L 86.58 83.39 L 87.04 83.31 L 87.36 83.22 L 87.56 83.14" />
+                <!-- Ring 2 -->
+                <path d="M 35.37 102.12 L 39.14 102.16 L 43.01 102.19 L 46.94 102.21 L 50.89 102.21 L 54.84 102.20 L 58.74 102.18 L 62.57 102.15 L 66.28 102.10 L 69.85 102.04 L 73.24 101.97 L 76.43 101.88 L 79.38 101.79 L 82.07 101.69 L 84.48 101.58 L 86.58 101.46 L 88.36 101.33 L 89.80 101.20 L 90.88 101.07 L 91.60 100.93 L 91.95 100.79" />
+                <!-- Ring 3 -->
+                <path d="M 14.41 118.91 L 17.19 119.10 L 20.78 119.27 L 25.09 119.42 L 30.01 119.54 L 35.42 119.64 L 41.19 119.70 L 47.18 119.74 L 53.24 119.74 L 59.22 119.70 L 64.97 119.63 L 70.35 119.54 L 75.24 119.41 L 79.50 119.26 L 83.03 119.08 L 85.75 118.89 L 87.59 118.69 L 88.58 118.43" />
+                <!-- Ring 4 -->
+                <path d="M 25.64 136.07 L 27.51 136.36 L 30.12 136.52 L 33.68 136.66 L 38.03 136.77 L 42.95 136.85 L 48.22 136.88 L 53.57 136.88 L 58.75 136.83 L 63.51 136.74 L 67.61 136.62 L 70.87 136.47 L 73.12 136.30 L 74.38 136.06" />
+                <!-- Meridians -->
+                <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+                <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+                <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+                <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+              </g>
+
+              <!-- 3. Upper Fluid Solid Fill (Cyan #00F0FF) -->
+              <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
+
+              <!-- 4. Front Cut Curve Contour (Cyan #00F0FF) -->
+              <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" />
+
+              <!-- 5A. Lower Sphere Outer Border (Neon Green #39FF14) -->
+              <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+
+              <!-- 5B. Upper Fluid Cone Outer Border (Cyan #00F0FF) -->
+              <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+
+            <!-- Vertical guide at right tangent of drop (x = 167) -->
+            <line x1="167" y1="20" x2="167" y2="240" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="2 2"/>
+
+            <!-- Vertical guide at start of text (x = 217) -->
+            <line x1="217" y1="20" x2="217" y2="240" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="2 2"/>
+
+            <!-- Caliper 2: Gap = 1u = 1/4 H (50px) between Drop (x=167) and Name (x=217) -->
+            <line x1="167" y1="130" x2="217" y2="130" stroke="#FFFFFF" stroke-width="1.5"/>
+            <path d="M 167 122 L 167 138 M 217 122 L 217 138" stroke="#FFFFFF" stroke-width="1.5"/>
+            <text x="192" y="104" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" text-anchor="middle">
+              <tspan x="192" dy="0">gap = 1u</tspan>
+              <tspan x="192" dy="11">(1/4 H)</tspan>
+            </text>
+
+            <!-- LOGOTYPE BOUNDING BOX (Height = 2u = 100px, from y=80 to y=180, Width = 680px, ends at x=897) -->
+            <rect x="217" y="80" width="680" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.3)" stroke-dasharray="3 3" rx="4"/>
+
+            <!-- Vertical guide at end of text bounding box (x = 897) -->
+            <line x1="897" y1="20" x2="897" y2="240" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="2 2"/>
+            
+            <!-- CANONICAL UNIFIED LOGOTYPE: Fluid³D with native Unicode ³ exponent, D as regular uppercase on baseline -->
+            <!-- Baseline at y=175 (touches 3/4 H with 5px margin), Top touches 1/4 H line -->
+            <text x="217" y="175"><tspan font-family="'Poppins', sans-serif" font-weight="900" font-size="112" fill="#00F0FF" letter-spacing="-0.02em">Neo</tspan><tspan font-family="'JetBrains Mono', monospace" font-weight="700" font-size="110" fill="#39FF14">Fluid³D</tspan></text>
+
+            <!-- Caliper 3: Text Height 2u = H/2 (100px) AFTER THE BOUNDING BOX (x=925) -->
+            <line x1="925" y1="80" x2="925" y2="180" stroke="#FFFFFF" stroke-width="1.5"/>
+            <path d="M 920 80 L 930 80 M 920 180 L 930 180" stroke="#FFFFFF" stroke-width="1.5"/>
+            <text x="942" y="130" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="9" transform="rotate(90 942 130)" text-anchor="middle">2u = H/2</text>
+          </svg>
+        </div>
+
+        <div class="blueprint-rules-grid">
+          <div class="blueprint-rule-item">
+            <div class="rule-math-tag">1. SEPARACIÓN DE MARCA (gap = 1u = 1/4 H)</div>
+            <div class="rule-text">La distancia horizontal desde la silueta tangente del isotipo general hasta la <em>'N'</em> de <em>Neo</em> es exactamente <em>1u (1/4 de la altura H)</em>.</div>
+          </div>
+
+          <div class="blueprint-rule-item">
+            <div class="rule-math-tag">2. ACOTACIÓN PLENA EN 2u (H_caja = 2u = H/2)</div>
+            <div class="rule-text">La caja modular abarca <em>2u</em> (del 25% al 75%), enmarcando el logotipo <em>NeoFluid³D</em> con el superíndice <strong>³</strong> y la <strong>D</strong> sobre la línea base.</div>
+          </div>
+
+          <div class="blueprint-rule-item">
+            <div class="rule-math-tag">3. CONTINUIDAD TIPOGRÁFICA NATURAL</div>
+            <div class="rule-text"><em>Neo</em> y <em>Fluid³D</em> se acoplan de forma continua sin espacios artificiales; el espaciado intrínseco de la <em>'F'</em> en <strong>JetBrains Mono</strong> aporta la holgura óptica exacta.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 <section id="possibilities">
   <div class="section-inner">
     <div class="section-header center">
@@ -1839,7 +934,7 @@
       <!-- Posibilidad 1: Gemelos Digitales & Monitoreo -->
       <article class="pos-card featured reveal reveal-d1">
         <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true">🏭</div>
+          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M17 18h1M12 18h1M7 18h1"></path></svg></div>
           <span class="pos-badge">Industria 4.0</span>
         </div>
         <h3 class="pos-title">Gemelos Digitales & Plantas Industriales</h3>
@@ -1849,14 +944,14 @@
         <ul class="pos-usecases">
           <li>Visualización de niveles y flujos en tanques y contenedores</li>
           <li>Predicción visual de tiempos de vaciado y presiones</li>
-          <li>Paneles de control SCADA interactivos con feedback 3D</li>
+          <li>Paneles de control y telemetría industrial con visualización 3D interactiva</li>
         </ul>
       </article>
 
       <!-- Posibilidad 2: Prototipado en Ingeniería Hidráulica & Mecánica -->
       <article class="pos-card reveal reveal-d2">
         <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true">📐</div>
+          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"></path><path d="M9.6 4.6A2 2 0 1 1 11 8H2"></path><path d="M12.6 19.4A2 2 0 1 0 14 16H2"></path></svg></div>
           <span class="pos-badge">Ingeniería</span>
         </div>
         <h3 class="pos-title">Prototipado Rápido & Validación Pre-CFD</h3>
@@ -1873,7 +968,7 @@
       <!-- Posibilidad 3: Simuladores de Entrenamiento & Capacitación -->
       <article class="pos-card reveal reveal-d3">
         <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true">🥽</div>
+          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-2l-2-2h-4l-2 2H6a3 3 0 0 1-3-3Z"></path><circle cx="8" cy="12" r="2"></circle><circle cx="16" cy="12" r="2"></circle></svg></div>
           <span class="pos-badge">Entrenamiento</span>
         </div>
         <h3 class="pos-title">Simuladores de Operación & Realidad Virtual</h3>
@@ -1890,7 +985,7 @@
       <!-- Posibilidad 4: Efectos Visuales & Producción Virtual -->
       <article class="pos-card reveal reveal-d1">
         <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true">🎬</div>
+          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-5 3v4l5 3V7Z"></path><circle cx="9.5" cy="12" r="2.5"></circle></svg></div>
           <span class="pos-badge">VFX & Media</span>
         </div>
         <h3 class="pos-title">Middleware para Motores Gráficos & VFX</h3>
@@ -1907,7 +1002,7 @@
       <!-- Posibilidad 5: Instalaciones Interactivas & Museografía -->
       <article class="pos-card reveal reveal-d2">
         <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true">✨</div>
+          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="3"></rect><line x1="6" y1="12" x2="10" y2="12"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line></svg></div>
           <span class="pos-badge">Experiencias</span>
         </div>
         <h3 class="pos-title">Experiencias Interactivas & Exhibiciones</h3>
@@ -1924,7 +1019,7 @@
       <!-- Posibilidad 6: Soluciones a Medida & Licenciamiento B2B -->
       <article class="pos-card featured reveal reveal-d3">
         <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true">🤝</div>
+          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"></path><line x1="12" y1="8" x2="12" y2="11"></line></svg></div>
           <span class="pos-badge">B2B Custom</span>
         </div>
         <h3 class="pos-title">Desarrollo a Medida & Licencia del Motor</h3>
@@ -1942,11 +1037,6 @@
   </div>
 </section>
 
-<div class="divider" aria-hidden="true"></div>
-
-<!-- ══════════════════════════════════════════════
-     SECTION: MODOS DE VISUALIZACIÓN
-══════════════════════════════════════════════ -->
 <section id="modes">
   <div class="section-inner">
     <div class="section-header">
@@ -1981,7 +1071,7 @@
         <div class="mode-caption">
           <div>
             <div class="mode-caption-title">Nube de Elementos Discretos</div>
-            <div class="mode-caption-sub">Seguimiento individual de partículas SPH y densidades</div>
+            <div class="mode-caption-sub">Seguimiento de alta densidad y dinámica de partículas interactivas</div>
           </div>
           <span class="mode-tag">Partículas</span>
         </div>
@@ -2017,11 +1107,6 @@
   </div>
 </section>
 
-<div class="divider" aria-hidden="true"></div>
-
-<!-- ══════════════════════════════════════════════
-     SECTION: ROADMAP & EVOLUCIÓN
-══════════════════════════════════════════════ -->
 <section id="roadmap">
   <div class="section-inner">
     <div>
@@ -2045,9 +1130,9 @@
         <div class="roadmap-phase">Fase 01 : Consolidada</div>
         <h3 class="roadmap-heading">Motor Fundacional en GPU</h3>
         <p class="roadmap-desc">
-          Arquitectura base en Vulkan 1.3, pipeline de cómputo paralelo masivo, física SPH en VRAM y spatial hashing en tiempo O(1).
+          Motor de simulación gráfica de alta eficiencia, cómputo paralelo masivo en GPU y respuesta física instantánea a 60 FPS.
         </p>
-        <span class="roadmap-tag tag-completed">✓ Completado</span>
+        <span class="roadmap-tag tag-completed"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:3px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Completado</span>
       </div>
 
       <div class="roadmap-item reveal reveal-d2">
@@ -2055,9 +1140,9 @@
         <div class="roadmap-phase">Fase 02 : Consolidada</div>
         <h3 class="roadmap-heading">Generación Dinámica de Mallas</h3>
         <p class="roadmap-desc">
-          Algoritmo de Marching Cubes paralelo en GPU con resolución de 96³ para producir superficies lisas en tiempo real con más de 1.5M de vértices.
+          Reconstrucción continua de superficies líquidas y mallas fotorrealistas en tiempo real con refracción y sombreado avanzado.
         </p>
-        <span class="roadmap-tag tag-completed">✓ Completado</span>
+        <span class="roadmap-tag tag-completed"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:3px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Completado</span>
       </div>
 
       <div class="roadmap-item reveal reveal-d3">
@@ -2065,7 +1150,7 @@
         <div class="roadmap-phase">Fase 03 : En Desarrollo Activo</div>
         <h3 class="roadmap-heading">Capa de Control & Colisiones Dinámicas</h3>
         <p class="roadmap-desc">
-          Integración de consola paramétrica en vivo y carga de geometrías de colisión con generación asíncrona de campos de distancia (SDF).
+          Entorno interactivo con ajuste dinámico de parámetros de fluido y soporte para interacción con sólidos y geometrías complejas.
         </p>
         <span class="roadmap-tag tag-active">● En Progreso</span>
       </div>
@@ -2075,7 +1160,7 @@
         <div class="roadmap-phase">Fase 04 : Próxima Etapa</div>
         <h3 class="roadmap-heading">SDK Modular & API de Integración B2B</h3>
         <p class="roadmap-desc">
-          Empaquetado de bibliotecas dinámicas (DLL/Shared Lib) con interfaces C/C++ limpias para incrustar el motor en aplicaciones y visores de terceros.
+          SDK modular y suite de integración corporativa para incrustar el motor en aplicaciones, gemelos digitales y visores 3D.
         </p>
         <span class="roadmap-tag tag-planned">○ Planeado</span>
       </div>
@@ -2085,7 +1170,7 @@
         <div class="roadmap-phase">Fase 05 : Escalado Comercial</div>
         <h3 class="roadmap-heading">Soluciones Llave en Mano para Empresas</h3>
         <p class="roadmap-desc">
-          Soporte comercial, licenciamiento por puesto/proyecto y adaptaciones personalizadas para gemelos digitales y sistemas de simulación industrial.
+          Licenciamiento empresarial, soporte técnico preferente y desarrollos a medida para industrias de ingeniería, media y software.
         </p>
         <span class="roadmap-tag tag-planned">○ Planeado</span>
       </div>
@@ -2094,11 +1179,6 @@
   </div>
 </section>
 
-<div class="divider" aria-hidden="true"></div>
-
-<!-- ══════════════════════════════════════════════
-     SECTION: CONTACTO B2B & LICENCIAMIENTO
-══════════════════════════════════════════════ -->
 <section id="contact">
   <div class="section-inner">
     <div class="contact-container reveal">
@@ -2112,7 +1192,7 @@
 
         <ul class="contact-perks">
           <li class="contact-perk-item">
-            <div class="perk-check" aria-hidden="true">✓</div>
+            <div class="perk-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
             <div class="perk-text">
               <h5>Demostraciones Técnicas Privadas</h5>
               <p>Presentaciones en vivo adaptadas a sus casos de uso específicos.</p>
@@ -2120,7 +1200,7 @@
           </li>
 
           <li class="contact-perk-item">
-            <div class="perk-check" aria-hidden="true">✓</div>
+            <div class="perk-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
             <div class="perk-text">
               <h5>Licenciamiento & Acceso Temprano</h5>
               <p>Opciones flexibles para evaluación tecnológica y prototipado inicial.</p>
@@ -2128,7 +1208,7 @@
           </li>
 
           <li class="contact-perk-item">
-            <div class="perk-check" aria-hidden="true">✓</div>
+            <div class="perk-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
             <div class="perk-text">
               <h5>Desarrollo e Integración a Medida</h5>
               <p>Adaptación del motor a sus estándares de software y hardware.</p>
@@ -2160,468 +1240,76 @@
   </div>
 </section>
 
-<div class="divider" aria-hidden="true"></div>
-
-<!-- ══════════════════════════════════════════════
-     FOOTER
-══════════════════════════════════════════════ -->
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
-      <svg width="28" height="34" viewBox="0 0 44 56" fill="none" aria-hidden="true">
-        <defs><clipPath id="ftClip"><path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z"/></clipPath></defs>
-        <path d="M22 2C22 2 4 22 4 36C4 47 12 54 22 54C32 54 40 47 40 36C40 22 22 2 22 2Z" fill="rgba(0,240,255,0.08)" stroke="#00F0FF" stroke-width="1.4"/>
-        <path d="M22 2C22 2 4 22 4 30L40 30C40 22 22 2 22 2Z" fill="rgba(0,240,255,0.65)"/>
-        <g clip-path="url(#ftClip)" stroke="#39FF14" stroke-width="0.9" opacity="0.85">
-          <ellipse cx="22" cy="36" rx="11.5" ry="3.5" fill="none"/>
-          <ellipse cx="22" cy="42" rx="14.5" ry="5" fill="none"/>
-          <path d="M14 30Q12 42 15 54"/><path d="M22 30L22 54"/><path d="M30 30Q32 42 29 54"/>
-        </g>
-      </svg>
-      <span><span class="neo">Neo</span><span class="fluid3d">Fluid<sup>3</sup>D</span></span>
+      <svg class="footer-brand-logo" width="32" height="42" viewBox="4 4 92 143.83" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <!-- NeoFluid3D Principal High-Contrast Isotype -->
+  <defs>
+    <clipPath id="ftDropClip">
+      <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" />
+    </clipPath>
+  </defs>
+
+  <!-- 1. Full Drop Solid Black Base -->
+  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#000000" />
+
+  <!-- 2. Lower Grid (Neon Green) -->
+  <g clip-path="url(#ftDropClip)" stroke="#39FF14" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M 55.76 84.40 L 57.82 84.38 L 60.11 84.36 L 62.36 84.34 L 64.57 84.31 L 66.71 84.27 L 68.79 84.23 L 70.80 84.19 L 72.72 84.14 L 74.55 84.09 L 76.29 84.03 L 77.92 83.97 L 79.45 83.91 L 80.85 83.84 L 82.14 83.77 L 83.30 83.70 L 84.32 83.62 L 85.21 83.55 L 85.97 83.47 L 86.58 83.39 L 87.04 83.31 L 87.36 83.22 L 87.56 83.14" />
+    <path d="M 35.37 102.12 L 39.14 102.16 L 43.01 102.19 L 46.94 102.21 L 50.89 102.21 L 54.84 102.20 L 58.74 102.18 L 62.57 102.15 L 66.28 102.10 L 69.85 102.04 L 73.24 101.97 L 76.43 101.88 L 79.38 101.79 L 82.07 101.69 L 84.48 101.58 L 86.58 101.46 L 88.36 101.33 L 89.80 101.20 L 90.88 101.07 L 91.60 100.93 L 91.95 100.79" />
+    <path d="M 14.41 118.91 L 17.19 119.10 L 20.78 119.27 L 25.09 119.42 L 30.01 119.54 L 35.42 119.64 L 41.19 119.70 L 47.18 119.74 L 53.24 119.74 L 59.22 119.70 L 64.97 119.63 L 70.35 119.54 L 75.24 119.41 L 79.50 119.26 L 83.03 119.08 L 85.75 118.89 L 87.59 118.69 L 88.58 118.43" />
+    <path d="M 25.64 136.07 L 27.51 136.36 L 30.12 136.52 L 33.68 136.66 L 38.03 136.77 L 42.95 136.85 L 48.22 136.88 L 53.57 136.88 L 58.75 136.83 L 63.51 136.74 L 67.61 136.62 L 70.87 136.47 L 73.12 136.30 L 74.38 136.06" />
+    <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+    <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+    <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+    <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+  </g>
+
+  <!-- 3. Upper Fluid Solid Fill (Cyan #00F0FF) -->
+  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
+
+  <!-- 4. Front Cut Curve Contour (Cyan #00F0FF) -->
+  <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" />
+
+  <!-- 5A. Lower Sphere Outer Border (Neon Green #39FF14) -->
+  <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- 5B. Upper Fluid Cone Outer Border (Cyan #00F0FF) -->
+  <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+      <span><span class="neo" style="margin-right: 0;">Neo</span><span class="fluid3d"><span class="footer-fluid">Fluid</span><span class="footer-3d"><span class="footer-exp">³</span><span class="footer-d">D</span></span></span></span>
     </div>
 
     <p class="footer-summary">
-      Plataforma y motor de cálculo de dinámica de fluidos en tiempo real sobre Vulkan.<br>
+      Plataforma y motor de cálculo de dinámica de fluidos en tiempo real.<br>
       Tecnología de simulación acelerada en GPU para aplicaciones industriales, gemelos digitales y medios interactivos.
     </p>
 
     <ul class="footer-nav">
-      <li><a href="#vision">La Base</a></li>
-      <li><a href="#demos">Demostraciones</a></li>
-      <li><a href="#possibilities">Posibilidades</a></li>
-      <li><a href="#modes">Visualización</a></li>
-      <li><a href="#roadmap">Evolución</a></li>
-      <li><a href="#contact">Contacto B2B</a></li>
+      <li><a href="#vision">01 Visión</a></li>
+      <li><a href="#demos">02 Demos</a></li>
+      <li><a href="#isotype">03 Isotipo</a></li>
+      <li><a href="#logotype">04 Logotipo</a></li>
+      <li><a href="#imagotype">05 Imagotipo</a></li>
+      <li><a href="#possibilities">06 Posibilidades</a></li>
+      <li><a href="#modes">07 Modos</a></li>
+      <li><a href="#roadmap">08 Roadmap</a></li>
+      <li><a href="#contact">09 Contacto</a></li>
     </ul>
 
     <div class="footer-bottom-bar">
       <span>© 2025–2026 NeoFluid3D : Todos los derechos reservados</span>
-      <span class="brand-spec">
-        Tipografía: <span class="c">Neo (Poppins Bold)</span> : <span class="g">Fluid³D (JetBrains Mono)</span>
-      </span>
-      <span>Identidad: <span style="color:#00F0FF">#00F0FF</span> &amp; <span style="color:#39FF14">#39FF14</span></span>
     </div>
   </div>
 </footer>
 
-<!-- ══════════════════════════════════════════════
-     SCRIPTS & STATE CONTROLLER
-══════════════════════════════════════════════ -->
-<script>
-/**
- * NeoFluid3D : Core Application Controller
- * Handles cursor tracking, scroll reveals, responsive state, canvas simulations,
- * video fallbacks, and UI toast feedback.
- */
-
-/* ── 1. Interactive Cursor Subsystem ── */
-(function setupCursor() {
-  const cursorDot = document.getElementById('cursor-dot');
-  const cursorRing = document.getElementById('cursor-ring');
-  if (!cursorDot || !cursorRing) return;
-
-  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-  let isMoving = false;
-
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    isMoving = true;
-  }, { passive: true });
-
-  function renderCursor() {
-    if (isMoving) {
-      cursorDot.style.left = mouseX + 'px';
-      cursorDot.style.top = mouseY + 'px';
-
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-      cursorRing.style.left = ringX + 'px';
-      cursorRing.style.top = ringY + 'px';
-    }
-    requestAnimationFrame(renderCursor);
-  }
-  renderCursor();
-
-  document.querySelectorAll('a, button, .pos-card, .video-card, .mode-card, .arch-layer-item, .form-input').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      if (el.classList.contains('featured') || el.classList.contains('btn-primary')) {
-        document.body.classList.add('hovered-green');
-      } else {
-        document.body.classList.add('hovered');
-      }
-    });
-    el.addEventListener('mouseleave', () => {
-      document.body.classList.remove('hovered');
-      document.body.classList.remove('hovered-green');
-    });
-  });
-})();
-
-/* ── 2. Navigation Header Scroll State ── */
-(function setupNavbar() {
-  const nav = document.getElementById('navbar');
-  if (!nav) return;
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
-})();
-
-/* ── 3. Intersection Observer (Scroll Reveal) ── */
-(function setupScrollReveal() {
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-})();
-
-/* ── 4. Hero Background Particle Simulation ── */
-(function setupHeroCanvas() {
-  const canvas = document.getElementById('hero-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let w, h, particles = [];
-  const N = 90;
-  const CYAN = '#00F0FF', GREEN = '#39FF14';
-
-  function resize() {
-    w = canvas.width = canvas.offsetWidth;
-    h = canvas.height = canvas.offsetHeight;
-  }
-  resize();
-  window.addEventListener('resize', () => { resize(); createParticles(); }, { passive: true });
-
-  class FluidParticle {
-    constructor() { this.init(); }
-    init() {
-      this.x = Math.random() * w;
-      this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.35;
-      this.vy = (Math.random() - 0.5) * 0.35;
-      this.radius = Math.random() * 1.8 + 0.5;
-      this.color = Math.random() > 0.45 ? CYAN : GREEN;
-      this.alpha = Math.random() * 0.5 + 0.15;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.init();
-    }
-    draw() {
-      ctx.save();
-      ctx.globalAlpha = this.alpha;
-      ctx.fillStyle = this.color;
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = this.color;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
-  }
-
-  function createParticles() {
-    particles = Array.from({ length: N }, () => new FluidParticle());
-  }
-  createParticles();
-
-  function drawSprings() {
-    const maxDist = 120;
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < maxDist) {
-          ctx.save();
-          ctx.globalAlpha = (1 - dist / maxDist) * 0.12;
-          ctx.strokeStyle = CYAN;
-          ctx.lineWidth = 0.6;
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.stroke();
-          ctx.restore();
-        }
-      }
-    }
-  }
-
-  (function loop() {
-    ctx.clearRect(0, 0, w, h);
-    drawSprings();
-    particles.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(loop);
-  })();
-})();
-
-/* ── 5. Canvas Engine Pipeline Factory ── */
-function setupDynamicCanvas(id, renderCallback) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const ctx = el.getContext('2d');
-  let w, h;
-  function updateSize() {
-    w = el.width = el.offsetWidth;
-    h = el.height = el.offsetHeight;
-  }
-  updateSize();
-  new ResizeObserver(updateSize).observe(el);
-  let time = Math.random() * 100;
-  (function frame() {
-    ctx.clearRect(0, 0, w, h);
-    renderCallback(ctx, w, h, time);
-    time += 0.015;
-    requestAnimationFrame(frame);
-  })();
-}
-
-/* ── Video Fallback Canvases (Simulation Previews) ── */
-setupDynamicCanvas('vfb-1', (ctx, w, h, t) => {
-  ctx.fillStyle = '#030809';
-  ctx.fillRect(0, 0, w, h);
-  const cx = w / 2, cy = h / 2;
-  for (let i = 1; i <= 8; i++) {
-    const r = (i / 9) * Math.min(w, h) * 0.48;
-    ctx.save();
-    ctx.globalAlpha = 0.08 + (i / 9) * 0.28;
-    ctx.strokeStyle = i % 2 === 0 ? '#00F0FF' : '#39FF14';
-    ctx.lineWidth = 1.4;
-    ctx.shadowBlur = 12;
-    ctx.shadowColor = i % 2 === 0 ? '#00F0FF' : '#39FF14';
-    ctx.beginPath();
-    for (let p = 0; p <= 64; p++) {
-      const a = (p / 64) * Math.PI * 2;
-      const noise = 1 + Math.sin(a * 3 + t * 0.8 + i) * 0.1 + Math.cos(a * 5 - t * 0.6 + i * 0.8) * 0.06;
-      const px = cx + Math.cos(a) * r * noise;
-      const py = cy + Math.sin(a) * r * noise * 0.75;
-      p === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-    }
-    ctx.closePath();
-    ctx.stroke();
-    ctx.restore();
-  }
-});
-
-setupDynamicCanvas('vfb-2', (ctx, w, h, t) => {
-  ctx.fillStyle = '#020607';
-  ctx.fillRect(0, 0, w, h);
-  for (let i = 0; i < 70; i++) {
-    const s = i * 137.5;
-    const x = (Math.sin(s + t * 0.25) * 0.5 + 0.5) * w;
-    const y = (Math.cos(s * 0.7 + t * 0.2) * 0.5 + 0.5) * h;
-    const r = 1.8 + Math.sin(s + t) * 0.8;
-    const a = 0.35 + Math.sin(s * 2 + t * 0.4) * 0.35;
-    ctx.save();
-    ctx.globalAlpha = a;
-    ctx.fillStyle = '#00F0FF';
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = '#00F0FF';
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
-});
-
-setupDynamicCanvas('vfb-3', (ctx, w, h, t) => {
-  ctx.fillStyle = '#020708';
-  ctx.fillRect(0, 0, w, h);
-  const cols = 14, rows = 8;
-  const dx = w / cols, dy = h / rows;
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const x = dx * (c + 0.5), y = dy * (r + 0.5);
-      const angle = Math.sin(x * 0.04 + t * 0.5) * Math.PI + Math.cos(y * 0.04 - t * 0.3) * 0.6;
-      const spd = Math.abs(Math.sin(x * 0.05 + y * 0.04 + t));
-      const len = 6 + spd * 12;
-      const ex = x + Math.cos(angle) * len;
-      const ey = y + Math.sin(angle) * len;
-      const color = spd > 0.5 ? '#00F0FF' : '#39FF14';
-      ctx.save();
-      ctx.globalAlpha = 0.45 + spd * 0.45;
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1;
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = color;
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(ex, ey);
-      ctx.stroke();
-      ctx.restore();
-    }
-  }
-});
-
-/* ── Mode Canvases (Analytical Previews) ── */
-setupDynamicCanvas('mc-p1', (ctx, w, h, t) => {
-  ctx.fillStyle = '#030809';
-  ctx.fillRect(0, 0, w, h);
-  const cx = w / 2, cy = h / 2;
-  for (let i = 1; i <= 9; i++) {
-    const r = (i / 10) * Math.min(w, h) * 0.5;
-    ctx.save();
-    ctx.globalAlpha = 0.08 + (i / 10) * 0.3;
-    ctx.strokeStyle = '#00F0FF';
-    ctx.lineWidth = 1.4;
-    ctx.shadowBlur = 14;
-    ctx.shadowColor = '#00F0FF';
-    ctx.beginPath();
-    for (let p = 0; p <= 90; p++) {
-      const a = (p / 90) * Math.PI * 2;
-      const n1 = Math.sin(a * 4 + t * 0.7 + i) * 0.1;
-      const n2 = Math.cos(a * 6 - t * 0.5 + i * 1.2) * 0.06;
-      const px = cx + Math.cos(a) * r * (1 + n1 + n2);
-      const py = cy + Math.sin(a) * r * (1 + n1 + n2) * 0.72;
-      p === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-    }
-    ctx.closePath();
-    ctx.stroke();
-    ctx.restore();
-  }
-});
-
-setupDynamicCanvas('mc-p2', (ctx, w, h, t) => {
-  ctx.fillStyle = '#020607';
-  ctx.fillRect(0, 0, w, h);
-  for (let i = 0; i < 90; i++) {
-    const s = i * 53.7 + 11;
-    const x = (Math.sin(s + t * 0.22) * 0.5 + 0.5) * w;
-    const y = (Math.cos(s * 0.6 + t * 0.18) * 0.5 + 0.5) * h;
-    const r = 1.5 + Math.sin(s + t) * 0.8;
-    const a = 0.35 + Math.sin(s * 2 + t * 0.4) * 0.35;
-    ctx.save();
-    ctx.globalAlpha = a;
-    ctx.fillStyle = '#00F0FF';
-    ctx.shadowBlur = 12;
-    ctx.shadowColor = '#00F0FF';
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
-});
-
-setupDynamicCanvas('mc-p3', (ctx, w, h, t) => {
-  ctx.fillStyle = '#020708';
-  ctx.fillRect(0, 0, w, h);
-  const pts = [];
-  for (let i = 0; i < 35; i++) {
-    const s = i * 137.5;
-    pts.push({
-      x: (Math.sin(s + t * 0.22) * 0.5 + 0.5) * w,
-      y: (Math.cos(s * 0.75 + t * 0.16) * 0.5 + 0.5) * h
-    });
-  }
-  for (let i = 0; i < pts.length; i++) {
-    for (let j = i + 1; j < pts.length; j++) {
-      const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
-      const th = Math.min(w, h) * 0.42;
-      if (d < th) {
-        ctx.save();
-        ctx.globalAlpha = (1 - d / th) * 0.6;
-        ctx.strokeStyle = '#39FF14';
-        ctx.lineWidth = 0.8;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = '#39FF14';
-        ctx.beginPath();
-        ctx.moveTo(pts[i].x, pts[i].y);
-        ctx.lineTo(pts[j].x, pts[j].y);
-        ctx.stroke();
-        ctx.restore();
-      }
-    }
-  }
-  pts.forEach(p => {
-    ctx.save();
-    ctx.globalAlpha = 0.85;
-    ctx.fillStyle = '#00F0FF';
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = '#00F0FF';
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  });
-});
-
-setupDynamicCanvas('mc-p4', (ctx, w, h, t) => {
-  ctx.fillStyle = '#020608';
-  ctx.fillRect(0, 0, w, h);
-  const cols = 16, rows = 9;
-  const dx = w / cols, dy = h / rows;
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const x = dx * (c + 0.5), y = dy * (r + 0.5);
-      const angle = Math.sin(x * 0.05 + t * 0.6) * Math.PI + Math.cos(y * 0.05 - t * 0.4) * 0.8;
-      const spd = Math.abs(Math.sin(x * 0.06 + y * 0.05 + t));
-      const len = 6 + spd * 14;
-      const ex = x + Math.cos(angle) * len;
-      const ey = y + Math.sin(angle) * len;
-      const color = spd > 0.45 ? '#00F0FF' : '#39FF14';
-      ctx.save();
-      ctx.globalAlpha = 0.4 + spd * 0.5;
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1;
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = color;
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(ex, ey);
-      ctx.stroke();
-      ctx.restore();
-    }
-  }
-});
-
-/* ── 6. UI Toast Subsystem ── */
-function showToast(message, duration = 4000) {
-  const toast = document.getElementById('ui-toast');
-  const msgEl = document.getElementById('toast-message');
-  if (!toast || !msgEl) return;
-  msgEl.textContent = message;
-  toast.classList.add('active');
-  clearTimeout(toast._timeout);
-  toast._timeout = setTimeout(() => {
-    toast.classList.remove('active');
-  }, duration);
-}
-
-/* ── 7. Video Showcase Playback Controller ── */
-function handleVideoToggle(videoId, buttonEl) {
-  const vid = document.getElementById(videoId);
-  if (!vid) return;
-
-  if (vid.readyState >= 2 || (vid.src && vid.src !== window.location.href)) {
-    if (vid.paused) {
-      vid.play();
-      buttonEl.classList.add('hidden');
-    } else {
-      vid.pause();
-      buttonEl.classList.remove('hidden');
-    }
-  } else {
-    showToast('Añade tu archivo .mp4 a la carpeta videos/ para activar este clip.');
-  }
-
-  vid.addEventListener('ended', () => {
-    buttonEl.classList.remove('hidden');
-  });
-}
-
-/* ── 8. Form Submission Feedback ── */
-function handleContactSubmit(e) {
-  e.preventDefault();
-  const name = document.getElementById('contact-name').value;
-  showToast(`Solicitud de ${name || 'contacto'} recibida con éxito.`);
-  e.target.reset();
-}
-</script>
+  <!-- Modular Specialized Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script src="hero_drop_3d.js"></script>
+  <script src="genesis_controller.js"></script>
+  <script src="plexus_controller.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
