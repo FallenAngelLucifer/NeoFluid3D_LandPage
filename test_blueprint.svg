@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1260 640" width="100%" height="100%" fill="none">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Poppins:wght@800;900&family=Oxanium:wght@600;700;800&display=swap');
+      .mono { font-family: "JetBrains Mono", monospace; }
+      .display-neo { font-family: "Poppins", "Clash Display", "Segoe UI", system-ui, sans-serif; font-weight: 900; }
+      .mono-fluid { font-family: "JetBrains Mono", monospace; font-weight: 700; }
+      .title-font { font-family: "Oxanium", "JetBrains Mono", sans-serif; font-weight: 700; }
+    </style>
+    <pattern id="blueprintGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0, 210, 255, 0.05)" stroke-width="1"/>
+    </pattern>
+    <pattern id="blueprintGridMajor" width="100" height="100" patternUnits="userSpaceOnUse">
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(0, 210, 255, 0.12)" stroke-width="1.2"/>
+    </pattern>
+    <clipPath id="imagotypeDropClip">
+      <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" />
+    </clipPath>
+    <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="greenGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <!-- Canvas Background & Grids -->
+  <rect width="1260" height="640" fill="#070B0E"/>
+  <rect width="1260" height="640" fill="url(#blueprintGrid)"/>
+  <rect width="1260" height="640" fill="url(#blueprintGridMajor)"/>
+  <!-- Outer Protection HUD Frame -->
+  <rect x="15" y="15" width="1230" height="610" fill="none" stroke="rgba(0, 210, 255, 0.2)" stroke-width="1.2" stroke-dasharray="4 4" rx="8"/>
+  <!-- HUD Corner Accents -->
+  <path d="M 25 37 L 25 25 L 37 25" stroke="#00F0FF" stroke-width="1.8" fill="none" opacity="0.6"/>
+  <path d="M 1235 37 L 1235 25 L 1223 25" stroke="#00F0FF" stroke-width="1.8" fill="none" opacity="0.6"/>
+  <path d="M 25 603 L 25 615 L 37 615" stroke="#00F0FF" stroke-width="1.8" fill="none" opacity="0.6"/>
+  <path d="M 1235 603 L 1235 615 L 1223 615" stroke="#00F0FF" stroke-width="1.8" fill="none" opacity="0.6"/>
+  <!-- HUD Top Header -->
+  <g transform="translate(35, 45)">
+    <rect x="0" y="0" width="180" height="22" rx="3" fill="rgba(0, 210, 255, 0.1)" stroke="rgba(0, 210, 255, 0.4)" stroke-width="1"/>
+    <text x="9" y="15" fill="#00F0FF" class="mono" font-size="11" font-weight="700" letter-spacing="0.08em">BLUEPRINT // IDENTIFICADOR</text>
+    <text x="195" y="16" fill="#FFFFFF" class="title-font" font-size="18" letter-spacing="0.04em">IMAGOTIPO APILADO — CONSTRUCCIÓN CANÓNICA 4X</text>
+    <text x="195" y="34" fill="rgba(255, 255, 255, 0.55)" class="mono" font-size="11.5">REGLA MODULAR: <tspan fill="#00F0FF" font-weight="700">1u = H/4 (80px)</tspan> | PROPORCIÓN: <tspan fill="#39FF14" font-weight="700">ISOTIPO (4u) + SEPARACIÓN (1u) + LOGOTIPO (4u / 2 FILAS)</tspan></text>
+  </g>
+  <!-- Horizontal Module Grid Lines (0u, 1u, 2u, 3u, 4u) -->
+  <line x1="30" y1="140.0" x2="1230" y2="140.0" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="3 3"/>
+  <line x1="30" y1="220.0" x2="1230" y2="220.0" stroke="rgba(0, 210, 255, 0.3)" stroke-dasharray="3 3"/>
+  <line x1="30" y1="300.0" x2="1230" y2="300.0" stroke="rgba(0, 240, 255, 0.6)" stroke-dasharray="5 3" stroke-width="1.4"/>
+  <line x1="30" y1="380.0" x2="1230" y2="380.0" stroke="rgba(0, 210, 255, 0.3)" stroke-dasharray="3 3"/>
+  <line x1="30" y1="460.0" x2="1230" y2="460.0" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="3 3"/>
+  <!-- ZONE 1: Left Coordinates & Height Caliper -->
+  <text x="35" y="145.0" fill="rgba(255,255,255,0.7)" class="mono" font-size="13" font-weight="700">0u (0%)</text>
+  <text x="35" y="225.0" fill="rgba(0,210,255,0.9)" class="mono" font-size="13" font-weight="700">1u (25%)</text>
+  <text x="35" y="305.0" fill="#00F0FF" class="mono" font-size="13" font-weight="800">2u (50%)</text>
+  <text x="35" y="385.0" fill="rgba(0,210,255,0.9)" class="mono" font-size="13" font-weight="700">3u (75%)</text>
+  <text x="35" y="465.0" fill="rgba(255,255,255,0.7)" class="mono" font-size="13" font-weight="700">4u (100%)</text>
+  <line x1="118.0" y1="140.0" x2="118.0" y2="460.0" stroke="#FFFFFF" stroke-width="1.8"/>
+  <path d="M 110.0 140.0 L 126.0 140.0 M 110.0 460.0 L 126.0 460.0" stroke="#FFFFFF" stroke-width="1.8"/>
+  <text x="100.0" y="300.0" fill="#FFFFFF" class="mono" font-weight="800" font-size="16" letter-spacing="0.04em" transform="rotate(-90 100.0 300.0)" text-anchor="middle">H = 4u (320px)</text>
+  <!-- ZONE 2: Isotype Bipartite Drop -->
+  <rect x="150.0" y="140.0" width="197.9" height="320.0" fill="rgba(0, 210, 255, 0.02)" stroke="rgba(0, 210, 255, 0.35)" stroke-dasharray="4 4" rx="4"/>
+  <svg x="150.00" y="140.00" width="197.89" height="320.00" viewBox="4 4 92 143.83" fill="none">
+    <!-- 1. Full Drop Solid Base -->
+    <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#070B0E" />
+    <!-- 2. Lower Sphere Grid (Precision Emerald #39FF14) -->
+    <g clip-path="url(#imagotypeDropClip)" stroke="#39FF14" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M 76.9 86.42 L 79.81 86.59 L 82.39 86.78 L 84.62 86.99 L 86.47 87.2 L 87.92 87.43 L 88.95 87.67 L 89.56 87.9 M 10.27 88.1 L 10.53 87.86 L 11.23 87.62 L 12.35 87.38 L 13.88 87.16 L 15.81 86.94 L 18.11 86.74 L 20.76 86.56 L 23.73 86.39 L 26.99 86.24 L 30.5 86.11 L 34.23 86 L 38.13 85.92 L 42.16 85.86 L 46.27 85.82 L 50.43 85.81 L 54.58 85.83 L 58.68 85.87 L 62.68 85.93 L 66.55 86.02 L 70.23 86.13 L 73.7 86.27 L 76.9 86.42" />
+      <path d="M 77.98 107.78 L 81.01 107.96 L 83.7 108.16 L 86.01 108.37 L 87.94 108.6 L 89.44 108.83 L 90.52 109.08 L 91.15 109.33 M 8.67 109.53 L 8.94 109.28 L 9.67 109.03 L 10.83 108.79 L 12.42 108.55 L 14.43 108.33 L 16.82 108.12 L 19.58 107.93 L 22.67 107.75 L 26.07 107.59 L 29.72 107.46 L 33.59 107.35 L 37.65 107.26 L 41.84 107.2 L 46.12 107.16 L 50.44 107.15 L 54.76 107.16 L 59.03 107.21 L 63.19 107.27 L 67.21 107.37 L 71.05 107.48 L 74.65 107.62 L 77.98 107.78" />
+      <path d="M 70.5 129.69 L 72.71 129.82 L 74.68 129.97 L 76.38 130.12 L 77.79 130.29 L 78.89 130.46 L 79.68 130.64 L 80.14 130.82 M 19.73 130.97 L 19.93 130.78 L 20.46 130.6 L 21.31 130.42 L 22.48 130.25 L 23.95 130.09 L 25.7 129.93 L 27.72 129.79 L 29.99 129.66 L 32.47 129.55 L 35.15 129.45 L 37.98 129.37 L 40.95 129.3 L 44.02 129.26 L 47.16 129.23 L 50.32 129.22 L 53.49 129.24 L 56.61 129.27 L 59.66 129.32 L 62.61 129.38 L 65.42 129.47 L 68.05 129.57 L 70.5 129.69" />
+      <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+      <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+      <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+      <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+    </g>
+    <!-- 3. Upper Fluid Solid Fill (Electric Cyan #00F0FF) -->
+    <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
+    <!-- 4. Front Cut Curve Contour -->
+    <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" />
+    <!-- 5A. Lower Sphere Outer Border (Precision Emerald #39FF14) -->
+    <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- 5B. Upper Fluid Cone Outer Border (Electric Cyan #00F0FF) -->
+    <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+  <!-- Drop Tangent Guides -->
+  <line x1="150.0" y1="100" x2="150.0" y2="490" stroke="rgba(255, 255, 255, 0.2)" stroke-dasharray="2 2"/>
+  <line x1="347.9" y1="100" x2="347.9" y2="490" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="2 2"/>
+  <!-- ZONE 3: Gap Caliper (gap = 1u = 1/4 H) -->
+  <line x1="427.9" y1="100" x2="427.9" y2="490" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="2 2"/>
+  <line x1="347.9" y1="300.0" x2="427.9" y2="300.0" stroke="#FFFFFF" stroke-width="1.8"/>
+  <path d="M 347.9 290.0 L 347.9 310.0 M 427.9 290.0 L 427.9 310.0" stroke="#FFFFFF" stroke-width="1.8"/>
+  <text x="387.9" y="275.0" fill="#FFFFFF" class="mono" font-size="14" font-weight="800" text-anchor="middle">
+    <tspan x="387.9" dy="0">gap = 1u</tspan>
+    <tspan x="387.9" dy="16" fill="rgba(0, 210, 255, 0.9)">(1/4 H)</tspan>
+  </text>
+  <!-- ZONE 4: Stacked Logotype Text Modules -->
+  <!-- Row 1: NEO Box (2u = 160px, y=[140.0, 300.0]) -->
+  <rect x="427.9" y="140.0" width="485.0" height="160.0" fill="rgba(0, 210, 255, 0.03)" stroke="rgba(0, 210, 255, 0.35)" stroke-dasharray="4 4" rx="4"/>
+  <text x="437.9" y="158.0" fill="rgba(0, 210, 255, 0.6)" class="mono" font-size="9.5" font-weight="700" letter-spacing="0.06em">MODULO 1 : PREFIJO [NEO] // ALTO = 2u (H/2)</text>
+  <!-- Row 2: Fluid³D Box (2u = 160px, y=[300.0, 460.0]) -->
+  <rect x="427.9" y="300.0" width="485.0" height="160.0" fill="rgba(57, 255, 20, 0.03)" stroke="rgba(57, 255, 20, 0.35)" stroke-dasharray="4 4" rx="4"/>
+  <text x="437.9" y="318.0" fill="rgba(57, 255, 20, 0.6)" class="mono" font-size="9.5" font-weight="700" letter-spacing="0.06em">MODULO 2 : SUFIJO [Fluid³D] // ALTO = 2u (H/2)</text>
+  <line x1="912.9" y1="100" x2="912.9" y2="490" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="2 2"/>
+  <!-- Typography Row 1: NEO -->
+  <text x="435.9" y="278.0" class="display-neo" font-size="168" fill="#00F0FF" letter-spacing="-0.025em">NEO</text>
+  <!-- Typography Row 2: Fluid³D -->
+  <text x="435.9" y="432.0" class="mono-fluid" font-size="118" fill="#39FF14" letter-spacing="-0.02em">Fluid<tspan font-size="92" dy="-32">3</tspan><tspan font-size="118" dy="32">D</tspan></text>
+  <!-- ZONE 5: Calipers for Modular Text Rows -->
+  <line x1="944.8944268571008" y1="140.0" x2="944.8944268571008" y2="300.0" stroke="#00F0FF" stroke-width="1.6"/>
+  <path d="M 938.8944268571008 140.0 L 950.8944268571008 140.0 M 938.8944268571008 300.0 L 950.8944268571008 300.0" stroke="#00F0FF" stroke-width="1.6"/>
+  <text x="960.8944268571008" y="220.0" fill="#00F0FF" class="mono" font-weight="800" font-size="13" letter-spacing="0.04em" transform="rotate(90 960.8944268571008 220.0)" text-anchor="middle">2u = H/2</text>
+  <line x1="944.8944268571008" y1="300.0" x2="944.8944268571008" y2="460.0" stroke="#39FF14" stroke-width="1.6"/>
+  <path d="M 938.8944268571008 300.0 L 950.8944268571008 300.0 M 938.8944268571008 460.0 L 950.8944268571008 460.0" stroke="#39FF14" stroke-width="1.6"/>
+  <text x="960.8944268571008" y="380.0" fill="#39FF14" class="mono" font-weight="800" font-size="13" letter-spacing="0.04em" transform="rotate(90 960.8944268571008 380.0)" text-anchor="middle">2u = H/2</text>
+  <line x1="988.8944268571008" y1="140.0" x2="988.8944268571008" y2="460.0" stroke="#FFFFFF" stroke-width="1.8"/>
+  <path d="M 980.8944268571008 140.0 L 996.8944268571008 140.0 M 980.8944268571008 460.0 L 996.8944268571008 460.0" stroke="#FFFFFF" stroke-width="1.8"/>
+  <text x="1006.8944268571008" y="300.0" fill="#FFFFFF" class="mono" font-weight="800" font-size="15" letter-spacing="0.04em" transform="rotate(90 1006.8944268571008 300.0)" text-anchor="middle">H = 4u (TOTAL APILADO)</text>
+  <!-- ZONE 6: Right Architectural Datum Labels -->
+  <text x="1026.8944268571008" y="145.0" fill="rgba(255,255,255,0.75)" class="mono" font-size="12" font-weight="700">ÁPICE (0/4) <tspan fill="rgba(255,255,255,0.4)">// TOPE MODULAR</tspan></text>
+  <text x="1026.8944268571008" y="225.0" fill="rgba(0,210,255,0.85)" class="mono" font-size="12" font-weight="700">1/4 H <tspan fill="rgba(0,210,255,0.45)">// TOPE COTA SUPERIOR</tspan></text>
+  <text x="1026.8944268571008" y="305.0" fill="#00F0FF" class="mono" font-size="12" font-weight="800">2/4 H <tspan fill="rgba(0,240,255,0.7)">// CENTRO &amp; DIVISIÓN DE FILAS</tspan></text>
+  <text x="1026.8944268571008" y="385.0" fill="rgba(0,210,255,0.85)" class="mono" font-size="12" font-weight="700">3/4 H <tspan fill="rgba(0,210,255,0.45)">// BASE COTA INFERIOR</tspan></text>
+  <text x="1026.8944268571008" y="465.0" fill="rgba(255,255,255,0.75)" class="mono" font-size="12" font-weight="700">BASE (4/4) <tspan fill="rgba(255,255,255,0.4)">// LÍNEA BASE FLUID³D</tspan></text>
+  <!-- ZONE 7: Bottom Architecture Rules Footnotes -->
+  <g transform="translate(35, 495)">
+    <rect x="0" y="0" width="1190" height="105" rx="6" fill="rgba(7, 11, 14, 0.75)" stroke="rgba(0, 210, 255, 0.25)" stroke-width="1"/>
+    <g transform="translate(20, 18)">
+      <text x="0" y="10" fill="#00F0FF" class="mono" font-size="11.5" font-weight="800" letter-spacing="0.05em">1. MODULARIDAD 2X2u (H = 4u)</text>
+      <text x="0" y="30" fill="rgba(255,255,255,0.7)" class="mono" font-size="11">La altura total <tspan fill="#FFFFFF" font-weight="700">H (4u)</tspan> se divide en 2 filas exactas</text>
+      <text x="0" y="46" fill="rgba(255,255,255,0.7)" class="mono" font-size="11">de <tspan fill="#00F0FF" font-weight="700">2u = H/2</tspan>: <tspan fill="#00F0FF">NEO</tspan> [0u..2u] y <tspan fill="#39FF14">Fluid³D</tspan> [2u..4u].</text>
+      <text x="0" y="64" fill="rgba(0,210,255,0.6)" class="mono" font-size="10">Eje de simetría horizontal en 2u (50% H).</text>
+    </g>
+    <line x1="396.6666666666667" y1="15" x2="396.6666666666667" y2="90" stroke="rgba(0, 210, 255, 0.15)" stroke-dasharray="2 2"/>
+    <g transform="translate(416.6666666666667, 18)">
+      <text x="0" y="10" fill="#39FF14" class="mono" font-size="11.5" font-weight="800" letter-spacing="0.05em">2. SEPARACIÓN CANÓNICA (gap = 1u)</text>
+      <text x="0" y="30" fill="rgba(255,255,255,0.7)" class="mono" font-size="11">Distancia horizontal constante de <tspan fill="#39FF14" font-weight="700">1u = H/4</tspan></text>
+      <text x="0" y="46" fill="rgba(255,255,255,0.7)" class="mono" font-size="11">desde la tangencia este de la gota hasta la</text>
+      <text x="0" y="64" fill="rgba(57,255,20,0.6)" class="mono" font-size="10">caja tipográfica apilada (N de NEO / F de Fluid).</text>
+    </g>
+    <line x1="793.3333333333334" y1="15" x2="793.3333333333334" y2="90" stroke="rgba(0, 210, 255, 0.15)" stroke-dasharray="2 2"/>
+    <g transform="translate(813.3333333333334, 18)">
+      <text x="0" y="10" fill="#FFFFFF" class="mono" font-size="11.5" font-weight="800" letter-spacing="0.05em">3. COHERENCIA DE BASE (4/4)</text>
+      <text x="0" y="30" fill="rgba(255,255,255,0.7)" class="mono" font-size="11">La línea base de <tspan fill="#39FF14" font-weight="700">Fluid³D</tspan> descansa sobre la cota</text>
+      <text x="0" y="46" fill="rgba(255,255,255,0.7)" class="mono" font-size="11"><tspan fill="#FFFFFF" font-weight="700">4u (100%)</tspan>, coincidiendo exactamente con</text>
+      <text x="0" y="64" fill="rgba(255,255,255,0.5)" class="mono" font-size="10">el polo sur de la gota y la base del isotipo.</text>
+    </g>
+  </g>
+</svg>

@@ -3,49 +3,6 @@
  * Hardware-Accelerated Procedural Fluid Canvases & UI Subsystems
  */
 
-/* ── 1. Smooth Hardware-Accelerated Fluid Cursor ── */
-(function setupCursor() {
-  const dot = document.getElementById('cursor-dot');
-  const ring = document.getElementById('cursor-ring');
-  if (!dot || !ring || window.matchMedia('(pointer: coarse)').matches) return;
-
-  let mouseX = -100, mouseY = -100;
-  let dotX = -100, dotY = -100;
-  let ringX = -100, ringY = -100;
-  let isSleeping = true;
-
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    if (isSleeping) {
-      isSleeping = false;
-      requestAnimationFrame(loopCursor);
-    }
-  }, { passive: true });
-
-  function loopCursor() {
-    const dDx = (mouseX - dotX) * 0.45;
-    const dDy = (mouseY - dotY) * 0.45;
-    const rDx = (mouseX - ringX) * 0.16;
-    const rDy = (mouseY - ringY) * 0.16;
-
-    dotX += dDx;
-    dotY += dDy;
-    ringX += rDx;
-    ringY += rDy;
-
-    dot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate(-50%, -50%)`;
-    ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
-
-    if (Math.abs(dDx) < 0.15 && Math.abs(dDy) < 0.15 && Math.abs(rDx) < 0.15 && Math.abs(rDy) < 0.15) {
-      isSleeping = true;
-      return;
-    }
-
-    requestAnimationFrame(loopCursor);
-  }
-})();
-
 /* ── 2. Navigation Header Scroll State & Smooth Progress Bar ── */
 (function setupNavigation() {
   const navbar = document.getElementById('navbar');
@@ -111,15 +68,15 @@ function setupDynamicCanvas(canvasId, drawFn) {
 /* ── 4. Interactive Demos (Procedural Real-Time Canvases) ── */
 // Demo 1: SPH Micro-Particles
 setupDynamicCanvas('vfb-1', (ctx, w, h, t) => {
-  ctx.fillStyle = '#020608';
+  ctx.fillStyle = '#060B0E';
   ctx.fillRect(0, 0, w, h);
   const cx = w / 2, cy = h / 2;
 
   ctx.save();
-  ctx.strokeStyle = '#00F0FF';
-  ctx.lineWidth = 1.2;
+  ctx.strokeStyle = '#00D2FF';
+  ctx.lineWidth = 1.4;
   ctx.shadowBlur = 10;
-  ctx.shadowColor = '#00F0FF';
+  ctx.shadowColor = '#00D2FF';
   ctx.beginPath();
   for (let p = 0; p <= 60; p++) {
     const a = (p / 60) * Math.PI * 2;
@@ -136,7 +93,7 @@ setupDynamicCanvas('vfb-1', (ctx, w, h, t) => {
 
 // Demo 2: Surface Reconstruction
 setupDynamicCanvas('vfb-2', (ctx, w, h, t) => {
-  ctx.fillStyle = '#020607';
+  ctx.fillStyle = '#060B0E';
   ctx.fillRect(0, 0, w, h);
   for (let i = 0; i < 70; i++) {
     const s = i * 137.5;
@@ -146,9 +103,9 @@ setupDynamicCanvas('vfb-2', (ctx, w, h, t) => {
     const a = 0.35 + Math.sin(s * 2 + t * 0.4) * 0.35;
     ctx.save();
     ctx.globalAlpha = a;
-    ctx.fillStyle = '#00F0FF';
+    ctx.fillStyle = '#00D2FF';
     ctx.shadowBlur = 10;
-    ctx.shadowColor = '#00F0FF';
+    ctx.shadowColor = '#00D2FF';
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();
@@ -158,7 +115,7 @@ setupDynamicCanvas('vfb-2', (ctx, w, h, t) => {
 
 // Demo 3: Vector Velocity Fields
 setupDynamicCanvas('vfb-3', (ctx, w, h, t) => {
-  ctx.fillStyle = '#020708';
+  ctx.fillStyle = '#060B0E';
   ctx.fillRect(0, 0, w, h);
   const cols = 14, rows = 8;
   const dx = w / cols, dy = h / rows;
@@ -170,11 +127,11 @@ setupDynamicCanvas('vfb-3', (ctx, w, h, t) => {
       const len = 6 + spd * 12;
       const ex = x + Math.cos(angle) * len;
       const ey = y + Math.sin(angle) * len;
-      const color = spd > 0.5 ? '#00F0FF' : '#39FF14';
+      const color = spd > 0.5 ? '#00D2FF' : '#00E599';
       ctx.save();
       ctx.globalAlpha = 0.45 + spd * 0.45;
       ctx.strokeStyle = color;
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1.1;
       ctx.shadowBlur = 6;
       ctx.shadowColor = color;
       ctx.beginPath();
@@ -186,26 +143,100 @@ setupDynamicCanvas('vfb-3', (ctx, w, h, t) => {
   }
 });
 
-/* ── 5. Mode Inspection Canvases (Analytical Previews) ── */
+/* ── 5. Mode Inspection Canvases (The 6 Official Analytical Modes) ── */
+
+// [Mode 1] Partículas Discretas: Spherical GPU particles with velocity/pressure shading
 setupDynamicCanvas('mc-p1', (ctx, w, h, t) => {
-  ctx.fillStyle = '#030809';
+  ctx.fillStyle = '#05090C';
+  ctx.fillRect(0, 0, w, h);
+  const count = 95;
+  const cx = w / 2, cy = h / 2;
+  for (let i = 0; i < count; i++) {
+    const angle = (i / count) * Math.PI * 2 + t * 0.35;
+    const dist = ((i * 11.7 + t * 40) % (Math.min(w, h) * 0.46));
+    const x = cx + Math.cos(angle) * dist + Math.sin(t * 1.5 + i) * 8;
+    const y = cy + Math.sin(angle) * dist * 0.72 + Math.cos(t * 1.2 + i) * 6;
+    const alpha = Math.max(0.15, 1 - dist / (Math.min(w, h) * 0.46));
+    const radius = 2.4 + Math.sin(i * 0.5 + t) * 0.8;
+    const isHighSpeed = i % 4 === 0;
+
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = isHighSpeed ? '#00D2FF' : '#00E599';
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = ctx.fillStyle;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+});
+
+// [Mode 2] Red de Cohesión (Plexus): Neighbor search & smoothing kernel topology
+setupDynamicCanvas('mc-p2', (ctx, w, h, t) => {
+  ctx.fillStyle = '#05090C';
+  ctx.fillRect(0, 0, w, h);
+  const nodes = [];
+  const nodeCount = 38;
+  const cx = w / 2, cy = h / 2;
+  for (let i = 0; i < nodeCount; i++) {
+    const a = (i / nodeCount) * Math.PI * 2 + t * 0.2;
+    const r = 20 + ((i * 19 + t * 18) % (Math.min(w, h) * 0.42));
+    nodes.push({
+      x: cx + Math.cos(a + Math.sin(t * 0.8 + i) * 0.3) * r,
+      y: cy + Math.sin(a + Math.cos(t * 0.7 + i) * 0.3) * r * 0.75
+    });
+  }
+  const maxDist = Math.min(w, h) * 0.22;
+  // Draw connecting cohesion bonds
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+      if (d < maxDist) {
+        ctx.save();
+        ctx.globalAlpha = (1 - d / maxDist) * 0.55;
+        ctx.strokeStyle = '#00D2FF';
+        ctx.lineWidth = 1.0;
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+  }
+  // Draw particles
+  nodes.forEach(n => {
+    ctx.save();
+    ctx.fillStyle = '#00E599';
+    ctx.shadowBlur = 6;
+    ctx.shadowColor = '#00E599';
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, 2.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+});
+
+// [Mode 3] Malla Superficie Continua: Reconstructed fluid isosurfaces
+setupDynamicCanvas('mc-p3', (ctx, w, h, t) => {
+  ctx.fillStyle = '#04080B';
   ctx.fillRect(0, 0, w, h);
   const cx = w / 2, cy = h / 2;
-  for (let i = 1; i <= 9; i++) {
-    const r = (i / 10) * Math.min(w, h) * 0.5;
+  for (let i = 1; i <= 8; i++) {
+    const baseR = (i / 9) * Math.min(w, h) * 0.52;
     ctx.save();
-    ctx.globalAlpha = 0.08 + (i / 10) * 0.3;
-    ctx.strokeStyle = '#00F0FF';
-    ctx.lineWidth = 1.4;
-    ctx.shadowBlur = 14;
-    ctx.shadowColor = '#00F0FF';
+    ctx.globalAlpha = 0.12 + (i / 9) * 0.45;
+    ctx.strokeStyle = i % 2 === 0 ? '#00D2FF' : '#00E599';
+    ctx.lineWidth = 1.6;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = ctx.strokeStyle;
     ctx.beginPath();
-    for (let p = 0; p <= 90; p++) {
-      const a = (p / 90) * Math.PI * 2;
-      const n1 = Math.sin(a * 4 + t * 0.7 + i) * 0.1;
-      const n2 = Math.cos(a * 6 - t * 0.5 + i * 1.2) * 0.06;
-      const px = cx + Math.cos(a) * r * (1 + n1 + n2);
-      const py = cy + Math.sin(a) * r * (1 + n1 + n2) * 0.72;
+    for (let p = 0; p <= 72; p++) {
+      const a = (p / 72) * Math.PI * 2;
+      const wave = Math.sin(a * 5 + t * 1.1 + i * 0.7) * 0.12 + Math.cos(a * 3 - t * 0.8) * 0.08;
+      const px = cx + Math.cos(a) * baseR * (1 + wave);
+      const py = cy + Math.sin(a) * baseR * (1 + wave) * 0.72;
       p === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
     }
     ctx.closePath();
@@ -214,59 +245,113 @@ setupDynamicCanvas('mc-p1', (ctx, w, h, t) => {
   }
 });
 
-setupDynamicCanvas('mc-p2', (ctx, w, h, t) => {
-  ctx.fillStyle = '#020506';
+// [Mode 4] Campo Vectorial 3D: Directional and magnitude vector arrows
+setupDynamicCanvas('mc-p4', (ctx, w, h, t) => {
+  ctx.fillStyle = '#05090C';
   ctx.fillRect(0, 0, w, h);
-  const count = 90;
-  for (let i = 0; i < count; i++) {
-    const a = (i / count) * Math.PI * 2 + t * 0.25;
-    const r = ((i * 7.3 + t * 25) % (Math.min(w, h) * 0.55));
-    const x = w / 2 + Math.cos(a) * r;
-    const y = h / 2 + Math.sin(a) * r * 0.65;
-    const alpha = 1 - r / (Math.min(w, h) * 0.55);
-    ctx.save();
-    ctx.globalAlpha = Math.max(0, alpha * 0.85);
-    ctx.fillStyle = i % 3 === 0 ? '#00F0FF' : '#39FF14';
-    ctx.shadowBlur = 6;
-    ctx.shadowColor = ctx.fillStyle;
-    ctx.beginPath();
-    ctx.arc(x, y, 1.8, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
-});
-
-setupDynamicCanvas('mc-p3', (ctx, w, h, t) => {
-  ctx.fillStyle = '#020608';
-  ctx.fillRect(0, 0, w, h);
-  const cols = 22, rows = 12;
+  const cols = 15, rows = 9;
   const dx = w / cols, dy = h / rows;
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const x = dx * (c + 0.5), y = dy * (r + 0.5);
-      const val = Math.sin(x * 0.035 + t * 0.9) * Math.cos(y * 0.045 - t * 0.7);
-      const intensity = (val + 1) / 2;
-      ctx.fillStyle = `rgba(0, 240, 255, ${intensity * 0.45})`;
-      ctx.fillRect(dx * c + 1, dy * r + 1, dx - 2, dy - 2);
+      const angle = Math.sin(x * 0.035 + t * 0.8) * Math.PI + Math.cos(y * 0.04 - t * 0.5) * 0.8;
+      const speed = Math.abs(Math.sin(x * 0.04 + y * 0.03 + t * 0.9));
+      const len = 5 + speed * 12;
+      const ex = x + Math.cos(angle) * len;
+      const ey = y + Math.sin(angle) * len;
+      const col = speed > 0.55 ? '#00D2FF' : '#00E599';
+
+      ctx.save();
+      ctx.globalAlpha = 0.4 + speed * 0.55;
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(ex, ey);
+      // Arrowhead
+      const headLen = 3;
+      ctx.lineTo(ex - headLen * Math.cos(angle - 0.5), ey - headLen * Math.sin(angle - 0.5));
+      ctx.moveTo(ex, ey);
+      ctx.lineTo(ex - headLen * Math.cos(angle + 0.5), ey - headLen * Math.sin(angle + 0.5));
+      ctx.stroke();
+      ctx.restore();
     }
   }
 });
 
-setupDynamicCanvas('mc-p4', (ctx, w, h, t) => {
-  ctx.fillStyle = '#010405';
+// [Mode 5] Líneas de Corriente: Continuous kinetic streamlines
+setupDynamicCanvas('mc-p5', (ctx, w, h, t) => {
+  ctx.fillStyle = '#04080B';
   ctx.fillRect(0, 0, w, h);
-  const cx = w / 2, cy = h / 2;
-  ctx.save();
-  ctx.strokeStyle = '#39FF14';
-  ctx.lineWidth = 1.4;
-  ctx.shadowBlur = 10;
-  ctx.shadowColor = '#39FF14';
-  ctx.beginPath();
-  for (let i = 0; i < 7; i++) {
-    const r = (i + 1) * 16;
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  const lineCount = 18;
+  for (let i = 0; i < lineCount; i++) {
+    const yBase = (i / (lineCount - 1)) * (h - 20) + 10;
+    const speed = 0.6 + (i % 3) * 0.25;
+    ctx.save();
+    ctx.beginPath();
+    ctx.strokeStyle = i % 2 === 0 ? '#00D2FF' : '#00E599';
+    ctx.lineWidth = 1.4;
+    ctx.globalAlpha = 0.35 + (i % 4) * 0.15;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = ctx.strokeStyle;
+
+    for (let x = 0; x <= w; x += 12) {
+      const wave1 = Math.sin(x * 0.02 + t * speed + i) * 14;
+      const wave2 = Math.cos(x * 0.04 - t * 0.5 + i * 0.5) * 6;
+      const y = yBase + wave1 + wave2;
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
   }
-  ctx.stroke();
+});
+
+// [Mode 6] Mapa Térmico CFD: Scientific Jet colormap (0% laminar blue -> 100% turbulent red)
+setupDynamicCanvas('mc-p6', (ctx, w, h, t) => {
+  ctx.fillStyle = '#04070A';
+  ctx.fillRect(0, 0, w, h);
+  const cols = 20, rows = 12;
+  const dx = w / cols, dy = h / rows;
+
+  // Function to compute Jet colormap
+  function jetColor(v, alpha) {
+    // v in [0, 1]
+    const fourV = 4 * v;
+    const r = Math.min(Math.max(Math.min(fourV - 1.5, -fourV + 4.5), 0), 1);
+    const g = Math.min(Math.max(Math.min(fourV - 0.5, -fourV + 3.5), 0), 1);
+    const b = Math.min(Math.max(Math.min(fourV + 0.5, -fourV + 2.5), 0), 1);
+    return `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${alpha})`;
+  }
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const xNorm = c / cols;
+      const yNorm = r / rows;
+      // Synthesize a fluid jet vortex flow
+      const v1 = Math.sin(xNorm * 6 + t * 0.9) * Math.cos(yNorm * 5 - t * 0.7);
+      const v2 = Math.sin(Math.hypot(xNorm - 0.5, yNorm - 0.5) * 8 - t * 1.2);
+      const scalar = (v1 + v2 + 2) / 4; // normalized [0, 1]
+      ctx.fillStyle = jetColor(scalar, 0.75);
+      ctx.fillRect(dx * c, dy * r, dx + 0.5, dy + 0.5);
+    }
+  }
+
+  // Draw subtle contour grid
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+  ctx.lineWidth = 0.5;
+  for (let c = 0; c <= cols; c++) {
+    ctx.beginPath();
+    ctx.moveTo(c * dx, 0);
+    ctx.lineTo(c * dx, h);
+    ctx.stroke();
+  }
+  for (let r = 0; r <= rows; r++) {
+    ctx.beginPath();
+    ctx.moveTo(0, r * dy);
+    ctx.lineTo(w, r * dy);
+    ctx.stroke();
+  }
   ctx.restore();
 });
 
@@ -435,7 +520,7 @@ function renderAllMathOnPage() {
   if (lockupNeo) {
     lockupNeo.style.cursor = 'pointer';
     lockupNeo.addEventListener('mouseenter', () => {
-      baselineTag.innerHTML = '<span style="color:#00F0FF; font-weight:700;">PREFIJO NEO:</span> POPPINS 900 • CIAN FLUIDO (AGUA & FLUIDEZ)';
+      baselineTag.innerHTML = '<span style="color:#00D2FF; font-weight:700;">PREFIJO NEO:</span> CIENCIA & FLUIDO CONTINUO (#00D2FF)';
     });
     lockupNeo.addEventListener('mouseleave', () => {
       baselineTag.innerHTML = originalHtml;
@@ -445,7 +530,7 @@ function renderAllMathOnPage() {
   if (lockupFluid3d) {
     lockupFluid3d.style.cursor = 'pointer';
     lockupFluid3d.addEventListener('mouseenter', () => {
-      baselineTag.innerHTML = '<span style="color:#39FF14; font-weight:700;">PALABRA FLUID³D:</span> JETBRAINS MONO 700 • VERDE GPU (TERMINAL & 3D)';
+      baselineTag.innerHTML = '<span style="color:#00E599; font-weight:700;">PALABRA FLUID³D:</span> CÓMPUTO PARALELO EN GPU & 3D (#00E599)';
     });
     lockupFluid3d.addEventListener('mouseleave', () => {
       baselineTag.innerHTML = originalHtml;
@@ -458,12 +543,54 @@ function renderAllMathOnPage() {
   document.querySelectorAll('.blueprint-rule-item').forEach(item => {
     item.style.cursor = 'default';
     item.addEventListener('mouseenter', () => {
-      item.style.borderColor = 'rgba(0, 240, 255, 0.45)';
-      item.style.background = 'rgba(0, 240, 255, 0.04)';
+      item.style.borderColor = 'rgba(0, 210, 255, 0.45)';
+      item.style.background = 'rgba(0, 210, 255, 0.04)';
     });
     item.addEventListener('mouseleave', () => {
       item.style.borderColor = '';
       item.style.background = '';
     });
   });
+})();
+
+/* ── 14. Interactive Core Architecture Inspection Subsystem ── */
+(function setupCoreArchitectureInteraction() {
+  const layerBoxes = document.querySelectorAll('.arch-layer-box');
+  if (!layerBoxes || layerBoxes.length === 0) return;
+
+  const layerMessages = {
+    '1': 'Capa 01: Inyección de mallas de colisión y constantes físicas globales',
+    '2': 'Capa 02: Memoria de partículas 100% contigua en VRAM (Zero-PCIe latency)',
+    '3': 'Capa 03: Núcleo SPH autónomo resolviendo gradientes de presión y viscosidad',
+    '4': 'Capa 04: Extracción geométrica de isosuperficies y desacoplamiento de render'
+  };
+
+  layerBoxes.forEach(box => {
+    box.addEventListener('click', () => {
+      const layerId = box.getAttribute('data-layer');
+      layerBoxes.forEach(b => b.classList.remove('active'));
+      box.classList.add('active');
+      if (layerMessages[layerId]) {
+        showToast(layerMessages[layerId]);
+      }
+    });
+  });
+})();
+
+
+
+/* ── 16. Presentation Interactive Deck Launcher (Zero Block Guarantee) ── */
+(function setupDeckLauncher() {
+  const launchBtn = document.getElementById('btn-open-deck-genesis');
+  if (launchBtn) {
+    launchBtn.addEventListener('click', (e) => {
+      // Allow natural anchor navigation, but enforce fallback in local file:/// scenarios
+      try {
+        const opened = window.open('presentation/index.html#slide-3', '_blank');
+        if (opened) {
+          e.preventDefault();
+        }
+      } catch (err) {}
+    });
+  }
 })();

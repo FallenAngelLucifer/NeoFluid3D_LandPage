@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeoFluid3D — Manual de Marca Oficial // Normativa Canónica</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --color-cyan: #00F0FF;
+      --color-green: #39FF14;
+      --color-bg: #05080B;
+      --color-surface: #070D12;
+      --color-surface-card: #0A121A;
+      --color-border: rgba(0, 240, 255, 0.25);
+      --color-border-subtle: rgba(255, 255, 255, 0.08);
+      --color-text: #E6EDF3;
+      --color-text-dim: #8B949E;
+      --font-display: 'Clash Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow {
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      opacity: 0.15;
+      z-index: 0;
+    }
+    .glow-cyan {
+      top: -100px;
+      left: 10%;
+      background: var(--color-cyan);
+    }
+    .glow-green {
+      bottom: -100px;
+      right: 10%;
+      background: var(--color-green);
+    }
+
+    header.manual-hud {
+      position: relative;
+      z-index: 10;
+      height: 62px;
+      min-height: 62px;
+      background: rgba(4, 9, 14, 0.95);
+      border-bottom: 1px solid var(--color-border);
+      backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      gap: 1rem;
+    }
+
+    .brand-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #FFFFFF;
+      transition: opacity 0.2s ease;
+    }
+    .brand-back-link:hover {
+      opacity: 0.85;
+    }
+
+    .brand-icon-svg {
+      width: 24px;
+      height: 34px;
+      flex-shrink: 0;
+    }
+
+    .brand-title-wrap {
+      display: flex;
+      flex-direction: column;
+      line-height: 0.95;
+    }
+    .brand-title-wrap .title-neo {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-cyan);
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+      letter-spacing: 0.04em;
+    }
+    .brand-title-wrap .title-fluid {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--color-green);
+      letter-spacing: -0.02em;
+    }
+
+    .manual-doc-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+    }
+    .doc-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-green);
+      box-shadow: 0 0 10px var(--color-green);
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.6; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .doc-pill {
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      color: var(--color-cyan);
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+    }
+
+    .manual-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .hud-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 0.42rem 0.85rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.04);
+      color: #FFFFFF;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .hud-btn:hover {
+      background: rgba(0, 240, 255, 0.12);
+      border-color: var(--color-cyan);
+      color: var(--color-cyan);
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.3);
+    }
+
+    .hud-btn-download {
+      border-color: rgba(57, 255, 20, 0.4);
+      background: rgba(57, 255, 20, 0.08);
+      color: var(--color-green);
+    }
+    .hud-btn-download:hover {
+      background: rgba(57, 255, 20, 0.22);
+      border-color: var(--color-green);
+      color: #FFFFFF;
+      box-shadow: 0 0 16px rgba(57, 255, 20, 0.4);
+    }
+
+    .hud-btn-back {
+      border-color: rgba(0, 240, 255, 0.35);
+      color: var(--color-cyan);
+    }
+
+    main.viewer-stage {
+      position: relative;
+      flex: 1;
+      width: 100%;
+      height: calc(100% - 62px - 34px);
+      background: #020407;
+      z-index: 1;
+      display: flex;
+    }
+
+    iframe.pdf-viewport-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #020407;
+      display: block;
+    }
+
+    footer.manual-footer {
+      position: relative;
+      z-index: 10;
+      height: 34px;
+      min-height: 34px;
+      background: rgba(3, 6, 10, 0.98);
+      border-top: 1px solid var(--color-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--color-text-dim);
+    }
+
+    .footer-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 46px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      background: rgba(7, 13, 18, 0.95);
+      border: 1px solid var(--color-cyan);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 240, 255, 0.3);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 4px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 9999;
+    }
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 850px) {
+      .manual-doc-meta { display: none; }
+      .brand-title-wrap { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow glow-cyan"></div>
+  <div class="bg-glow glow-green"></div>
+
+  <header class="manual-hud">
+    <a href="index.html#brand" class="brand-back-link" title="Volver a la Sección de ADN en NeoFluid3D">
+      <svg class="brand-icon-svg" viewBox="4 4 92 143.83" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="bmDropClip">
+            <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" />
+          </clipPath>
+        </defs>
+        <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#061A14" stroke="#39FF14" stroke-width="4.8" />
+        <g clip-path="url(#bmDropClip)" stroke="#39FF14" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <path d="M 76.9 86.42 L 79.81 86.59 L 82.39 86.78 L 84.62 86.99 L 86.47 87.2 L 87.92 87.43 L 88.95 87.67 L 89.56 87.9 M 10.27 88.1 L 10.53 87.86 L 11.23 87.62 L 12.35 87.38 L 13.88 87.16 L 15.81 86.94 L 18.11 86.74 L 20.76 86.56 L 23.73 86.39 L 26.99 86.24 L 30.5 86.11 L 34.23 86 L 38.13 85.92 L 42.16 85.86 L 46.27 85.82 L 50.43 85.81 L 54.58 85.83 L 58.68 85.87 L 62.68 85.93 L 66.55 86.02 L 70.23 86.13 L 73.7 86.27 L 76.9 86.42" />
+          <path d="M 77.98 107.78 L 81.01 107.96 L 83.7 108.16 L 86.01 108.37 L 87.94 108.6 L 89.44 108.83 L 90.52 109.08 L 91.15 109.33 M 8.67 109.53 L 8.94 109.28 L 9.67 109.03 L 10.83 108.79 L 12.42 108.55 L 14.43 108.33 L 16.82 108.12 L 19.58 107.93 L 22.67 107.75 L 26.07 107.59 L 29.72 107.46 L 33.59 107.35 L 37.65 107.26 L 41.84 107.2 L 46.12 107.16 L 50.44 107.15 L 54.76 107.16 L 59.03 107.21 L 63.19 107.27 L 67.21 107.37 L 71.05 107.48 L 74.65 107.62 L 77.98 107.78" />
+          <path d="M 70.5 129.69 L 72.71 129.82 L 74.68 129.97 L 76.38 130.12 L 77.79 130.29 L 78.89 130.46 L 79.68 130.64 L 80.14 130.82 M 19.73 130.97 L 19.93 130.78 L 20.46 130.6 L 21.31 130.42 L 22.48 130.25 L 23.95 130.09 L 25.7 129.93 L 27.72 129.79 L 29.99 129.66 L 32.47 129.55 L 35.15 129.45 L 37.98 129.37 L 40.95 129.3 L 44.02 129.26 L 47.16 129.23 L 50.32 129.22 L 53.49 129.24 L 56.61 129.27 L 59.66 129.32 L 62.61 129.38 L 65.42 129.47 L 68.05 129.57 L 70.5 129.69" />
+          <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+          <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+          <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+          <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+        </g>
+        <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" stroke="#00F0FF" stroke-width="4.8" stroke-linejoin="round" />
+        <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="5.2" stroke-linecap="round" />
+        <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="brand-title-wrap">
+        <span class="title-neo">NEO</span>
+        <span class="title-fluid">Fluid³D</span>
+      </div>
+    </a>
+
+    <div class="manual-doc-meta">
+      <div class="doc-pulse-dot"></div>
+      <span style="color:#FFF; font-weight:700;">MANUAL DE MARCA OFICIAL</span>
+      <span class="doc-pill">19 PÁGINAS • 1.6 MB</span>
+      <span style="color:var(--color-text-dim);">HACKATHON NICARAGUA 2026</span>
+    </div>
+
+    <div class="manual-actions">
+      <a href="docs/Manual%20de%20marca%20NEO.pdf" download="Manual_de_Marca_NeoFluid3D.pdf" class="hud-btn hud-btn-download" title="Descargar copia PDF a disco local">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Descargar PDF</span>
+      </a>
+
+      <button id="btn-print-manual" class="hud-btn" title="Enviar a impresión nativa">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span>Imprimir</span>
+      </button>
+
+      <button id="btn-fullscreen-manual" class="hud-btn" title="Alternar Pantalla Completa (F)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        <span>Pantalla Completa</span>
+      </button>
+
+      <a href="docs/Manual%20de%20marca%20NEO.pdf" target="_blank" class="hud-btn" title="Abrir en pestaña independiente">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        <span>Pestaña ↗</span>
+      </a>
+
+      <a href="index.html#brand" class="hud-btn hud-btn-back" title="Regresar a la página principal">
+        <span>← Volver al Sitio</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="viewer-stage" id="viewer-stage">
+    <iframe id="pdf-frame" class="pdf-viewport-frame" src="docs/Manual%20de%20marca%20NEO.pdf#toolbar=1&navpanes=0&view=FitH" title="Manual de Marca NeoFluid3D Oficial">
+      <p style="padding:3rem; text-align:center; color:var(--color-text-dim);">
+        Tu navegador no soporta visualización embebida de PDF.<br><br>
+        <a href="docs/Manual%20de%20marca%20NEO.pdf" target="_blank" class="hud-btn hud-btn-download">Descargar Archivo PDF Directamente</a>
+      </p>
+    </iframe>
+  </main>
+
+  <footer class="manual-footer">
+    <div class="footer-item">
+      <span style="color:var(--color-cyan);">NORMATIVA OFICIAL:</span>
+      <span>Criterios de Evaluación y Evidencias de Marca • Hackathon Nicaragua 2026</span>
+    </div>
+    <div class="footer-item">
+      <span style="color:var(--color-green);">ESTADO:</span>
+      <span>Documento Canónico Local Verificado (100% Offline)</span>
+    </div>
+  </footer>
+
+  <div id="toast"></div>
+
+  <script>
+    const iframe = document.getElementById('pdf-frame');
+    const printBtn = document.getElementById('btn-print-manual');
+    const fullscreenBtn = document.getElementById('btn-fullscreen-manual');
+    const toast = document.getElementById('toast');
+    const pdfUrl = 'docs/Manual%20de%20marca%20NEO.pdf';
+
+    function showToast(msg) {
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    printBtn.addEventListener('click', () => {
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.focus();
+          iframe.contentWindow.print();
+          showToast('Enviando documento a impresión...');
+          return;
+        } catch (err) {}
+      }
+      window.open(pdfUrl, '_blank');
+      showToast('Abriendo visor para diálogo de impresión');
+    });
+
+    fullscreenBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().then(() => {
+          showToast('Modo Pantalla Completa activado');
+        }).catch(() => {});
+      } else {
+        document.exitFullscreen().then(() => {
+          showToast('Pantalla Completa desactivada');
+        }).catch(() => {});
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'f' || e.key === 'F') {
+        fullscreenBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>

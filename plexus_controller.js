@@ -9,7 +9,7 @@
 
   const ctx = canvas.getContext('2d');
   const nodeItems = document.querySelectorAll('.plexus-node-item');
-  const sectionIds = ['hero', 'vision', 'demos', 'isotype', 'logotype', 'imagotype', 'possibilities', 'modes', 'roadmap', 'contact'];
+  const sectionIds = ['hero', 'vision', 'demos', 'benchmarks', 'sdk', 'modes', 'possibilities', 'roadmap', 'brand', 'contact'];
   const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
 
   let cachedDots = [];
@@ -99,9 +99,9 @@
       ctx.save();
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.45)';
+      ctx.fillStyle = 'rgba(0, 210, 255, 0.45)';
       ctx.shadowBlur = 6;
-      ctx.shadowColor = '#00F0FF';
+      ctx.shadowColor = '#00D2FF';
       ctx.fill();
       ctx.restore();
     });
@@ -117,7 +117,7 @@
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
+          ctx.strokeStyle = `rgba(0, 210, 255, ${alpha})`;
           ctx.lineWidth = 0.7;
           ctx.stroke();
         }
@@ -135,7 +135,7 @@
           ctx.beginPath();
           ctx.moveTo(dot.x, dot.y);
           ctx.lineTo(p.x, p.y);
-          ctx.strokeStyle = dot.active ? `rgba(57, 255, 20, ${alpha})` : `rgba(0, 240, 255, ${alpha})`;
+          ctx.strokeStyle = dot.active ? `rgba(0, 229, 153, ${alpha})` : `rgba(0, 210, 255, ${alpha})`;
           ctx.lineWidth = dot.active ? 1.0 : 0.6;
           ctx.stroke();
         }

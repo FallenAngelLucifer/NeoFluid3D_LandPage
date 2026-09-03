@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#070B0E" />
+  <title>NeoFluid3D — Blueprint de Diseño & Identidad | Hackathon Nicaragua 2026</title>
+  <meta name="description" content="Presentación técnica y proporcional de la identidad visual y sistema de componentes de NeoFluid3D para la categoría Startup del Hackathon Nicaragua 2026." />
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Oxanium:wght@400;500;600;700;800&family=Poppins:wght@800;900&display=swap" rel="stylesheet" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+
+  <!-- Presentation Stylesheet -->
+  <link rel="stylesheet" href="presentation.css" />
+</head>
+<body>
+
+  <!-- Ambient Overlays -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="bg-blueprint-grid"></div>
+  <div class="bg-radial-gradient"></div>
+  <div class="bg-scanlines"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TOP ENGINEERING HUD BAR
+       ═══════════════════════════════════════════════════════════ -->
+  <header class="top-hud">
+    <div style="display:flex; align-items:center; gap:16px;">
+      <a href="../index.html" class="hud-brand-wrap" title="Volver al Portal NeoFluid3D">
+        <svg class="hud-logo-icon" viewBox="4 4 92 143.83" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Isotipo NeoFluid3D">
+          <!-- Lower Sphere Grid (3 Rings + Meridians) -->
+          <g stroke="#39FF14" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <path d="M 76.9 86.42 L 79.81 86.59 L 82.39 86.78 L 84.62 86.99 L 86.47 87.2 L 87.92 87.43 L 88.95 87.67 L 89.56 87.9 M 10.27 88.1 L 10.53 87.86 L 11.23 87.62 L 12.35 87.38 L 13.88 87.16 L 15.81 86.94 L 18.11 86.74 L 20.76 86.56 L 23.73 86.39 L 26.99 86.24 L 30.5 86.11 L 34.23 86 L 38.13 85.92 L 42.16 85.86 L 46.27 85.82 L 50.43 85.81 L 54.58 85.83 L 58.68 85.87 L 62.68 85.93 L 66.55 86.02 L 70.23 86.13 L 73.7 86.27 L 76.9 86.42" />
+            <path d="M 77.98 107.78 L 81.01 107.96 L 83.7 108.16 L 86.01 108.37 L 87.94 108.6 L 89.44 108.83 L 90.52 109.08 L 91.15 109.33 M 8.67 109.53 L 8.94 109.28 L 9.67 109.03 L 10.83 108.79 L 12.42 108.55 L 14.43 108.33 L 16.82 108.12 L 19.58 107.93 L 22.67 107.75 L 26.07 107.59 L 29.72 107.46 L 33.59 107.35 L 37.65 107.26 L 41.84 107.2 L 46.12 107.16 L 50.44 107.15 L 54.76 107.16 L 59.03 107.21 L 63.19 107.27 L 67.21 107.37 L 71.05 107.48 L 74.65 107.62 L 77.98 107.78" />
+            <path d="M 70.5 129.69 L 72.71 129.82 L 74.68 129.97 L 76.38 130.12 L 77.79 130.29 L 78.89 130.46 L 79.68 130.64 L 80.14 130.82 M 19.73 130.97 L 19.93 130.78 L 20.46 130.6 L 21.31 130.42 L 22.48 130.25 L 23.95 130.09 L 25.7 129.93 L 27.72 129.79 L 29.99 129.66 L 32.47 129.55 L 35.15 129.45 L 37.98 129.37 L 40.95 129.3 L 44.02 129.26 L 47.16 129.23 L 50.32 129.22 L 53.49 129.24 L 56.61 129.27 L 59.66 129.32 L 62.61 129.38 L 65.42 129.47 L 68.05 129.57 L 70.5 129.69" />
+            <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+            <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+            <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+            <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+          </g>
+          <!-- Upper Fluid Solid Fill (#00F0FF) -->
+          <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
+          <!-- Cut Curve (#00F0FF) -->
+          <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" />
+          <!-- Lower Sphere Contour (#39FF14) -->
+          <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+          <!-- Upper Cone Contour (#00F0FF) -->
+          <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div class="hud-brand-text-stacked">
+          <span class="hud-neo">NEO</span>
+          <span class="hud-fluid3d">Fluid<span class="hud-exp">³</span><span class="hud-d">D</span></span>
+        </div>
+      </a>
+      <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-cyan); letter-spacing:0.08em; border:1px solid var(--border-line); padding:2px 8px; border-radius:2px;">
+        STARTUP DECK // HACKATHON 2026
+      </span>
+      <div class="frag-meter-cluster" title="Telemetría GPU">
+        <div class="frag-bar"></div>
+        <div class="frag-bar"></div>
+        <div class="frag-bar"></div>
+        <div class="frag-bar"></div>
+        <div class="frag-bar"></div>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:0.76rem; color:var(--color-titanium);">
+      <div id="hud-slide-title">
+        <span style="color:var(--color-cyan);">PLANO 01</span> <span style="opacity:0.35;">/</span> Portada Oficial & Identificador Canónico
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button id="btn-notes" class="hud-btn konami-locked" style="display:none;" title="Abrir Consola Remota & Libreto de Pitch en pestaña sincronizada (S)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        <span>Remoto (S) ↗</span>
+      </button>
+      <a id="return-site-btn" href="../index.html" class="hud-btn hud-btn-site" title="Volver al Sitio Web Principal">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>Sitio Web ↗</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       STAGE VIEWPORT (16:9 PROPORTIONAL ARTBOARDS)
+       ═══════════════════════════════════════════════════════════ -->
+  <main class="stage-viewport">
+    <div class="artboard-deck">
+
+      <!-- Brand Manual Canonical Crop & Registration Marks (Page 4) -->
+      <div class="brand-corner-reg tl"></div>
+      <div class="brand-corner-reg tr"></div>
+      <div class="brand-corner-reg bl"></div>
+      <div class="brand-corner-reg br"></div>
+      <div class="brand-frame-ticks">
+        <span>GRILLA CANÓNICA: 4 × 2.4 CM</span>
+        <span>•</span>
+        <span>H: 4u | GAP: 1u</span>
+      </div>
+
+      <!-- Fragmented Data Bar Telemetry Rail (Page 10) -->
+      <div class="brand-telemetry-margin">
+        <div class="frag-meter-cluster" style="transform:rotate(90deg); margin-bottom:12px;">
+          <div class="frag-bar"></div>
+          <div class="frag-bar"></div>
+          <div class="frag-bar"></div>
+        </div>
+        <span class="telemetry-micro-txt">RE 2.38E4 // 60 FPS GPU // SPH V2.0</span>
+        <div class="frag-meter-cluster" style="transform:rotate(90deg); margin-top:12px;">
+          <div class="frag-bar"></div>
+          <div class="frag-bar"></div>
+          <div class="frag-bar"></div>
+        </div>
+      </div>
+
+      <!-- Hexagonal Honeycomb Watermark (Page 10) -->
+      <svg class="hex-watermark-bg" viewBox="0 0 100 100" fill="none" stroke="#00F0FF" stroke-width="0.75">
+        <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" />
+        <polygon points="50,20 76,35 76,65 50,80 24,65 24,35" />
+        <line x1="50" y1="5" x2="50" y2="20" />
+        <line x1="90" y1="27.5" x2="76" y2="35" />
+        <line x1="90" y1="72.5" x2="76" y2="65" />
+        <line x1="50" y1="95" x2="50" y2="80" />
+        <line x1="10" y1="72.5" x2="24" y2="65" />
+        <line x1="10" y1="27.5" x2="24" y2="35" />
+      </svg>
+
+      <!-- ─── SLIDE 01: HERO / PORTADA PROPORCIONAL ─── -->
+      <section class="slide active" data-slide="1">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[CANONICAL SPEC: 4x2.4CM] // [GRID: 1u = H/4]</div>
+            <h1 class="slide-headline"><span class="cyan">NeoFluid³D</span> — Blueprint de Diseño & Identidad</h1>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <span class="sheet-badge">HACKATHON NICARAGUA 2026</span>
+            <span class="sheet-badge" style="color:var(--color-green); border-color:var(--border-green);">CATEGORÍA STARTUP</span>
+            <span class="sheet-badge">01 / 19</span>
+          </div>
+        </div>
+
+        <div class="prop-split-2">
+          <div class="prop-split-item" style="flex:1.2;">
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--color-cyan); margin-bottom:12px; letter-spacing:0.08em;">
+              DOCUMENTO OFICIAL DE EVALUACIÓN DE DISEÑO // ETAPA 1
+            </div>
+
+            <div style="line-height:0.92; margin-bottom:20px;">
+              <span style="font-family:var(--font-neo); font-size:4.8rem; font-weight:700; color:#00F0FF; letter-spacing:-0.02em;">NEO</span><br />
+              <span style="font-family:var(--font-mono); font-size:3.6rem; font-weight:700; color:var(--color-green); letter-spacing:-0.03em;">Fluid<span style="font-size:2.6rem; vertical-align:super; color:var(--color-green);">³</span><span style="color:var(--color-green);">D</span></span>
+            </div>
+
+            <p style="font-family:var(--font-sub); font-size:1.1rem; color:var(--color-titanium); line-height:1.6; margin-bottom:28px;">
+              Motor de simulación hidrodinámica 3D en tiempo real acelerado en GPU. Presentación del sistema de identidad visual, proporciones canónicas del símbolo y arquitectura modular de componentes.
+            </p>
+
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; border-top:1px solid var(--border-subtle); padding-top:16px;">
+              <div>
+                <div class="metric-line-lbl">EJE CONCEPTUAL</div>
+                <div class="metric-line-val" style="color:var(--color-cyan); font-size:0.9rem;">FLUIDEZ + COMPUTACIÓN</div>
+              </div>
+              <div>
+                <div class="metric-line-lbl">PROPORCIÓN CANÓNICA</div>
+                <div class="metric-line-val" style="color:var(--color-green); font-size:0.9rem;">3.27 ALTO × 2.0 ANCHO</div>
+              </div>
+              <div>
+                <div class="metric-line-lbl">AUDITORÍA CRITERIOS</div>
+                <div class="metric-line-val" style="color:#FFF; font-size:0.9rem;">12 / 12 VALIDADOS</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="prop-split-divider"></div>
+
+          <!-- Large Expressive Vector Isotype Artboard -->
+          <div class="prop-split-item" style="flex:0.8; align-items:center;">
+            <svg viewBox="0 0 500 500" width="90%" height="90%" fill="none">
+              <!-- Circular Construction Guides -->
+              <circle cx="250" cy="270" r="140" stroke="rgba(0, 240, 255, 0.15)" stroke-dasharray="3 3" />
+              <circle cx="250" cy="270" r="190" stroke="rgba(0, 240, 255, 0.08)" stroke-dasharray="6 6" />
+              <line x1="40" y1="270" x2="460" y2="270" stroke="rgba(0, 240, 255, 0.2)" stroke-dasharray="2 2" />
+              <line x1="250" y1="30" x2="250" y2="470" stroke="rgba(0, 240, 255, 0.2)" stroke-dasharray="2 2" />
+
+              <text x="255" y="45" fill="rgba(0, 240, 255, 0.8)" font-family="var(--font-mono)" font-size="10">ÁPICE (0, 3.27u)</text>
+              <text x="255" y="460" fill="rgba(57, 255, 20, 0.8)" font-family="var(--font-mono)" font-size="10">BASE ESFÉRICA (0, 0u)</text>
+
+              <g transform="translate(145, 60) scale(2.3)">
+                <defs>
+                  <clipPath id="s1DropClip">
+                    <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" />
+                  </clipPath>
+                </defs>
+                <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#061A14" stroke="#39FF14" stroke-width="2.5" />
+                <g clip-path="url(#s1DropClip)" stroke="#39FF14" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                  <path d="M 76.9 86.42 L 79.81 86.59 L 82.39 86.78 L 84.62 86.99 L 86.47 87.2 L 87.92 87.43 L 88.95 87.67 L 89.56 87.9 M 10.27 88.1 L 10.53 87.86 L 11.23 87.62 L 12.35 87.38 L 13.88 87.16 L 15.81 86.94 L 18.11 86.74 L 20.76 86.56 L 23.73 86.39 L 26.99 86.24 L 30.5 86.11 L 34.23 86 L 38.13 85.92 L 42.16 85.86 L 46.27 85.82 L 50.43 85.81 L 54.58 85.83 L 58.68 85.87 L 62.68 85.93 L 66.55 86.02 L 70.23 86.13 L 73.7 86.27 L 76.9 86.42" />
+                  <path d="M 77.98 107.78 L 81.01 107.96 L 83.7 108.16 L 86.01 108.37 L 87.94 108.6 L 89.44 108.83 L 90.52 109.08 L 91.15 109.33 M 8.67 109.53 L 8.94 109.28 L 9.67 109.03 L 10.83 108.79 L 12.42 108.55 L 14.43 108.33 L 16.82 108.12 L 19.58 107.93 L 22.67 107.75 L 26.07 107.59 L 29.72 107.46 L 33.59 107.35 L 37.65 107.26 L 41.84 107.2 L 46.12 107.16 L 50.44 107.15 L 54.76 107.16 L 59.03 107.21 L 63.19 107.27 L 67.21 107.37 L 71.05 107.48 L 74.65 107.62 L 77.98 107.78" />
+                  <path d="M 70.5 129.69 L 72.71 129.82 L 74.68 129.97 L 76.38 130.12 L 77.79 130.29 L 78.89 130.46 L 79.68 130.64 L 80.14 130.82 M 19.73 130.97 L 19.93 130.78 L 20.46 130.6 L 21.31 130.42 L 22.48 130.25 L 23.95 130.09 L 25.7 129.93 L 27.72 129.79 L 29.99 129.66 L 32.47 129.55 L 35.15 129.45 L 37.98 129.37 L 40.95 129.3 L 44.02 129.26 L 47.16 129.23 L 50.32 129.22 L 53.49 129.24 L 56.61 129.27 L 59.66 129.32 L 62.61 129.38 L 65.42 129.47 L 68.05 129.57 L 70.5 129.69" />
+                  <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+                  <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+                  <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+                  <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+                </g>
+                <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" stroke="#00F0FF" stroke-width="2.5" stroke-linejoin="round" />
+                <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.8" stroke-linecap="round" />
+                <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+              </g>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 02: LOS 5 PILARES TRANSVERSALES ─── -->
+      <section class="slide" data-slide="2">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[SPEC: CRITERIOS TRANSVERSALES] // [HACKATHON STARTUP 2026]</div>
+            <h2 class="slide-headline">1. Propósito: Los 5 Aspectos <span class="cyan">Transversales</span></h2>
+          </div>
+          <span class="sheet-badge">02 / 19</span>
+        </div>
+
+        <div class="prop-cols-5">
+          <div class="prop-col-item">
+            <div style="margin-bottom:12px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
+            <div class="prop-col-num">01</div>
+            <h3 class="prop-col-title" style="color:var(--color-cyan);">COHERENCIA</h3>
+            <p class="prop-col-desc">
+              Cada decisión visual responde al eje conceptual de la marca: síntesis de la dinámica de fluidos y el cómputo masivo acelerado en GPU.
+            </p>
+            <div class="prop-col-foot">Eje Dual de Marca</div>
+          </div>
+
+          <div class="prop-col-item">
+            <div style="margin-bottom:12px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            </div>
+            <div class="prop-col-num">02</div>
+            <h3 class="prop-col-title" style="color:var(--color-green);">CONSISTENCIA</h3>
+            <p class="prop-col-desc">
+              Misma lógica visual y cromática aplicada rigurosamente en Sitio Web, Simulador Desktop, Documentación SDK y Material de Presentación.
+            </p>
+            <div class="prop-col-foot">4 Puntos de Contacto</div>
+          </div>
+
+          <div class="prop-col-item">
+            <div style="margin-bottom:12px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+            </div>
+            <div class="prop-col-num">03</div>
+            <h3 class="prop-col-title" style="color:#FFF;">INTENCIONALIDAD</h3>
+            <p class="prop-col-desc">
+              Decisiones cromáticas para telemetría, altos contrastes para estaciones de trabajo y descanso visual en sesiones de cómputo prolongadas.
+            </p>
+            <div class="prop-col-foot">Función de Ingeniería</div>
+          </div>
+
+          <div class="prop-col-item">
+            <div style="margin-bottom:12px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+            </div>
+            <div class="prop-col-num">04</div>
+            <h3 class="prop-col-title" style="color:var(--color-green);">SISTEMATIZACIÓN</h3>
+            <p class="prop-col-desc">
+              Organización bajo reglas modulares reproducibles: módulo $1u$, grilla de $4 \times 2.4\text{ cm}$, escala de 8px y paleta cerrada de 6 tokens.
+            </p>
+            <div class="prop-col-foot">Módulo 1u & 8px</div>
+          </div>
+
+          <div class="prop-col-item">
+            <div style="margin-bottom:12px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <div class="prop-col-num">05</div>
+            <h3 class="prop-col-title" style="color:var(--color-cyan);">APLICACIÓN</h3>
+            <p class="prop-col-desc">
+              Implementación activa y funcional en código real: shaders GLSL, motor de partículas SPH y layouts web responsive en producción.
+            </p>
+            <div class="prop-col-foot">Código Operativo</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 03: EJE DUAL ARTÍSTICO ─── -->
+      <section class="slide" data-slide="3">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 1: IDENTIDAD] // [CONCEPTO & DIRECCIÓN VISUAL]</div>
+            <h2 class="slide-headline">1. Eje Conceptual Dual: <span class="cyan">Fluidez</span> vs <span class="green">Computación</span></h2>
+          </div>
+          <span class="sheet-badge">03 / 19</span>
+        </div>
+
+        <div class="prop-split-2">
+          <div id="dual-card-fluid" class="prop-split-item" style="padding-right:30px; cursor:pointer;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path></svg>
+              <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--color-cyan);">LA FLUIDEZ</h3>
+            </div>
+            <p style="font-family:var(--font-sub); font-size:1rem; color:#FFF; margin-bottom:16px;">
+              Masa de agua continua, movimiento hidrodinámico y tensión superficial.
+            </p>
+            <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--color-titanium); line-height:2;">
+              <div>• <strong style="color:var(--color-cyan);">Prefijo de Marca:</strong> Neo (vanguardia y agilidad)</div>
+              <div>• <strong style="color:var(--color-cyan);">Color Oficial:</strong> Celeste de Marca (<code>#00F0FF</code>)</div>
+              <div>• <strong style="color:var(--color-cyan);">Expresión Gráfica:</strong> Cima lisa continua de la gota</div>
+              <div>• <strong style="color:var(--color-cyan);">Física:</strong> Dinámica de fluidos y Navier-Stokes</div>
+            </div>
+          </div>
+
+          <div class="prop-split-divider"></div>
+
+          <div id="dual-card-compute" class="prop-split-item" style="padding-left:30px; cursor:pointer;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+              <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--color-green);">LA COMPUTACIÓN</h3>
+            </div>
+            <p style="font-family:var(--font-sub); font-size:1rem; color:#FFF; margin-bottom:16px;">
+              Precisión matemática, estructura discreta y aceleración en hardware GPU.
+            </p>
+            <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--color-titanium); line-height:2;">
+              <div>• <strong style="color:var(--color-green);">Sufijo de Marca:</strong> Fluid³D (rigor técnico y espacio 3D)</div>
+              <div>• <strong style="color:var(--color-green);">Color Oficial:</strong> Verde Neón (<code>#39FF14</code>)</div>
+              <div>• <strong style="color:var(--color-green);">Expresión Gráfica:</strong> Base enrejada de 3 anillos latitudinales</div>
+              <div>• <strong style="color:var(--color-green);">Física:</strong> Paralelismo masivo SIMD / Compute Shaders</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 04: ANATOMÍA DEL ISOTIPO ─── -->
+      <section class="slide" data-slide="4">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 1: IDENTIDAD] // [DESGLOSE ORTOGONAL]</div>
+            <h2 class="slide-headline">2. El Isotipo: <span class="cyan">Anatomía de la Gota Bipartita</span></h2>
+          </div>
+          <span class="sheet-badge">04 / 19</span>
+        </div>
+
+        <div class="prop-split-2">
+          <div class="prop-split-item" style="flex:1; align-items:center; justify-content:center;">
+            <svg viewBox="0 0 460 380" width="95%" height="95%" fill="none" style="overflow:visible;">
+              <!-- Central Construction Axis -->
+              <line x1="140" y1="10" x2="140" y2="370" stroke="rgba(0, 240, 255, 0.3)" stroke-dasharray="4 4" />
+
+              <!-- Upper Fluid Section (Separated upwards) -->
+              <g transform="translate(90, 20) scale(1.0)">
+                <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
+                <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" />
+                <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+              </g>
+              <text x="215" y="85" fill="var(--color-cyan)" font-family="var(--font-mono)" font-size="11" font-weight="700" letter-spacing="0.04em">CIMA LISA (FLUIDO CONTINUO)</text>
+              <line x1="175" y1="80" x2="208" y2="80" stroke="var(--color-cyan)" stroke-width="1.5" />
+
+              <!-- Lower Spherical Grid (Separated downwards, complete 3 rings + meridians) -->
+              <g transform="translate(90, 190) scale(1.0)">
+                <!-- Dark Emerald Backing -->
+                <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 Z" fill="#061A14" />
+                
+                <!-- Complete 3 Rings + Meridians (Genesis Canonical) -->
+                <g stroke="#39FF14" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                  <path d="M 76.9 86.42 L 79.81 86.59 L 82.39 86.78 L 84.62 86.99 L 86.47 87.2 L 87.92 87.43 L 88.95 87.67 L 89.56 87.9 M 10.27 88.1 L 10.53 87.86 L 11.23 87.62 L 12.35 87.38 L 13.88 87.16 L 15.81 86.94 L 18.11 86.74 L 20.76 86.56 L 23.73 86.39 L 26.99 86.24 L 30.5 86.11 L 34.23 86 L 38.13 85.92 L 42.16 85.86 L 46.27 85.82 L 50.43 85.81 L 54.58 85.83 L 58.68 85.87 L 62.68 85.93 L 66.55 86.02 L 70.23 86.13 L 73.7 86.27 L 76.9 86.42" />
+                  <path d="M 77.98 107.78 L 81.01 107.96 L 83.7 108.16 L 86.01 108.37 L 87.94 108.6 L 89.44 108.83 L 90.52 109.08 L 91.15 109.33 M 8.67 109.53 L 8.94 109.28 L 9.67 109.03 L 10.83 108.79 L 12.42 108.55 L 14.43 108.33 L 16.82 108.12 L 19.58 107.93 L 22.67 107.75 L 26.07 107.59 L 29.72 107.46 L 33.59 107.35 L 37.65 107.26 L 41.84 107.2 L 46.12 107.16 L 50.44 107.15 L 54.76 107.16 L 59.03 107.21 L 63.19 107.27 L 67.21 107.37 L 71.05 107.48 L 74.65 107.62 L 77.98 107.78" />
+                  <path d="M 70.5 129.69 L 72.71 129.82 L 74.68 129.97 L 76.38 130.12 L 77.79 130.29 L 78.89 130.46 L 79.68 130.64 L 80.14 130.82 M 19.73 130.97 L 19.93 130.78 L 20.46 130.6 L 21.31 130.42 L 22.48 130.25 L 23.95 130.09 L 25.7 129.93 L 27.72 129.79 L 29.99 129.66 L 32.47 129.55 L 35.15 129.45 L 37.98 129.37 L 40.95 129.3 L 44.02 129.26 L 47.16 129.23 L 50.32 129.22 L 53.49 129.24 L 56.61 129.27 L 59.66 129.32 L 62.61 129.38 L 65.42 129.47 L 68.05 129.57 L 70.5 129.69" />
+                  <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+                  <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+                  <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+                  <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+                </g>
+
+                <!-- Lower Sphere Contour (#39FF14) -->
+                <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+
+                <!-- Upper Boundary Cut Curve (#00F0FF) -->
+                <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" />
+              </g>
+              <text x="215" y="275" fill="var(--color-green)" font-family="var(--font-mono)" font-size="11" font-weight="700" letter-spacing="0.04em">BASE MALLADA (CÓMPUTO GPU)</text>
+              <line x1="175" y1="270" x2="208" y2="270" stroke="var(--color-green)" stroke-width="1.5" />
+            </svg>
+          </div>
+
+          <div class="prop-split-divider"></div>
+
+          <div class="prop-split-item" style="flex:1;">
+            <div style="border-bottom:1px solid var(--border-subtle); padding-bottom:16px; margin-bottom:16px;">
+              <h3 style="font-family:var(--font-display); font-size:1.2rem; color:var(--color-cyan); margin-bottom:6px;">Sección Superior Cónica</h3>
+              <p style="font-size:0.85rem; color:var(--color-titanium); line-height:1.6;">
+                Superficie lisa y continua en Celeste de Marca (<code>#00F0FF</code>). Representa la masa de líquido libre, la tensión superficial y la continuidad física del agua en movimiento.
+              </p>
+            </div>
+
+            <div style="border-bottom:1px solid var(--border-subtle); padding-bottom:16px; margin-bottom:16px;">
+              <h3 style="font-family:var(--font-display); font-size:1.2rem; color:var(--color-green); margin-bottom:6px;">Sección Inferior Esférica</h3>
+              <p style="font-size:0.85rem; color:var(--color-titanium); line-height:1.6;">
+                Estructura enrejada con tres anillos latitudinales y líneas guía en Verde Neón (<code>#39FF14</code>). Simboliza la discretización espacial y la malla matemática de cálculo en GPU.
+              </p>
+            </div>
+
+            <div>
+              <h3 style="font-family:var(--font-display); font-size:1.2rem; color:#FFF; margin-bottom:6px;">Corte Curvo Frontal</h3>
+              <p style="font-size:0.85rem; color:var(--color-titanium); line-height:1.6;">
+                Unión geométrica precisa entre ambas secciones (<code>#00F0FF</code>). No es un degradado difuso; es un límite matemático limpio que articula la dualidad conceptual de la startup.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 05: IDENTIFICADOR TIPOGRÁFICO ─── -->
+      <section class="slide" data-slide="5">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 1: IDENTIDAD] // [CONSTRUCCIÓN DEL IMAGOTIPO]</div>
+            <h2 class="slide-headline">2. Identificador: <span class="cyan">Composición del Imagotipo</span></h2>
+          </div>
+          <span class="sheet-badge">05 / 19</span>
+        </div>
+
+        <div class="prop-split-2">
+          <div class="prop-split-item" style="flex:1.2; justify-content:center;">
+            <div style="border:1px solid var(--border-line); padding:36px; display:flex; align-items:center; gap:36px;">
+              <svg width="90" height="135" viewBox="4 4 92 143.83" fill="none">
+                <defs>
+                  <clipPath id="s5DropClip">
+                    <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" />
+                  </clipPath>
+                </defs>
+                <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#061A14" stroke="#39FF14" stroke-width="4.8" />
+                <g clip-path="url(#s5DropClip)" stroke="#39FF14" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                  <path d="M 76.9 86.42 L 79.81 86.59 L 82.39 86.78 L 84.62 86.99 L 86.47 87.2 L 87.92 87.43 L 88.95 87.67 L 89.56 87.9 M 10.27 88.1 L 10.53 87.86 L 11.23 87.62 L 12.35 87.38 L 13.88 87.16 L 15.81 86.94 L 18.11 86.74 L 20.76 86.56 L 23.73 86.39 L 26.99 86.24 L 30.5 86.11 L 34.23 86 L 38.13 85.92 L 42.16 85.86 L 46.27 85.82 L 50.43 85.81 L 54.58 85.83 L 58.68 85.87 L 62.68 85.93 L 66.55 86.02 L 70.23 86.13 L 73.7 86.27 L 76.9 86.42" />
+                  <path d="M 77.98 107.78 L 81.01 107.96 L 83.7 108.16 L 86.01 108.37 L 87.94 108.6 L 89.44 108.83 L 90.52 109.08 L 91.15 109.33 M 8.67 109.53 L 8.94 109.28 L 9.67 109.03 L 10.83 108.79 L 12.42 108.55 L 14.43 108.33 L 16.82 108.12 L 19.58 107.93 L 22.67 107.75 L 26.07 107.59 L 29.72 107.46 L 33.59 107.35 L 37.65 107.26 L 41.84 107.2 L 46.12 107.16 L 50.44 107.15 L 54.76 107.16 L 59.03 107.21 L 63.19 107.27 L 67.21 107.37 L 71.05 107.48 L 74.65 107.62 L 77.98 107.78" />
+                  <path d="M 70.5 129.69 L 72.71 129.82 L 74.68 129.97 L 76.38 130.12 L 77.79 130.29 L 78.89 130.46 L 79.68 130.64 L 80.14 130.82 M 19.73 130.97 L 19.93 130.78 L 20.46 130.6 L 21.31 130.42 L 22.48 130.25 L 23.95 130.09 L 25.7 129.93 L 27.72 129.79 L 29.99 129.66 L 32.47 129.55 L 35.15 129.45 L 37.98 129.37 L 40.95 129.3 L 44.02 129.26 L 47.16 129.23 L 50.32 129.22 L 53.49 129.24 L 56.61 129.27 L 59.66 129.32 L 62.61 129.38 L 65.42 129.47 L 68.05 129.57 L 70.5 129.69" />
+                  <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+                  <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+                  <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+                  <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+                </g>
+                <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" stroke="#00F0FF" stroke-width="4.8" stroke-linejoin="round" />
+                <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="5.2" stroke-linecap="round" />
+                <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="none" stroke="#00F0FF" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <div style="display:flex; flex-direction:column; line-height:0.92;">
+                <span style="font-family:var(--font-neo); font-size:4.8rem; font-weight:700; color:#00F0FF; letter-spacing:-0.02em;">NEO</span>
+                <span style="font-family:var(--font-mono); font-size:3.6rem; font-weight:700; color:var(--color-green); letter-spacing:-0.03em;">Fluid<span style="font-size:2.6rem; vertical-align:super; color:var(--color-green);">³</span><span style="color:var(--color-green);">D</span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="prop-split-divider"></div>
+
+          <div class="prop-split-item" style="flex:1;">
+            <div class="metric-line-item">
+              <span class="metric-line-lbl">FILA 1: NEO</span>
+              <div style="font-family:var(--font-display); font-size:1.1rem; color:var(--color-cyan); font-weight:700;">Clash Display Variable Bold</div>
+              <p style="font-size:0.82rem; color:var(--color-titanium); margin-top:2px;">Mayúsculas geométricas sólidas. Peso visual dominante, moderno y vanguardista.</p>
+            </div>
+
+            <div class="metric-line-item">
+              <span class="metric-line-lbl">FILA 2: FLUID³D</span>
+              <div style="font-family:var(--font-mono); font-size:1.1rem; color:var(--color-green); font-weight:700;">JetBrains Mono Bold</div>
+              <p style="font-size:0.82rem; color:var(--color-titanium); margin-top:2px;">Tipografía monoespaciada de código. Evoca rigor algorítmico y telemetría de consola.</p>
+            </div>
+
+            <div class="metric-line-item" style="border-bottom:none;">
+              <span class="metric-line-lbl">EL DETALLE ³D (FLAT-DEPTH)</span>
+              <div style="font-family:var(--font-mono); font-size:1rem; color:#FFF; font-weight:700;">Exponente Cúbico + D Dimensional</div>
+              <p style="font-size:0.82rem; color:var(--color-titanium); margin-top:2px;">El superíndice ³ y la letra D conviven sobre la misma línea base, generando síntesis entre volumen hidrodinámico y espacio 3D.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 06: MANUAL DE MARCA — MASTER BLUEPRINT (H = 4u) ─── -->
+      <section class="slide" data-slide="6">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 1: MANUAL DE MARCA] // [COTAS PARAMÉTRICAS]</div>
+            <h2 class="slide-headline">5. Construcción Modular: <span class="cyan">Plano Técnico (H = 4u)</span></h2>
+          </div>
+          <span class="sheet-badge">06 / 19</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; width:100%; height:100%; border:1px solid var(--border-line);">
+          <div style="padding:6px 14px; background:rgba(0,240,255,0.06); border-bottom:1px solid var(--border-line); display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:0.72rem; color:var(--color-cyan);">
+            <span>COTAS MAESTRAS: 1u = H/4 (ALTURA TOTAL H = 4u)</span>
+            <span>SEPARACIÓN: GAP = 1u (H/4)</span>
+            <span>ÁREA DE RESERVA: 1u PERIMETRAL</span>
+          </div>
+          <div style="flex:1; display:flex; align-items:center; justify-content:center; padding:10px;">
+            <svg id="live-blueprint-svg" viewBox="0 0 1140 360" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+    <pattern id="blueprintGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#00D2FF" stroke-opacity="0.08" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1140" height="360" fill="#070B0E"/>
+  <rect width="1140" height="360" fill="url(#blueprintGrid)"/>
+  <rect x="18" y="18" width="1104" height="324" fill="none" stroke="#00D2FF" stroke-opacity="0.22" stroke-dasharray="4 4" rx="6"/>
+  <line x1="25" y1="50.0" x2="1115" y2="50.0" stroke="#FFFFFF" stroke-opacity="0.25" stroke-dasharray="2 2"/>
+  <line x1="25" y1="115.0" x2="1115" y2="115.0" stroke="#00D2FF" stroke-opacity="0.35" stroke-dasharray="2 2"/>
+  <line x1="25" y1="180.0" x2="1115" y2="180.0" stroke="#00D2FF" stroke-opacity="0.45" stroke-dasharray="2 2"/>
+  <line x1="25" y1="245.0" x2="1115" y2="245.0" stroke="#00D2FF" stroke-opacity="0.35" stroke-dasharray="2 2"/>
+  <line x1="25" y1="310.0" x2="1115" y2="310.0" stroke="#FFFFFF" stroke-opacity="0.25" stroke-dasharray="2 2"/>
+  <line x1="50" y1="50.0" x2="50" y2="310.0" stroke="#FFFFFF" stroke-width="1.6"/>
+  <path d="M 44 50.0 L 56 50.0 M 44 310.0 L 56 310.0" stroke="#FFFFFF" stroke-width="1.6"/>
+  <text x="36" y="180.0" fill="#FFFFFF" font-family="'JetBrains Mono', 'Courier New', monospace" font-weight="700" font-size="14" letter-spacing="0.04em" transform="rotate(-90 36 180.0)" text-anchor="middle">H = 4u</text>
+  <svg x="90.00" y="50.00" width="160.79" height="260.00" viewBox="4 4 92 143.83" fill="none">
+    <g stroke="#39FF14" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M 76.9 86.42 L 79.81 86.59 L 82.39 86.78 L 84.62 86.99 L 86.47 87.2 L 87.92 87.43 L 88.95 87.67 L 89.56 87.9 M 10.27 88.1 L 10.53 87.86 L 11.23 87.62 L 12.35 87.38 L 13.88 87.16 L 15.81 86.94 L 18.11 86.74 L 20.76 86.56 L 23.73 86.39 L 26.99 86.24 L 30.5 86.11 L 34.23 86 L 38.13 85.92 L 42.16 85.86 L 46.27 85.82 L 50.43 85.81 L 54.58 85.83 L 58.68 85.87 L 62.68 85.93 L 66.55 86.02 L 70.23 86.13 L 73.7 86.27 L 76.9 86.42" />
+      <path d="M 77.98 107.78 L 81.01 107.96 L 83.7 108.16 L 86.01 108.37 L 87.94 108.6 L 89.44 108.83 L 90.52 109.08 L 91.15 109.33 M 8.67 109.53 L 8.94 109.28 L 9.67 109.03 L 10.83 108.79 L 12.42 108.55 L 14.43 108.33 L 16.82 108.12 L 19.58 107.93 L 22.67 107.75 L 26.07 107.59 L 29.72 107.46 L 33.59 107.35 L 37.65 107.26 L 41.84 107.2 L 46.12 107.16 L 50.44 107.15 L 54.76 107.16 L 59.03 107.21 L 63.19 107.27 L 67.21 107.37 L 71.05 107.48 L 74.65 107.62 L 77.98 107.78" />
+      <path d="M 70.5 129.69 L 72.71 129.82 L 74.68 129.97 L 76.38 130.12 L 77.79 130.29 L 78.89 130.46 L 79.68 130.64 L 80.14 130.82 M 19.73 130.97 L 19.93 130.78 L 20.46 130.6 L 21.31 130.42 L 22.48 130.25 L 23.95 130.09 L 25.7 129.93 L 27.72 129.79 L 29.99 129.66 L 32.47 129.55 L 35.15 129.45 L 37.98 129.37 L 40.95 129.3 L 44.02 129.26 L 47.16 129.23 L 50.32 129.22 L 53.49 129.24 L 56.61 129.27 L 59.66 129.32 L 62.61 129.38 L 65.42 129.47 L 68.05 129.57 L 70.5 129.69" />
+      <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+      <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+      <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+      <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+    </g>
+    <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
+    <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" />
+    <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+
+              <!-- Caliper Gap = 1u -->
+              <line x1="250" y1="35" x2="250" y2="325" stroke="#FFF" stroke-opacity="0.25" stroke-dasharray="2 2"/>
+              <line x1="315" y1="35" x2="315" y2="325" stroke="#FFF" stroke-opacity="0.25" stroke-dasharray="2 2"/>
+              <line x1="250" y1="180" x2="315" y2="180" stroke="#FFF" stroke-width="1.8"/>
+              <path d="M 250 172 L 250 188 M 315 172 L 315 188" stroke="#FFF" stroke-width="1.8"/>
+              <text x="282" y="165" fill="#FFF" font-family="var(--font-mono)" font-size="12" font-weight="700" text-anchor="middle">gap = 1u</text>
+
+              <!-- Typography Lockup (NEO White / Fluid³D Emerald Green) -->
+              <text x="325" y="171" font-family="var(--font-neo)" font-weight="700" font-size="156" fill="#00F0FF">NEO</text>
+              <text x="325" y="300" font-family="var(--font-mono)" font-weight="700" font-size="118" fill="#39FF14">Fluid<tspan font-size="88" dy="-48">³</tspan><tspan font-size="118" dy="48">D</tspan></text>
+
+              <!-- Caliper Right -->
+              <line x1="840" y1="50" x2="840" y2="310" stroke="#FFF" stroke-width="1.8"/>
+              <path d="M 834 50 L 846 50 M 834 310 L 846 310" stroke="#FFF" stroke-width="1.8"/>
+              <text x="860" y="180" fill="#FFF" font-family="var(--font-mono)" font-weight="700" font-size="14" transform="rotate(90 860 180)" text-anchor="middle">H = 4u</text>
+              
+              <text x="880" y="55" fill="#FFF" opacity="0.85" font-family="var(--font-mono)" font-size="11" font-weight="700">ÁPICE (0u)</text>
+              <text x="880" y="120" fill="#00F0FF" font-family="var(--font-mono)" font-size="11" font-weight="700">1/4 H (TOPE COTA)</text>
+              <text x="880" y="185" fill="#00F0FF" font-family="var(--font-mono)" font-size="11" font-weight="700">2/4 H (LÍNEA BASE NEO)</text>
+              <text x="880" y="250" fill="#00F0FF" font-family="var(--font-mono)" font-size="11" font-weight="700">3/4 H (CENTRO FLUID³D)</text>
+              <text x="880" y="315" fill="#FFF" opacity="0.85" font-family="var(--font-mono)" font-size="11" font-weight="700">BASE (4u)</text>
+            </svg>
+          </div>
+          <div style="padding:8px 16px; background:rgba(7,11,14,0.95); border-top:1px solid var(--border-line); display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; gap:12px;">
+              <button id="bp-btn-replay" class="hud-btn">Recalibrar Cotas</button>
+              <button id="bp-btn-cotas" class="hud-btn">Alternar Malla / Ejes</button>
+            </div>
+            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--color-titanium);">
+              Límites Mínimos: 16px Favicon | 32px UI Estándar | 48px Tarjetas | 5mm Impreso
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 07: PALETA CROMÁTICA PROPORCIONAL ─── -->
+      <section class="slide" data-slide="7">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 1: IDENTIDAD] // [ESPECIFICACIÓN CROMÁTICA]</div>
+            <h2 class="slide-headline">3A. Paleta Cromática: <span class="cyan">6 Tokens Oficiales</span></h2>
+          </div>
+          <span class="sheet-badge">07 / 19</span>
+        </div>
+
+        <div class="prop-color-spectrum">
+          <div class="prop-color-col color-card" data-hex="#00F0FF">
+            <div class="prop-color-band" style="background:#00F0FF;">
+              <span style="font-family:var(--font-mono); font-size:0.65rem; color:#070B0E; font-weight:700;">PRIMARIO</span>
+              <span style="font-family:var(--font-mono); font-size:1.1rem; font-weight:800; color:#070B0E;">#00F0FF</span>
+            </div>
+            <div class="prop-color-info">
+              <strong style="color:#FFF; font-size:0.95rem;">Cian Brillante</strong>
+              <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-cyan);">RGB(0, 240, 255)</div>
+              <p style="font-size:0.78rem; color:var(--color-titanium); line-height:1.5;">Prefijo Neo, masa de agua continua y cima de la gota.</p>
+            </div>
+          </div>
+
+          <div class="prop-color-col color-card" data-hex="#39FF14">
+            <div class="prop-color-band" style="background:#39FF14;">
+              <span style="font-family:var(--font-mono); font-size:0.65rem; color:#070B0E; font-weight:700;">PRIMARIO</span>
+              <span style="font-family:var(--font-mono); font-size:1.1rem; font-weight:800; color:#070B0E;">#39FF14</span>
+            </div>
+            <div class="prop-color-info">
+              <strong style="color:#FFF; font-size:0.95rem;">Verde Neón</strong>
+              <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-green);">RGB(57, 255, 20)</div>
+              <p style="font-size:0.78rem; color:var(--color-titanium); line-height:1.5;">Sufijo Fluid³D, base reticulada y hardware GPU.</p>
+            </div>
+          </div>
+
+          <div class="prop-color-col color-card" data-hex="#070B0E">
+            <div class="prop-color-band" style="background:#070B0E; border-bottom:1px solid var(--border-subtle);">
+              <span style="font-family:var(--font-mono); font-size:0.65rem; color:#FFF; font-weight:700;">BASE</span>
+              <span style="font-family:var(--font-mono); font-size:1.1rem; font-weight:800; color:#FFF;">#070B0E</span>
+            </div>
+            <div class="prop-color-info">
+              <strong style="color:#FFF; font-size:0.95rem;">Obsidiana Deep</strong>
+              <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-titanium);">RGB(7, 11, 14)</div>
+              <p style="font-size:0.78rem; color:var(--color-titanium); line-height:1.5;">Fondo base de alto contraste y viewport 3D.</p>
+            </div>
+          </div>
+
+          <div class="prop-color-col color-card" data-hex="#8FA6B2">
+            <div class="prop-color-band" style="background:#8FA6B2;">
+              <span style="font-family:var(--font-mono); font-size:0.65rem; color:#070B0E; font-weight:700;">HUD / META</span>
+              <span style="font-family:var(--font-mono); font-size:1.1rem; font-weight:800; color:#070B0E;">#8FA6B2</span>
+            </div>
+            <div class="prop-color-info">
+              <strong style="color:#FFF; font-size:0.95rem;">Titanio Técnico</strong>
+              <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-titanium);">RGB(143, 166, 178)</div>
+              <p style="font-size:0.78rem; color:var(--color-titanium); line-height:1.5;">Telemetría, metadatos y líneas de cota.</p>
+            </div>
+          </div>
+
+          <div class="prop-color-col color-card" data-hex="#3B82F6">
+            <div class="prop-color-band" style="background:#3B82F6;">
+              <span style="font-family:var(--font-mono); font-size:0.65rem; color:#FFF; font-weight:700;">CFD LAMINAR</span>
+              <span style="font-family:var(--font-mono); font-size:1.1rem; font-weight:800; color:#FFF;">#3B82F6</span>
+            </div>
+            <div class="prop-color-info">
+              <strong style="color:#FFF; font-size:0.95rem;">Azul Simulación</strong>
+              <div style="font-family:var(--font-mono); font-size:0.7rem; color:#3B82F6;">RGB(59, 130, 246)</div>
+              <p style="font-size:0.78rem; color:var(--color-titanium); line-height:1.5;">Campos de baja velocidad y régimen laminar.</p>
+            </div>
+          </div>
+
+          <div class="prop-color-col color-card" data-hex="#FF9100">
+            <div class="prop-color-band" style="background:#FF9100;">
+              <span style="font-family:var(--font-mono); font-size:0.65rem; color:#070B0E; font-weight:700;">CFD VÓRTICE</span>
+              <span style="font-family:var(--font-mono); font-size:1.1rem; font-weight:800; color:#070B0E;">#FF9100</span>
+            </div>
+            <div class="prop-color-info">
+              <strong style="color:#FFF; font-size:0.95rem;">Naranja Térmico</strong>
+              <div style="font-family:var(--font-mono); font-size:0.7rem; color:#FF9100;">RGB(255, 145, 0)</div>
+              <p style="font-size:0.78rem; color:var(--color-titanium); line-height:1.5;">Zonas de aceleración máxima y turbulencia.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 08: TIPOGRAFÍAS OFICIALES ─── -->
+      <section class="slide" data-slide="8">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 1: IDENTIDAD] // [SISTEMA TIPOGRÁFICO]</div>
+            <h2 class="slide-headline">3B. Tipografías: <span class="cyan">Jerarquía & Construcción</span></h2>
+          </div>
+          <span class="sheet-badge">08 / 19</span>
+        </div>
+
+        <div class="prop-type-specimen">
+          <div class="type-specimen-band">
+            <div class="type-specimen-meta">
+              <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-cyan);">01 // DISPLAY LOGOTIPO</span>
+              <div style="font-family:var(--font-display); font-size:1.15rem; font-weight:700; color:#FFF;">Clash Display Variable</div>
+            </div>
+            <div style="flex:1; font-family:var(--font-neo); font-size:2.4rem; font-weight:900; color:var(--color-cyan); letter-spacing:-0.02em;">
+              NEO ADVANCED GPU HYDRODYNAMICS
+            </div>
+          </div>
+
+          <div class="type-specimen-band">
+            <div class="type-specimen-meta">
+              <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-green);">02 // MONOESPACIADA CÓDIGO</span>
+              <div style="font-family:var(--font-mono); font-size:1.15rem; font-weight:700; color:#FFF;">JetBrains Mono Bold</div>
+            </div>
+            <div style="flex:1; font-family:var(--font-mono); font-size:1.7rem; font-weight:700; color:var(--color-green);">
+              Fluid³D::SimulateSPH(dt, particles);
+            </div>
+          </div>
+
+          <div class="type-specimen-band">
+            <div class="type-specimen-meta">
+              <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-cyan);">03 // TÍTULOS DE INTERFAZ</span>
+              <div style="font-family:var(--font-display); font-size:1.15rem; font-weight:700; color:#FFF;">Oxanium Medium</div>
+            </div>
+            <div style="flex:1; font-family:var(--font-display); font-size:1.6rem; font-weight:600; color:#FFF;">
+              PARÁMETROS FÍSICOS & TELEMETRÍA HIDRÁULICA
+            </div>
+          </div>
+
+          <div class="type-specimen-band">
+            <div class="type-specimen-meta">
+              <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-titanium);">04 // SUBTÍTULOS & MÉTRICAS</span>
+              <div style="font-family:var(--font-sub); font-size:1.15rem; font-weight:600; color:#FFF;">IBM Plex Sans SemiCond.</div>
+            </div>
+            <div style="flex:1; font-family:var(--font-sub); font-size:1.3rem; color:var(--color-titanium);">
+              Discretización espacial continua en memoria VRAM
+            </div>
+          </div>
+
+          <div class="type-specimen-band">
+            <div class="type-specimen-meta">
+              <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-titanium);">05 // LECTURA & UI</span>
+              <div style="font-family:var(--font-sans); font-size:1.15rem; font-weight:600; color:#FFF;">Inter Regular</div>
+            </div>
+            <div style="flex:1; font-family:var(--font-sans); font-size:1.05rem; color:var(--color-text);">
+              Texto corrido optimizado para pantallas de alta densidad de píxeles, microcopy y documentación.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 09: COHERENCIA DE IDENTIDAD (4 CONTEXTOS) ─── -->
+      <section class="slide" data-slide="9">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 1: IDENTIDAD] // [MATRIZ DE COHERENCIA]</div>
+            <h2 class="slide-headline">4. Coherencia: <span class="cyan">Los 4 Puntos de Contacto</span></h2>
+          </div>
+          <span class="sheet-badge">09 / 19</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); height:100%;">
+          <div class="prop-col-item">
+            <div style="margin-bottom:12px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            </div>
+            <h3 class="prop-col-title" style="color:var(--color-cyan);">Sitio Web Oficial</h3>
+            <p class="prop-col-desc">
+              Isotipo en navbar, footer y favicon vectorial. Tipografías Oxanium + Inter. Fondo Obsidiana con retícula técnica y shaders interactivos WebGL.
+            </p>
+            <div class="prop-col-foot">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Validado en Producción</span>
+            </div>
+          </div>
+
+          <div class="prop-col-item">
+            <div style="margin-bottom:12px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+            </div>
+            <h3 class="prop-col-title" style="color:var(--color-green);">Simulador Nativo</h3>
+            <p class="prop-col-desc">
+              Viewport 3D oscuro de ingeniería, HUD de telemetría con JetBrains Mono, escala térmica Jet en m/s y controles en los 3 planos visuales.
+            </p>
+            <div class="prop-col-foot">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>60 FPS Solver</span>
+            </div>
+          </div>
+
+          <div class="prop-col-item">
+            <div style="margin-bottom:12px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path></svg>
+            </div>
+            <h3 class="prop-col-title" style="color:#FFF;">Documentación SDK</h3>
+            <p class="prop-col-desc">
+              Cabeceras de página unificadas con isotipo modular, snippets de código en JetBrains Mono sobre fondos oscuros y badges técnicos en Verde Neón.
+            </p>
+            <div class="prop-col-foot">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>API Rust & C++</span>
+            </div>
+          </div>
+
+          <div class="prop-col-item">
+            <div style="margin-bottom:12px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+            </div>
+            <h3 class="prop-col-title" style="color:var(--color-green);">Material de Pitch</h3>
+            <p class="prop-col-desc">
+              Láminas técnicas en proporción 16:9 widescreen, marcos milimétricos, planos CAD vectoriales y coherencia tipográfica invariable.
+            </p>
+            <div class="prop-col-foot">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>100% Coherencia</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 10: ESTRUCTURA EN 3 PLANOS ─── -->
+      <section class="slide" data-slide="10">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 2: SISTEMA VISUAL] // [JERARQUÍA DE PROFUNDIDAD]</div>
+            <h2 class="slide-headline">6. Jerarquía Visual: <span class="cyan">Los 3 Planos de Profundidad</span></h2>
+          </div>
+          <span class="sheet-badge">10 / 19</span>
+        </div>
+
+        <div class="prop-split-2">
+          <div class="prop-split-item" style="flex:1.1; align-items:center;">
+            <svg viewBox="0 0 500 360" width="100%" height="100%" fill="none">
+              <!-- Layer 1: Base -->
+              <g transform="translate(40, 210)">
+                <polygon points="180,0 360,50 180,100 0,50" fill="rgba(7, 11, 14, 0.95)" stroke="rgba(0, 240, 255, 0.3)" stroke-width="1.5" />
+                <line x1="180" y1="0" x2="180" y2="100" stroke="rgba(0, 240, 255, 0.2)" stroke-dasharray="2 2" />
+                <text x="375" y="55" fill="rgba(255,255,255,0.7)" font-family="var(--font-mono)" font-size="11">PLANO 1: BASE OBSIDIANA</text>
+              </g>
+
+              <!-- Layer 2: Content -->
+              <g transform="translate(40, 120)">
+                <polygon points="180,0 360,50 180,100 0,50" fill="rgba(14, 24, 34, 0.75)" stroke="#00F0FF" stroke-width="1.8" />
+                <text x="375" y="55" fill="var(--color-cyan)" font-family="var(--font-mono)" font-size="11" font-weight="700">PLANO 2: CONTENIDO TRANSLÚCIDO</text>
+              </g>
+
+              <!-- Layer 3: Action -->
+              <g transform="translate(40, 30)">
+                <polygon points="180,0 360,50 180,100 0,50" fill="rgba(0, 240, 255, 0.15)" stroke="#39FF14" stroke-width="2.2" />
+                <text x="375" y="55" fill="var(--color-green)" font-family="var(--font-mono)" font-size="11" font-weight="700">PLANO 3: ACCIÓN & ACENTOS GLOW</text>
+              </g>
+
+              <line x1="220" y1="30" x2="220" y2="310" stroke="#FFF" stroke-opacity="0.3" stroke-dasharray="3 3" />
+            </svg>
+          </div>
+
+          <div class="prop-split-divider"></div>
+
+          <div class="prop-split-item" style="flex:0.9;">
+            <div class="metric-line-item">
+              <span class="metric-line-lbl">PLANO 1: BASE DE ALTO CONTRASTE</span>
+              <div style="font-family:var(--font-display); font-size:1.1rem; color:#FFF; font-weight:700;">Color Obsidiana Deep (#070B0E)</div>
+              <p style="font-size:0.82rem; color:var(--color-titanium); margin-top:2px;">Fondo oscuro con retícula milimétrica. Diseñado para descansar la vista en sesiones de cálculo prolongadas.</p>
+            </div>
+
+            <div class="metric-line-item">
+              <span class="metric-line-lbl">PLANO 2: AGRUPACIÓN DE VARIABLES</span>
+              <div style="font-family:var(--font-display); font-size:1.1rem; color:var(--color-cyan); font-weight:700;">Paneles Translúcidos (Glassmorphism 1px)</div>
+              <p style="font-size:0.82rem; color:var(--color-titanium); margin-top:2px;">Superficies semitransparentes con bordes finos que agrupan parámetros y telemetría sin sobrecargar la vista.</p>
+            </div>
+
+            <div class="metric-line-item" style="border-bottom:none;">
+              <span class="metric-line-lbl">PLANO 3: INTERACCIÓN Y CONTROL</span>
+              <div style="font-family:var(--font-display); font-size:1.1rem; color:var(--color-green); font-weight:700;">Acentos Luminosos Celeste & Verde</div>
+              <p style="font-size:0.82rem; color:var(--color-titanium); margin-top:2px;">Botones y controles con resplandor suave que guían intuitivamente al operador hacia las acciones clave.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 11: COMPONENTES UI (3 ESTADOS) ─── -->
+      <section class="slide" data-slide="11">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 2: SISTEMA VISUAL] // [UI KIT DE INGENIERÍA]</div>
+            <h2 class="slide-headline">7A. Componentes UI: <span class="cyan">Los 3 Estados Interactivos</span></h2>
+          </div>
+          <span class="sheet-badge">11 / 19</span>
+        </div>
+
+        <div class="prop-split-2">
+          <div class="prop-split-item" style="padding-right:20px;">
+            <div style="border-bottom:1px solid var(--border-subtle); padding-bottom:8px; margin-bottom:16px; font-family:var(--font-mono); font-size:0.75rem; color:var(--color-titanium);">
+              [ESTADO 01: REPOSO // BASE]
+            </div>
+            <button class="hud-btn" style="padding:10px; width:100%; justify-content:center; margin-bottom:12px;">Botón Primario Base</button>
+            <button class="hud-btn" style="padding:10px; width:100%; justify-content:center; border-color:var(--border-subtle); margin-bottom:16px;">Botón Secundario</button>
+            <div style="border:1px solid var(--border-subtle); padding:12px;">
+              <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--color-titanium);">TELEMETRÍA BASE</div>
+              <div style="font-family:var(--font-mono); font-size:0.9rem; color:#FFF;">Viscosidad: 1.002 cSt</div>
+            </div>
+          </div>
+
+          <div class="prop-split-divider"></div>
+
+          <div class="prop-split-item" style="padding:0 20px;">
+            <div style="border-bottom:1px solid var(--border-line); padding-bottom:8px; margin-bottom:16px; font-family:var(--font-mono); font-size:0.75rem; color:var(--color-cyan);">
+              [ESTADO 02: HOVER / FOCO]
+            </div>
+            <button class="hud-btn" style="padding:10px; width:100%; justify-content:center; border-color:var(--color-cyan); color:#FFF; background:rgba(0,240,255,0.15); box-shadow:0 0 15px var(--color-cyan-glow); margin-bottom:12px;">Botón Primario Foco ↗</button>
+            <button class="hud-btn" style="padding:10px; width:100%; justify-content:center; border-color:var(--color-cyan); color:var(--color-cyan); margin-bottom:16px;">Botón Secundario Foco</button>
+            <div style="border:1px solid var(--color-cyan); padding:12px; background:rgba(0,240,255,0.04);">
+              <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--color-cyan);">TELEMETRÍA ENFOCADA</div>
+              <div style="font-family:var(--font-mono); font-size:0.9rem; color:#FFF;">Viscosidad: 1.002 cSt [OK]</div>
+            </div>
+          </div>
+
+          <div class="prop-split-divider"></div>
+
+          <div class="prop-split-item" style="padding-left:20px;">
+            <div style="border-bottom:1px solid var(--border-green); padding-bottom:8px; margin-bottom:16px; font-family:var(--font-mono); font-size:0.75rem; color:var(--color-green);">
+              [ESTADO 03: ACTIVO / ON]
+            </div>
+            <button class="hud-btn" style="padding:10px; width:100%; justify-content:center; border-color:var(--color-green); color:#070B0E; background:var(--color-green); font-weight:800; box-shadow:0 0 20px var(--color-green-glow); margin-bottom:12px;">✓ CÓMPUTO ACTIVO GPU</button>
+            <button class="hud-btn" style="padding:10px; width:100%; justify-content:center; border-color:var(--color-green); color:var(--color-green); margin-bottom:16px;">✓ PARÁMETRO FIJADO</button>
+            <div style="border:1px solid var(--color-green); padding:12px; background:rgba(57,255,20,0.04);">
+              <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--color-green);">SOLVER EN EJECUCIÓN</div>
+              <div style="font-family:var(--font-mono); font-size:0.9rem; color:#FFF;">60.0 FPS • 128K Pts</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 12: ICONOGRAFÍA TÉCNICA (13 ÍCONOS) ─── -->
+      <section class="slide" data-slide="12">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 2: SISTEMA VISUAL] // [FAMILIA DE GLIFOS VECTORIALES]</div>
+            <h2 class="slide-headline">7C. Iconografía: <span class="cyan">13 Íconos Vectoriales (Trazo 2px)</span></h2>
+          </div>
+          <span class="sheet-badge">12 / 19</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:16px; height:100%; align-content:center;">
+          <div style="text-align:center; padding:16px; border-bottom:1px solid var(--border-subtle);">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Zap</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">Alertas</div>
+          </div>
+          <div style="text-align:center; padding:16px; border-bottom:1px solid var(--border-subtle);">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Cpu</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">GPU Core</div>
+          </div>
+          <div style="text-align:center; padding:16px; border-bottom:1px solid var(--border-subtle);">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">RefreshCw</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">Reinicio</div>
+          </div>
+          <div style="text-align:center; padding:16px; border-bottom:1px solid var(--border-subtle);">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Globe</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">Entorno 3D</div>
+          </div>
+          <div style="text-align:center; padding:16px; border-bottom:1px solid var(--border-subtle);">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Sliders</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">Variables</div>
+          </div>
+          <div style="text-align:center; padding:16px; border-bottom:1px solid var(--border-subtle);">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Copy</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">Shaders</div>
+          </div>
+          <div style="text-align:center; padding:16px; border-bottom:1px solid var(--border-subtle);">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><rect x="2" y="2" width="20" height="20" rx="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Clapperboard</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">Gemelos</div>
+          </div>
+          <div style="text-align:center; padding:16px;">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Wind</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">CFD</div>
+          </div>
+          <div style="text-align:center; padding:16px;">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><line x1="6" y1="12" x2="10" y2="12"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line><rect x="2" y="6" width="20" height="12" rx="2"></rect></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Gamepad2</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">VR Hub</div>
+          </div>
+          <div style="text-align:center; padding:16px;">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2"></rect></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Video</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">Render</div>
+          </div>
+          <div style="text-align:center; padding:16px;">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Network</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">SDK API</div>
+          </div>
+          <div style="text-align:center; padding:16px;">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00F0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Crosshair</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">Cámara</div>
+          </div>
+          <div style="text-align:center; padding:16px;">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#39FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:#FFF; margin-top:8px;">Check</div>
+            <div style="font-size:0.68rem; color:var(--color-text-dim);">Estado</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 13: MODOS DE FLUIDO (SIMULADOR EN VIVO) ─── -->
+      <section class="slide" data-slide="13">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 2: SISTEMA VISUAL] // [SIMULADOR VULKAN ENGINE EN VIVO]</div>
+            <h2 class="slide-headline">7D. Modos de Fluido: <span class="cyan">6 Modos de Renderizado</span></h2>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="hud-tag" style="border-color:var(--color-green); color:var(--color-green);">TECLAS 1-6 ACTIVAS</span>
+            <span class="sheet-badge">13 / 19</span>
+          </div>
+        </div>
+
+        <div class="prop-split-2" style="height:calc(100% - 70px);">
+          <!-- Modes Selector Tabs -->
+          <div class="prop-split-item" style="flex:0.55; gap:8px;">
+            <div class="sim-mode-item active" data-mode="1" onclick="window.switchFluidMode && window.switchFluidMode(1)" title="Presiona [1] o haz click">
+              <span>[1] Partículas</span>
+              <span style="font-size:0.68rem; color:var(--color-cyan);">SPH GPU</span>
+            </div>
+            <div class="sim-mode-item" data-mode="2" onclick="window.switchFluidMode && window.switchFluidMode(2)" title="Presiona [2] o haz click">
+              <span>[2] Plexus</span>
+              <span style="font-size:0.68rem; color:var(--color-green);">Red Vecinal</span>
+            </div>
+            <div class="sim-mode-item" data-mode="3" onclick="window.switchFluidMode && window.switchFluidMode(3)" title="Presiona [3] o haz click">
+              <span>[3] Malla Superficie</span>
+              <span style="font-size:0.68rem; color:var(--color-cyan);">Marching Cubes</span>
+            </div>
+            <div class="sim-mode-item" data-mode="4" onclick="window.switchFluidMode && window.switchFluidMode(4)" title="Presiona [4] o haz click">
+              <span>[4] Vectores</span>
+              <span style="font-size:0.68rem; color:var(--color-cyan);">Campo Vel.</span>
+            </div>
+            <div class="sim-mode-item" data-mode="5" onclick="window.switchFluidMode && window.switchFluidMode(5)" title="Presiona [5] o haz click">
+              <span>[5] Líneas Flujo</span>
+              <span style="font-size:0.68rem; color:var(--color-cyan);">Estelas</span>
+            </div>
+            <div class="sim-mode-item" data-mode="6" onclick="window.switchFluidMode && window.switchFluidMode(6)" title="Presiona [6] o haz click">
+              <span>[6] Mapa CFD</span>
+              <span style="font-size:0.68rem; color:var(--color-green);">Jet Colormap</span>
+            </div>
+          </div>
+
+          <div class="prop-split-divider"></div>
+
+          <!-- Genuine Vulkan Simulator Viewport -->
+          <div class="prop-split-item vulkan-sim-container" style="flex:1.45; border:1px solid var(--border-line); position:relative; overflow:hidden; background:#000000; min-height:360px;">
+            <!-- Vulkan HUD Header Bar -->
+            <div class="vulkan-hud-top" aria-hidden="true">
+              <div class="vulkan-hud-left">
+                <span class="vulkan-hud-gpu">[ GPU: NVIDIA GeForce GTX 1650 ]</span>
+                <span class="vulkan-hud-simtime">SIM_TIME: 1.040 s</span>
+              </div>
+              <div class="vulkan-hud-right">
+                <span class="vulkan-hud-fps">FPS: 50.2</span>
+                <span class="vulkan-hud-coords">X: -3.7 | Y: -0.7 | Z: 3.4</span>
+              </div>
+            </div>
+
+            <!-- Vulkan Speed Colormap Legend (Modes 4, 5, 6) -->
+            <div class="vulkan-speed-legend" id="vulkan-speed-bar" aria-hidden="true" style="display:none;">
+              <div class="vulkan-speed-title">SPEED</div>
+              <div class="vulkan-speed-ramp">
+                <span>6.2</span>
+                <span>5.4</span>
+                <span>4.6</span>
+                <span>3.9</span>
+                <span>3.1</span>
+                <span>2.3</span>
+                <span>1.5</span>
+                <span>0.8</span>
+                <span>0.0</span>
+              </div>
+              <div class="vulkan-speed-unit">m/s</div>
+            </div>
+
+            <!-- Genuine Simulator Capture Image Screen -->
+            <div class="vulkan-screen-wrap">
+              <img id="vulkan-sim-image" src="../docs/Capturas/Untitled2.png" alt="NeoFluid3D Vulkan Engine Capture" class="vulkan-sim-img" />
+            </div>
+
+            <!-- Vulkan HUD Bottom Status Bar -->
+            <div class="vulkan-hud-bottom">
+              <div>
+                <span style="color:var(--color-cyan);">MODO ACTIVO:</span>
+                <strong id="sim-current-mode-name" style="color:#FFF; margin-left:6px;">Partículas</strong>
+              </div>
+              <div id="sim-current-mode-desc" style="color:var(--color-titanium);">
+                Partículas individuales con sombreado esférico GPU en VRAM
+              </div>
+              <div style="color:var(--color-green); font-weight:700;">VULKAN 1.3 // OK</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 14: ESCALA TÉRMICA JET & MODELOS 3D ─── -->
+      <section class="slide" data-slide="14">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 2: SISTEMA VISUAL] // [CFD SCIENTIFIC VISUALIZATION]</div>
+            <h2 class="slide-headline">7E/F. Escala Térmica Jet & <span class="cyan">Geometría 3D</span></h2>
+          </div>
+          <span class="sheet-badge">14 / 19</span>
+        </div>
+
+        <div class="prop-split-2">
+          <div class="prop-split-item" style="flex:0.6; align-items:center; justify-content:center;">
+            <div style="display:flex; align-items:center; gap:16px;">
+              <div style="height:260px; display:flex; flex-direction:column; justify-content:space-between; font-family:var(--font-mono); font-size:0.72rem; color:var(--color-titanium);">
+                <span>100% (Turbulencia)</span>
+                <span>75%</span>
+                <span>50% (Media)</span>
+                <span>25%</span>
+                <span>0% (Laminar)</span>
+              </div>
+              <div style="width:26px; height:260px; border:1px solid #FFF; background:linear-gradient(to bottom, #FF0000 0%, #FF9100 25%, #FFFF00 50%, #00FF00 65%, #00F0FF 80%, #0000FF 100%);"></div>
+              <div style="height:260px; display:flex; flex-direction:column; justify-content:space-between; font-family:var(--font-mono); font-size:0.72rem; color:var(--color-cyan);">
+                <span>8.0 m/s</span>
+                <span>6.0 m/s</span>
+                <span>4.0 m/s</span>
+                <span>2.0 m/s</span>
+                <span>0.0 m/s</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="prop-split-divider"></div>
+
+          <div class="prop-split-item" style="flex:1.4;">
+            <div style="border-bottom:1px solid var(--border-subtle); padding-bottom:16px; margin-bottom:16px;">
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--color-cyan);">PROBETA DE VELOCIDAD CFD:</span>
+              <input id="jet-probe-slider" type="range" min="0" max="100" value="50" style="width:100%; margin:8px 0; accent-color:var(--color-cyan);" />
+              <div style="display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:0.8rem;">
+                <span>Velocidad: <strong id="jet-probe-speed" style="color:#FFF;">4.00 m/s (50%)</strong></span>
+                <span id="jet-probe-color" style="color:#39FF14; font-weight:700;">Verde / Amarillo (Velocidad Nominal)</span>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:16px;">
+              <div>
+                <strong style="color:#FFF; font-size:0.9rem;">1. Modo Sólido</strong>
+                <p style="font-size:0.78rem; color:var(--color-titanium); margin-top:2px;">Aspecto opaco CAD para obstáculos físicos.</p>
+              </div>
+              <div>
+                <strong style="color:var(--color-cyan); font-size:0.9rem;">2. Modo Wireframe</strong>
+                <p style="font-size:0.78rem; color:var(--color-titanium); margin-top:2px;">Malla poligonal alámbrica de inspección.</p>
+              </div>
+              <div>
+                <strong style="color:var(--color-green); font-size:0.9rem;">3. Silueta / Ghost</strong>
+                <p style="font-size:0.78rem; color:var(--color-titanium); margin-top:2px;">Contorno guía semitransparente para emisores.</p>
+              </div>
+              <div>
+                <strong style="color:var(--color-text-dim); font-size:0.9rem;">4. Modo Oculto</strong>
+                <p style="font-size:0.78rem; color:var(--color-titanium); margin-top:2px;">Inspección exclusiva del fluido libre.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 15: ARQUITECTURA DEL HUD TÉCNICO ─── -->
+      <section class="slide" data-slide="15">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 2: SISTEMA VISUAL] // [LAYOUT ERGONÓMICO DEL SIMULADOR]</div>
+            <h2 class="slide-headline">7G. Arquitectura HUD: <span class="cyan">5 Zonas Funcionales</span></h2>
+          </div>
+          <span class="sheet-badge">15 / 19</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; width:100%; height:100%; gap:14px;">
+          <div style="display:grid; grid-template-rows:38px 1fr 34px; grid-template-columns:190px 1fr 200px; gap:8px; height:280px; font-family:var(--font-mono); font-size:0.75rem;">
+            <div class="hud-zone" data-zone="top" style="grid-column:1 / -1; display:flex; align-items:center; justify-content:center; border:1px solid var(--color-cyan); color:var(--color-cyan); padding:6px; cursor:pointer;">
+              [1] BARRA SUPERIOR — Telemetría GPU, Tiempo de Cómputo, FPS y Coordenadas 3D
+            </div>
+            <div class="hud-zone" data-zone="left" style="grid-row:2; display:flex; align-items:center; justify-content:center; text-align:center; border:1px solid var(--border-subtle); padding:8px; cursor:pointer;">
+              [2] PANEL IZQ.<br>Capas Físicas<br>(ρ, μ, g)
+            </div>
+            <div class="hud-zone" data-zone="center" style="grid-row:2; display:flex; align-items:center; justify-content:center; text-align:center; background:#04070A; border:1px dashed var(--color-cyan); color:#FFF; padding:8px; cursor:pointer;">
+              [3] VIEWPORT PRINCIPAL 3D<br>(Renderizado en Tiempo Real + Escala Jet Vertical)
+            </div>
+            <div class="hud-zone" data-zone="right" style="grid-row:2; display:flex; align-items:center; justify-content:center; text-align:center; border:1px solid var(--border-subtle); padding:8px; cursor:pointer;">
+              [4] PANEL DER.<br>Emisores, Fluidos & Telemetría
+            </div>
+            <div class="hud-zone" data-zone="bottom" style="grid-column:1 / -1; display:flex; align-items:center; justify-content:center; border:1px solid var(--border-subtle); color:var(--color-titanium); padding:6px; cursor:pointer;">
+              [5] BARRA INFERIOR — Guía Rápida de Atajos de Teclado (Keys 1-6, Space, R, C)
+            </div>
+          </div>
+
+          <div style="border-top:1px solid var(--border-subtle); padding-top:12px;">
+            <strong id="hud-zone-desc-title" style="color:var(--color-cyan); font-family:var(--font-mono); font-size:0.82rem;">BARRA SUPERIOR (TOP HUD)</strong>
+            <p id="hud-zone-desc-body" style="font-size:0.82rem; color:var(--color-titanium); margin-top:2px;">
+              Muestra la GPU activa, tiempo de cómputo transcurrido, framerate (FPS) y coordenadas de cámara tridimensional. Haz clic en las zonas del diagrama para inspeccionar cada módulo.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 16: REGLAS DE DISEÑO & LÓGICA COMPARTIDA ─── -->
+      <section class="slide" data-slide="16">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[BLOQUE 2: SISTEMA VISUAL] // [REGLAS UNIVERSALES DE DISEÑO]</div>
+            <h2 class="slide-headline">8. Reglas de Diseño: <span class="cyan">Métrica de 8px & Trazo</span></h2>
+          </div>
+          <span class="sheet-badge">16 / 19</span>
+        </div>
+
+        <div class="prop-cols-5" style="grid-template-columns:repeat(4, 1fr);">
+          <div class="prop-col-item">
+            <div class="prop-col-num">01</div>
+            <h3 class="prop-col-title" style="color:#FFF;">Paleta Cerrada</h3>
+            <p class="prop-col-desc">
+              Todo componente utiliza estrictamente los 6 colores oficiales. No existen degradados arbitrarios ni colores no documentados.
+            </p>
+            <div class="prop-col-foot">6 Tokens Invariables</div>
+          </div>
+
+          <div class="prop-col-item">
+            <div class="prop-col-num">02</div>
+            <h3 class="prop-col-title" style="color:var(--color-green);">Mismo Trazo</h3>
+            <p class="prop-col-desc">
+              Íconos vectoriales, bordes y separadores mantienen grosor uniforme de 1–2px con terminaciones redondeadas (round caps).
+            </p>
+            <div class="prop-col-foot">Stroke 1-2px Uniform</div>
+          </div>
+
+          <div class="prop-col-item">
+            <div class="prop-col-num">03</div>
+            <h3 class="prop-col-title" style="color:var(--color-cyan);">Escala de 8px</h3>
+            <p class="prop-col-desc">
+              Espaciados, paddings y márgenes siguen múltiplos exactos de 8px (8, 16, 24, 32, 48px) garantizando balance visual estricto.
+            </p>
+            <div class="prop-col-foot">Múltiplos de 8px</div>
+          </div>
+
+          <div class="prop-col-item">
+            <div class="prop-col-num">04</div>
+            <h3 class="prop-col-title" style="color:var(--color-green);">Jerarquía Fija</h3>
+            <p class="prop-col-desc">
+              Clash Display (Neo), JetBrains Mono (Fluid³D / datos), Oxanium (títulos), IBM Plex Sans (subtítulos) e Inter (lectura).
+            </p>
+            <div class="prop-col-foot">5 Familias Asignadas</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 17: CHECKLIST OFICIAL DE EVIDENCIAS ─── -->
+      <section class="slide" data-slide="17">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[EVIDENCIAS OFICIALES] // [AUDITORÍA DE EVALUACIÓN HACKATHON]</div>
+            <h2 class="slide-headline">4. Checklist de Evidencias: <span class="cyan">100% Cumplido</span></h2>
+          </div>
+          <span class="sheet-badge" style="color:var(--color-green); border-color:var(--border-green);">12 CRITERIOS VALIDADOS</span>
+        </div>
+
+        <div style="width:100%; overflow-y:auto;">
+          <table class="clean-audit-table">
+            <thead>
+              <tr>
+                <th>Bloque de Evaluación</th>
+                <th>Criterio Requerido</th>
+                <th style="text-align:center;">Estado</th>
+                <th>Evidencia Documentada en el Entregable</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Bloque 1: Identidad Visual</strong></td>
+                <td>Concepto de Marca</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>Eje dual Fluidez + Computación con infografía vectorial (Sección 1).</td>
+              </tr>
+              <tr>
+                <td><strong>Bloque 1: Identidad Visual</strong></td>
+                <td>Identificador Gráfico</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>Imagotipo apilado con anatomía de gota bipartita y corte curvo (Sección 2).</td>
+              </tr>
+              <tr>
+                <td><strong>Bloque 1: Identidad Visual</strong></td>
+                <td>Paleta Cromática Oficial</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>Tabla formal con 2 primarios, 2 base/HUD y 2 CFD secundarios (Sección 3A).</td>
+              </tr>
+              <tr>
+                <td><strong>Bloque 1: Identidad Visual</strong></td>
+                <td>Tipografías Oficiales</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>5 familias tipográficas aplicadas con jerarquía invariable (Sección 3B).</td>
+              </tr>
+              <tr>
+                <td><strong>Bloque 1: Identidad Visual</strong></td>
+                <td>Coherencia de Identidad</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>Matriz de 4 contextos: Web, Simulador, SDK y Pitch Deck (Sección 4).</td>
+              </tr>
+              <tr>
+                <td><strong>Bloque 1: Manual de Marca</strong></td>
+                <td>Proporción & Área de Reserva</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>Blueprint modular: H=4u, gap=1u, margen libre de 1u perimetral (Sección 5A).</td>
+              </tr>
+              <tr>
+                <td><strong>Bloque 2: Sistema Visual</strong></td>
+                <td>Componentes UI (3 Estados)</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>Catálogo de botones, tarjetas, inputs y badges en 3 estados (Sección 7A/B).</td>
+              </tr>
+              <tr>
+                <td><strong>Bloque 2: Sistema Visual</strong></td>
+                <td>Iconografía Técnica</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>Familia de 13 íconos vectoriales SVG en trazo uniforme de 2px (Sección 7C).</td>
+              </tr>
+              <tr>
+                <td><strong>Bloque 2: Sistema Visual</strong></td>
+                <td>Modos de Fluido & Modelos</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>6 modos de simulación y 4 variantes de representación 3D (Sección 7D/E).</td>
+              </tr>
+              <tr>
+                <td><strong>Bloque 2: Sistema Visual</strong></td>
+                <td>Escala Térmica Jet CFD</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>Gradiente Jet 0%-100% m/s con barra vertical milimétrica (Sección 7F).</td>
+              </tr>
+              <tr>
+                <td><strong>Bloque 2: Sistema Visual</strong></td>
+                <td>Arquitectura HUD del Simulador</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>Plano arquitectónico acotado en 5 zonas ergonómicas (Sección 7G).</td>
+              </tr>
+              <tr>
+                <td><strong>Bloque 2: Sistema Visual</strong></td>
+                <td>Reglas de Diseño & Lógica</td>
+                <td style="text-align:center; color:var(--color-green); font-family:var(--font-mono); font-weight:700;">VALIDADO</td>
+                <td>Malla modular de 8px, radios de 6/10px y 4 reglas universales (Sección 8).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 18: SÍNTESIS DE EVALUACIÓN (4 PREGUNTAS CLAVE) ─── -->
+      <section class="slide" data-slide="18">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[SÍNTESIS OFICIAL] // [RESPUESTAS PARA EL JURADO]</div>
+            <h2 class="slide-headline">5. Síntesis de Evaluación: <span class="cyan">Respuestas Clave</span></h2>
+          </div>
+          <span class="sheet-badge">18 / 19</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:30px; height:100%;">
+          <div class="metric-line-item" style="border-bottom:1px solid var(--border-subtle); padding-bottom:18px;">
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--color-cyan); font-weight:700; margin-bottom:4px;">
+              1. ¿IDENTIDAD VISUAL DEFINIDA Y COHERENTE?
+            </div>
+            <p style="font-size:0.86rem; color:#FFF; line-height:1.6;">
+              <strong>Sí.</strong> Basada en el eje dual <em>Fluidez + Computación</em>. El isotipo bipartito sintetiza la masa líquida con la malla GPU, y la matriz cruzada demuestra su coherencia en Web, Simulador, SDK y Láminas.
+            </p>
+          </div>
+
+          <div class="metric-line-item" style="border-bottom:1px solid var(--border-subtle); padding-bottom:18px;">
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--color-green); font-weight:700; margin-bottom:4px;">
+              2. ¿DOCUMENTACIÓN DE CRITERIOS CONSISTENTES?
+            </div>
+            <p style="font-size:0.86rem; color:#FFF; line-height:1.6;">
+              <strong>Sí.</strong> El Manual de Marca establece el sistema modular exacto ($H = 4u$, $\text{gap} = 1u$, reserva $1u$), límites de reproducción (16px / 32px / 5mm) y reglas de no deformación ni alteración cromática.
+            </p>
+          </div>
+
+          <div class="metric-line-item" style="border-bottom:none;">
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--color-cyan); font-weight:700; margin-bottom:4px;">
+              3. ¿ELEMENTOS VISUALES REUTILIZABLES ORGANIZADOS?
+            </div>
+            <p style="font-size:0.86rem; color:#FFF; line-height:1.6;">
+              <strong>Sí.</strong> Ecosistema modular completo: UI Kit en 3 estados, familia de 13 íconos vectoriales SVG a 2px, 6 modos de simulación y arquitectura del HUD del simulador en 5 zonas.
+            </p>
+          </div>
+
+          <div class="metric-line-item" style="border-bottom:none;">
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--color-green); font-weight:700; margin-bottom:4px;">
+              4. ¿MISMA LÓGICA VISUAL COMPARTIDA?
+            </div>
+            <p style="font-size:0.86rem; color:#FFF; line-height:1.6;">
+              <strong>Sí.</strong> 4 reglas universales: paleta cerrada de 6 tokens, trazo uniforme de 1-2px, métrica estricta en múltiplos de 8px y jerarquía tipográfica invariable sin excepciones.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SLIDE 19: CONCLUSIÓN & CIERRE DE PLANO ─── -->
+      <section class="slide" data-slide="19">
+        <div class="slide-topbar">
+          <div>
+            <div class="slide-spec-code">[CONCLUSIÓN OFICIAL] // [NEOFLUID3D STARTUP DECK]</div>
+            <h2 class="slide-headline">NeoFluid3D: <span class="cyan">Conclusión & Cierre</span></h2>
+          </div>
+          <span class="sheet-badge">19 / 19</span>
+        </div>
+
+        <div class="prop-split-2">
+          <div class="prop-split-item" style="flex:1.2;">
+            <div style="font-family:var(--font-display); font-size:2.8rem; font-weight:800; color:#FFF; line-height:1.1; margin-bottom:16px;">
+              Rigor Científico.<br />
+              <span style="color:var(--color-cyan);">Identidad Consolidada.</span><br />
+              <span style="color:var(--color-green); font-size:0.85em;">Aceleración en Tiempo Real.</span>
+            </div>
+            <p style="font-family:var(--font-sub); font-size:1rem; color:var(--color-titanium); line-height:1.6; margin-bottom:28px;">
+              NeoFluid3D cuenta con un sistema de diseño maduro, reproducible y aplicado activamente en su motor de simulación nativo y plataforma web, preparado para escalar a gemelos digitales e investigación hidráulica.
+            </p>
+            <div style="display:flex; gap:12px;">
+              <a href="../index.html" class="hud-btn hud-btn-site" style="padding:10px 20px;">
+                Explorar Sitio Web Oficial ↗
+              </a>
+              <a href="../docs/Entregable_Diseno_Hackathon_Nicaragua_2026.md" target="_blank" class="hud-btn" style="padding:10px 20px;">
+                Ver Entregable Markdown
+              </a>
+            </div>
+          </div>
+
+          <div class="prop-split-divider"></div>
+
+          <div class="prop-split-item" style="flex:0.8; align-items:center; justify-content:center;">
+            <div style="border:1px solid var(--border-line); padding:28px; text-align:center;">
+              <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--color-cyan); margin-bottom:14px;">
+                CREDENCIALES DE LA STARTUP // ACCESO
+              </div>
+              <div style="background:#FFF; padding:12px; border-radius:2px; display:inline-block; margin-bottom:12px;">
+                <svg width="130" height="130" viewBox="0 0 100 100" fill="#070B0E">
+                  <rect x="10" y="10" width="24" height="24" rx="2" fill="#070B0E"/>
+                  <rect x="14" y="14" width="16" height="16" fill="#FFF"/>
+                  <rect x="18" y="18" width="8" height="8" fill="#070B0E"/>
+                  <rect x="66" y="10" width="24" height="24" rx="2" fill="#070B0E"/>
+                  <rect x="70" y="14" width="16" height="16" fill="#FFF"/>
+                  <rect x="74" y="18" width="8" height="8" fill="#070B0E"/>
+                  <rect x="10" y="66" width="24" height="24" rx="2" fill="#070B0E"/>
+                  <rect x="14" y="70" width="16" height="16" fill="#FFF"/>
+                  <rect x="18" y="74" width="8" height="8" fill="#070B0E"/>
+                  <rect x="42" y="12" width="6" height="6"/>
+                  <rect x="52" y="18" width="6" height="6"/>
+                  <rect x="44" y="44" width="12" height="12"/>
+                  <rect x="64" y="44" width="6" height="6"/>
+                  <rect x="44" y="64" width="6" height="6"/>
+                  <rect x="74" y="64" width="10" height="6"/>
+                  <rect x="64" y="78" width="8" height="8"/>
+                </svg>
+              </div>
+              <div style="font-family:var(--font-mono); font-size:0.85rem; font-weight:700; color:#FFF;">
+                NeoFluid3D Engine v2.0
+              </div>
+              <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--color-green); margin-top:2px;">
+                Categoría Startup • Hackathon Nicaragua 2026
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       BOTTOM HUD CONTROLS
+       ═══════════════════════════════════════════════════════════ -->
+  <footer class="bottom-hud">
+    <div class="progress-track">
+      <div id="progress-bar-fill" class="progress-fill"></div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button id="btn-prev" class="hud-btn" title="Anterior (←)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div style="font-family:var(--font-mono); font-size:0.82rem; min-width:60px; text-align:center;">
+        <span id="slide-num-current" style="color:var(--color-cyan); font-weight:800;">01</span> / <span id="slide-num-total">19</span>
+      </div>
+      <button id="btn-next" class="hud-btn" title="Siguiente (→)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:14px; color:var(--color-text-dim); font-size:0.7rem; font-family:var(--font-mono);">
+      <span><kbd style="background:rgba(255,255,255,0.06); padding:1px 5px; border-radius:2px;">Espacio</kbd> Avanzar</span>
+      <span><kbd style="background:rgba(255,255,255,0.06); padding:1px 5px; border-radius:2px;">O</kbd> / <kbd style="background:rgba(255,255,255,0.06); padding:1px 5px; border-radius:2px;">Esc</kbd> Cuadrícula</span>
+      <span id="footer-shortcut-pitch" style="display:none;"><kbd style="background:rgba(255,255,255,0.06); padding:1px 5px; border-radius:2px;">S</kbd> Pitch</span>
+      <span><kbd style="background:rgba(255,255,255,0.06); padding:1px 5px; border-radius:2px;">Ctrl+P</kbd> PDF</span>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button id="btn-overview" class="hud-btn" title="Cuadrícula (O / Esc)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </button>
+      <button id="btn-fullscreen" class="hud-btn" title="Pantalla Completa (F)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+    </div>
+  </footer>
+
+  <!-- Overview Modal -->
+  <div id="overview-modal" class="overview-modal">
+    <div class="overview-header">
+      <div style="font-family:var(--font-display); font-size:1.3rem; font-weight:700; color:#FFF;">
+        VISTA GENERAL DE LÁMINAS (19 LÁMINAS TÉCNICAS)
+      </div>
+      <button id="close-overview" class="hud-btn">Cerrar (Esc)</button>
+    </div>
+    <div id="overview-grid" class="overview-grid"></div>
+  </div>
+
+  <!-- Presenter Drawer (Pitch Notes) -->
+  <aside id="presenter-drawer" class="presenter-drawer">
+    <div class="presenter-header">
+      <span>LIBRETO DEL ORADOR // PITCH DEFENSA</span>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span id="pitch-timer" class="pitch-timer">00:00</span>
+        <button id="close-notes" class="hud-btn" style="padding:2px 6px;">✕</button>
+      </div>
+    </div>
+    <div id="presenter-notes-content" class="presenter-notes-content"></div>
+  </aside>
+
+  <script src="presentation.js"></script>
+</body>
+</html>

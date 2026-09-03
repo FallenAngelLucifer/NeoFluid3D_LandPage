@@ -1,13 +1,13 @@
 /**
  * NeoFluid3D - High-Performance 3D Rotating Hero Isotype
- * Parametric 5-Surface Engine with Dual-Color Silhouette (Cyan/Green) & Enhanced Back Grid
+ * Genesis-canonical straight vertical drop geometry
  */
 (function setupHero3DDrop() {
   const canvas = document.getElementById('hero-drop-3d');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let angle = Math.atan2(-2.3, 2.5); // Camera azimuth angle
-  const speed = 0.012; // Continuous smooth rotation speed
+  const speed = 0.011; // Continuous smooth rotation speed
 
   // Exact Mathematical Constants from Genesis
   const SQRT5 = Math.sqrt(5); // ≈ 2.236068
@@ -19,14 +19,20 @@
   const Z_CAM = 0.42;         // Fixed camera Z
   const TARGET_Z = (SQRT5 - 1.0) / 2; // ≈ 0.618034 (Geometric center)
 
+  // ── 3 RINGS: equal step, outer rings nudged slightly inward to avoid thin triangles ──
+  const SALTO_NEW = 3 * SALTO / 2;  // ≈ 0.6306 — base step between rings
+  const NUDGE    = 0.12;             // slight inward pull for top and bottom rings
   const ringConfigs = [
-    { z: Y0, r: X0 },
-    { z: Y0 - SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - SALTO)**2)) },
-    { z: Y0 - 2 * SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - 2 * SALTO)**2)) },
-    { z: Y0 - 3 * SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - 3 * SALTO)**2)) }
+    { z: Y0 - NUDGE,                   r: Math.sqrt(Math.max(0, 1 - (Y0 - NUDGE)**2)) },
+    { z: Y0 - SALTO_NEW,               r: Math.sqrt(Math.max(0, 1 - (Y0 - SALTO_NEW)**2)) },
+    { z: Y0 - 2 * SALTO_NEW + NUDGE,   r: Math.sqrt(Math.max(0, 1 - (Y0 - 2*SALTO_NEW + NUDGE)**2)) }
   ];
 
-  const meridianAngles = [0, Math.PI / 4, Math.PI / 2, 3 * Math.PI / 4, Math.PI, 5 * Math.PI / 4, 3 * Math.PI / 2, 7 * Math.PI / 4];
+  // 8 Canonical Meridian Arcs from Genesis Software
+  const meridianAngles = [
+    0, Math.PI / 4, Math.PI / 2, 3 * Math.PI / 4,
+    Math.PI, 5 * Math.PI / 4, 3 * Math.PI / 2, 7 * Math.PI / 4
+  ];
 
   function getCutPoint(theta) {
     const k = 0.6 * (Math.cos(theta) + Math.sin(theta));
@@ -45,13 +51,13 @@
     }
   }
 
-  let w = 340, h = 350;
+  let w = 161, h = 260;
   function updateDimensions() {
     const dpr = window.devicePixelRatio || 1;
-    w = canvas.offsetWidth || canvas.clientWidth || 340;
-    h = canvas.offsetHeight || canvas.clientHeight || 350;
-    if (w < 50) w = 340;
-    if (h < 50) h = 350;
+    w = canvas.offsetWidth || canvas.clientWidth || 161;
+    h = canvas.offsetHeight || canvas.clientHeight || 260;
+    if (w < 40) w = 161;
+    if (h < 40) h = 260;
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -63,14 +69,27 @@
     document.addEventListener('DOMContentLoaded', updateDimensions);
   }
 
+  // Interactive Mouse Modulation
+  let mouseInfluence = 0;
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    mouseInfluence = nx * 0.4;
+  });
+  canvas.addEventListener('mouseleave', () => {
+    mouseInfluence = 0;
+  });
+
   function renderFrame() {
     ctx.clearRect(0, 0, w, h);
 
     const cx = w / 2;
     const cy = h / 2;
-    const scale = Math.min(w, h) * 0.305;
+    // Precisely scale drop so its 3D vertical span (SQRT5 + 1.0) fills 97.5% of canvas height h
+    // Scale 3D drop so its 3D vertical span (SQRT5 + 1.0) matches the 239.8px optical span of the text (apex y=10.1px, base y=249.9px, cy=130px)
+    const scale = (h * 0.922) / (SQRT5 + 1.0);
 
-    // 1. Compute Orbiting Camera Transformation in XY plane
+    // 1. Compute Orbiting Camera Transformation
     const camX = R_XY * Math.cos(angle);
     const camY = R_XY * Math.sin(angle);
     const camZ = Z_CAM;
@@ -100,14 +119,15 @@
       const y2d = -(dx * uVec.x + dy * uVec.y + dz * uVec.z);
       return {
         px: cx + x2d * scale,
-        py: cy + y2d * scale
+        py: cy + y2d * scale,
+        wx: x, wy: y, wz: z
       };
     }
 
-    const pApex = projectPoint(0, 0, SQRT5);
+    // ── LAYER 0: Curved 3D Space Coordinate Manifold Grid (Complex Plane Deformation) ──
 
     // ── LAYER 1: Full Drop Solid Dark Base (Silhouette) ──
-    const numS = 72;
+    const numS = 60;
     const thetaIzq = angle + Math.PI / 2;
     const thetaDer = angle - Math.PI / 2;
     const cpIzq = getCutPoint(thetaIzq);
@@ -128,19 +148,19 @@
       ctx.lineTo(pt.px, pt.py);
     }
     ctx.closePath();
-    ctx.fillStyle = '#010506';
+    ctx.fillStyle = '#070B0E';
     ctx.fill();
     ctx.restore();
 
-    // ── LAYER 2: Back-Facing Lower Sphere Grid (Enhanced Visibility Green) ──
+    // ── LAYER 2: Back-Facing Lower Sphere Grid (Emerald Green #39FF14) ──
     ctx.save();
-    ctx.lineWidth = 1.4;
-    ctx.strokeStyle = 'rgba(57, 255, 20, 0.40)'; // Enhanced visibility
+    ctx.lineWidth = 1.2;
+    ctx.strokeStyle = 'rgba(57, 255, 20, 0.30)';
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
     ringConfigs.forEach(ring => {
-      const numStepsRing = 72;
+      const numStepsRing = 60;
       let isDrawing = false;
       ctx.beginPath();
       for (let i = 0; i <= numStepsRing; i++) {
@@ -164,7 +184,7 @@
       const dot = Math.cos(t) * camDir2D.x + Math.sin(t) * camDir2D.y;
       if (dot < 0) { // Back only
         const cp = getCutPoint(t);
-        const numM = 36;
+        const numM = 30;
         ctx.beginPath();
         for (let i = 0; i <= numM; i++) {
           const z = -1.0 + (i / numM) * (cp.z - (-1.0));
@@ -179,8 +199,8 @@
     });
     ctx.restore();
 
-    // ── LAYER 3: TAPA B_t & B_b (PERMANENTEMENTE OSCURA, DIBUJADA DEBAJO DEL CONO SUPERIOR) ──
-    const numTapaU = 48;
+    // ── LAYER 3: TAPA B_t & B_b (Superficie de Corte Oblicua) ──
+    const numTapaU = 36;
     const numTapaV = 4;
 
     for (let i = 0; i < numTapaU; i++) {
@@ -189,8 +209,8 @@
       const cp1 = getCutPoint(b1);
       const cp2 = getCutPoint(b2);
 
-      ctx.fillStyle = 'rgba(2, 24, 32, 0.94)';
-      ctx.strokeStyle = (i % 2 === 0) ? 'rgba(0, 240, 255, 0.28)' : 'transparent';
+      ctx.fillStyle = 'rgba(7, 18, 24, 0.94)';
+      ctx.strokeStyle = (i % 2 === 0) ? 'rgba(0, 240, 255, 0.20)' : 'transparent';
       ctx.lineWidth = 0.6;
 
       for (let j = 0; j < numTapaV; j++) {
@@ -209,44 +229,57 @@
       }
     }
 
-    // ── LAYER 4: UPPER FLUID DOME (CYBERPUNK CIAN BRILLANTE) ──
-    const numU = 72;
-    const numV = 6;
+    // ── LAYER 4: UPPER FLUID DOME (ELECTRIC CYAN CONFORMAL VOLUME) ──
+    const numU = 60;
+    const N_SPH = 4;   // 4 subdivisions (3 extra quiebres) for spherical curve continuity
+    const N_CONE = 5;  // 5 subdivisions for the straight conic generator
+    const numV = N_SPH + N_CONE;
+    const pApex = projectPoint(0, 0, SQRT5);
+
+    function getDomePoint(theta, k) {
+      if (k >= numV) return pApex;
+      const cp = getCutPoint(theta);
+      let z, r;
+      if (cp.z < Y0) {
+        if (k <= N_SPH) {
+          const s = k / N_SPH;
+          z = cp.z + s * (Y0 - cp.z);
+          r = Math.sqrt(Math.max(0, 1 - z * z));
+        } else {
+          const s = (k - N_SPH) / N_CONE;
+          z = Y0 + s * (SQRT5 - Y0);
+          r = (SQRT5 - z) / 2;
+        }
+      } else {
+        const s = k / numV;
+        z = cp.z + s * (SQRT5 - cp.z);
+        r = (SQRT5 - z) / 2;
+      }
+      return projectPoint(r * Math.cos(theta), r * Math.sin(theta), z);
+    }
 
     for (let i = 0; i < numU; i++) {
       const b1 = (i / numU) * Math.PI * 2;
       const b2 = ((i + 1) / numU) * Math.PI * 2;
-      const cp1 = getCutPoint(b1);
-      const cp2 = getCutPoint(b2);
 
       const midAng = (b1 + b2) / 2;
       const dot = Math.cos(midAng) * camDir2D.x + Math.sin(midAng) * camDir2D.y;
       const isFront = (dot >= 0);
 
-      ctx.fillStyle = isFront ? 'rgba(0, 240, 255, 0.88)' : 'rgba(0, 240, 255, 0.20)';
+      ctx.fillStyle = isFront ? 'rgba(0, 240, 255, 0.88)' : 'rgba(0, 240, 255, 0.22)';
       ctx.strokeStyle = (i % 3 === 0) ? (isFront ? 'rgba(0, 240, 255, 0.95)' : 'rgba(0, 240, 255, 0.35)') : 'transparent';
       ctx.lineWidth = 0.7;
 
       for (let j = 0; j < numV; j++) {
-        const t1 = j / numV, t2 = (j + 1) / numV;
-
-        const z1_1 = cp1.z + t1 * (SQRT5 - cp1.z);
-        const z1_2 = cp1.z + t2 * (SQRT5 - cp1.z);
-        const z2_1 = cp2.z + t1 * (SQRT5 - cp2.z);
-        const z2_2 = cp2.z + t2 * (SQRT5 - cp2.z);
-
-        const r1_1 = z1_1 > Y0 ? (SQRT5 - z1_1) / 2 : Math.sqrt(Math.max(0, 1 - z1_1 * z1_1));
-        const r1_2 = z1_2 > Y0 ? (SQRT5 - z1_2) / 2 : Math.sqrt(Math.max(0, 1 - z1_2 * z1_2));
-        const r2_1 = z2_1 > Y0 ? (SQRT5 - z2_1) / 2 : Math.sqrt(Math.max(0, 1 - z2_1 * z2_1));
-        const r2_2 = z2_2 > Y0 ? (SQRT5 - z2_2) / 2 : Math.sqrt(Math.max(0, 1 - z2_2 * z2_2));
-
-        const p1 = projectPoint(r1_1 * Math.cos(b1), r1_1 * Math.sin(b1), z1_1);
-        const p2 = projectPoint(r2_1 * Math.cos(b2), r2_1 * Math.sin(b2), z2_1);
-        const p3 = (j === numV - 1) ? pApex : projectPoint(r2_2 * Math.cos(b2), r2_2 * Math.sin(b2), z2_2);
-        const p4 = (j === numV - 1) ? pApex : projectPoint(r1_2 * Math.cos(b1), r1_2 * Math.sin(b1), z1_2);
+        const p1 = getDomePoint(b1, j);
+        const p2 = getDomePoint(b2, j);
+        const p3 = (j === numV - 1) ? pApex : getDomePoint(b2, j + 1);
+        const p4 = (j === numV - 1) ? pApex : getDomePoint(b1, j + 1);
 
         ctx.beginPath();
-        ctx.moveTo(p1.px, p1.py); ctx.lineTo(p2.px, p2.py); ctx.lineTo(p3.px, p3.py);
+        ctx.moveTo(p1.px, p1.py);
+        ctx.lineTo(p2.px, p2.py);
+        ctx.lineTo(p3.px, p3.py);
         if (j < numV - 1) ctx.lineTo(p4.px, p4.py);
         ctx.closePath();
         ctx.fill();
@@ -254,15 +287,15 @@
       }
     }
 
-    // ── LAYER 5: Front-Facing Lower Sphere Grid (Bright Neon Green #39FF14) ──
+    // ── LAYER 5: Front-Facing Lower Sphere Grid (Precision Emerald Green #39FF14) ──
     ctx.save();
-    ctx.lineWidth = 2.0;
+    ctx.lineWidth = 2.8;
     ctx.strokeStyle = '#39FF14';
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
     ringConfigs.forEach(ring => {
-      const numStepsRing = 72;
+      const numStepsRing = 60;
       let isDrawing = false;
       ctx.beginPath();
       for (let i = 0; i <= numStepsRing; i++) {
@@ -286,7 +319,7 @@
       const dot = Math.cos(t) * camDir2D.x + Math.sin(t) * camDir2D.y;
       if (dot >= 0) { // Front only
         const cp = getCutPoint(t);
-        const numM = 36;
+        const numM = 30;
         ctx.beginPath();
         for (let i = 0; i <= numM; i++) {
           const z = -1.0 + (i / numM) * (cp.z - (-1.0));
@@ -301,15 +334,15 @@
     });
     ctx.restore();
 
-    // ── LAYER 6: Glowing Cut Curve Perimeter ──
+    // ── LAYER 6: Glowing Curved Cut Perimeter ──
     [false, true].forEach(isFrontPass => {
       ctx.save();
-      ctx.lineWidth = isFrontPass ? 2.6 : 1.4;
+      ctx.lineWidth = isFrontPass ? 3.6 : 1.8;
       ctx.strokeStyle = isFrontPass ? '#00F0FF' : 'rgba(0, 240, 255, 0.35)';
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
 
-      const numCutPts = 72;
+      const numCutPts = 60;
       let isDrawing = false;
       ctx.beginPath();
       for (let i = 0; i <= numCutPts; i++) {
@@ -327,17 +360,16 @@
       ctx.restore();
     });
 
-    // ── LAYER 7: DUAL-COLOR SILHOUETTE BORDER (Verde en la base esférica, Celeste en el cono) ──
-    const numSub = 36;
+    // ── LAYER 7: CONFORMAL DUAL-COLOR SILHOUETTE CONTOUR ──
+    const numSub = 30;
 
     // 7A. Lower Sphere Contour (Verde Computación #39FF14)
     ctx.save();
     ctx.strokeStyle = '#39FF14';
-    ctx.lineWidth = 2.4;
+    ctx.lineWidth = 3.4;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    // Left lower sphere border: from cpIzq down to -1.0
     ctx.beginPath();
     for (let i = 0; i <= numSub; i++) {
       const z = cpIzq.z - (i / numSub) * (cpIzq.z - (-1.0));
@@ -345,7 +377,6 @@
       const pt = projectPoint(r * Math.cos(thetaIzq), r * Math.sin(thetaIzq), z);
       i === 0 ? ctx.moveTo(pt.px, pt.py) : ctx.lineTo(pt.px, pt.py);
     }
-    // Right lower sphere border: from -1.0 up to cpDer
     for (let i = 0; i <= numSub; i++) {
       const z = -1.0 + (i / numSub) * (cpDer.z - (-1.0));
       const r = z > Y0 ? (SQRT5 - z) / 2 : Math.sqrt(Math.max(0, 1 - z * z));
@@ -355,14 +386,13 @@
     ctx.stroke();
     ctx.restore();
 
-    // 7B. Upper Fluid Cone Contour (Cian Fluido #00F0FF)
+    // 7B. Upper Fluid Cone Contour (Cian Eléctrico #00F0FF)
     ctx.save();
     ctx.strokeStyle = '#00F0FF';
-    ctx.lineWidth = 2.4;
+    ctx.lineWidth = 3.4;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    // Left upper cone border: from cpIzq up to apex
     ctx.beginPath();
     for (let i = 0; i <= numSub; i++) {
       const z = cpIzq.z + (i / numSub) * (SQRT5 - cpIzq.z);
@@ -370,7 +400,6 @@
       const pt = projectPoint(r * Math.cos(thetaIzq), r * Math.sin(thetaIzq), z);
       i === 0 ? ctx.moveTo(pt.px, pt.py) : ctx.lineTo(pt.px, pt.py);
     }
-    // Right upper cone border: from apex down to cpDer
     for (let i = 0; i <= numSub; i++) {
       const z = SQRT5 - (i / numSub) * (SQRT5 - cpDer.z);
       const r = z > Y0 ? (SQRT5 - z) / 2 : Math.sqrt(Math.max(0, 1 - z * z));
@@ -413,3 +442,4 @@
     heroDropObs.observe(canvas);
   }
 })();
+

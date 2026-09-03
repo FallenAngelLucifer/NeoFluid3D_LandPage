@@ -3,48 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#030708" />
-  <title>NeoFluid3D - Motor de Simulación de Fluidos en Tiempo Real</title>
-  <meta name="description" content="Motor de cálculo acelerado en GPU para dinámica de fluidos en tiempo real, gemelos digitales y software avanzado." />
+  <meta name="theme-color" content="#070B0E" />
+  <title>NeoFluid3D - Motor de Simulación de Fluidos en Tiempo Real Acelerado por GPU</title>
+  <meta name="description" content="Motor de cálculo acelerado directamente en GPU para dinámica de fluidos en tiempo real, gemelos digitales industriales y software avanzado de ingeniería." />
 
   <!-- Fonts & Math Stylesheets -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Oxanium:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
 
-  <!-- High-Contrast Vector Isotype Favicon (Canonical High-Contrast Genesis Projection) -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <!-- High-Contrast Vector Isotype Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=3" />
+  <link rel="alternate icon" href="favicon.svg?v=3" />
 
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=5" />
 </head>
 <body>
 
-  <!-- Cyberpunk Background Atmosphere Overlays -->
+  <!-- Tech Background Atmosphere Overlays -->
   <div id="scanlines" aria-hidden="true"></div>
   <div id="grid-bg" aria-hidden="true"></div>
 
-  <!-- Hardware-Accelerated Interactive Glow Cursor -->
-  <div id="cursor-dot" aria-hidden="true"></div>
-  <div id="cursor-ring" aria-hidden="true"></div>
 
   <!-- Top Scroll Progress Indicator -->
   <div id="scroll-progress"></div>
 
-  <!-- Right Vertical Plexus 3D Navigator -->
   <!-- Sleek Vertical Plexus 3D Navigation System -->
   <div id="vertical-plexus-container">
     <canvas id="vertical-plexus-canvas"></canvas>
     <div class="plexus-nodes-overlay">
-      <a href="#hero" class="plexus-node-item active" data-sec="hero" title="Inicio / Portada"><div class="plexus-node-dot">00</div></a>
+      <a href="#hero" class="plexus-node-item active" data-sec="hero" title="00 Inicio"><div class="plexus-node-dot">00</div></a>
       <a href="#vision" class="plexus-node-item" data-sec="vision" title="01 Visión"><div class="plexus-node-dot">01</div></a>
       <a href="#demos" class="plexus-node-item" data-sec="demos" title="02 Demos"><div class="plexus-node-dot">02</div></a>
-      <a href="#isotype" class="plexus-node-item" data-sec="isotype" title="03 Isotipo"><div class="plexus-node-dot">03</div></a>
-      <a href="#logotype" class="plexus-node-item" data-sec="logotype" title="04 Logotipo"><div class="plexus-node-dot">04</div></a>
-      <a href="#imagotype" class="plexus-node-item" data-sec="imagotype" title="05 Imagotipo"><div class="plexus-node-dot">05</div></a>
-      <a href="#possibilities" class="plexus-node-item" data-sec="possibilities" title="06 Posibilidades"><div class="plexus-node-dot">06</div></a>
-      <a href="#modes" class="plexus-node-item" data-sec="modes" title="07 Modos"><div class="plexus-node-dot">07</div></a>
-      <a href="#roadmap" class="plexus-node-item" data-sec="roadmap" title="08 Roadmap"><div class="plexus-node-dot">08</div></a>
+      <a href="#benchmarks" class="plexus-node-item" data-sec="benchmarks" title="03 Cómputo GPU"><div class="plexus-node-dot">03</div></a>
+      <a href="#sdk" class="plexus-node-item" data-sec="sdk" title="04 Arquitectura Núcleo"><div class="plexus-node-dot">04</div></a>
+      <a href="#modes" class="plexus-node-item" data-sec="modes" title="05 Modos"><div class="plexus-node-dot">05</div></a>
+      <a href="#possibilities" class="plexus-node-item" data-sec="possibilities" title="06 B2B"><div class="plexus-node-dot">06</div></a>
+      <a href="#roadmap" class="plexus-node-item" data-sec="roadmap" title="07 Roadmap"><div class="plexus-node-dot">07</div></a>
+      <a href="#brand" class="plexus-node-item" data-sec="brand" title="08 ADN Técnico"><div class="plexus-node-dot">08</div></a>
       <a href="#contact" class="plexus-node-item" data-sec="contact" title="09 Contacto"><div class="plexus-node-dot">09</div></a>
     </div>
   </div>
@@ -61,26 +59,24 @@
   <nav id="navbar" class="navbar" aria-label="Navegación principal">
     <a href="#hero" class="navbar-brand" aria-label="NeoFluid3D Inicio">
       <svg class="navbar-brand-logo" width="28" height="36" viewBox="4 4 92 143.83" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <!-- NeoFluid3D Principal High-Contrast Isotype (Canonical Genesis Projection) -->
+  <!-- NeoFluid3D Precision High-Contrast Isotype -->
   <defs>
     <clipPath id="navDropClip">
       <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" />
     </clipPath>
   </defs>
 
-  <!-- 1. Full Drop Solid Black Base -->
-  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#000000" />
+  <!-- 1. Full Drop Solid Base with Deep Emerald backing -->
+  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#061A14" stroke="#39FF14" stroke-width="4.8" />
 
-  <!-- 2. Lower Sphere Grid (Neon Green #39FF14) -->
-  <g clip-path="url(#navDropClip)" stroke="#39FF14" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <!-- Ring 1 -->
-    <path d="M 55.76 84.40 L 57.82 84.38 L 60.11 84.36 L 62.36 84.34 L 64.57 84.31 L 66.71 84.27 L 68.79 84.23 L 70.80 84.19 L 72.72 84.14 L 74.55 84.09 L 76.29 84.03 L 77.92 83.97 L 79.45 83.91 L 80.85 83.84 L 82.14 83.77 L 83.30 83.70 L 84.32 83.62 L 85.21 83.55 L 85.97 83.47 L 86.58 83.39 L 87.04 83.31 L 87.36 83.22 L 87.56 83.14" />
-    <!-- Ring 2 -->
-    <path d="M 35.37 102.12 L 39.14 102.16 L 43.01 102.19 L 46.94 102.21 L 50.89 102.21 L 54.84 102.20 L 58.74 102.18 L 62.57 102.15 L 66.28 102.10 L 69.85 102.04 L 73.24 101.97 L 76.43 101.88 L 79.38 101.79 L 82.07 101.69 L 84.48 101.58 L 86.58 101.46 L 88.36 101.33 L 89.80 101.20 L 90.88 101.07 L 91.60 100.93 L 91.95 100.79" />
-    <!-- Ring 3 -->
-    <path d="M 14.41 118.91 L 17.19 119.10 L 20.78 119.27 L 25.09 119.42 L 30.01 119.54 L 35.42 119.64 L 41.19 119.70 L 47.18 119.74 L 53.24 119.74 L 59.22 119.70 L 64.97 119.63 L 70.35 119.54 L 75.24 119.41 L 79.50 119.26 L 83.03 119.08 L 85.75 118.89 L 87.59 118.69 L 88.58 118.43" />
-    <!-- Ring 4 -->
-    <path d="M 25.64 136.07 L 27.51 136.36 L 30.12 136.52 L 33.68 136.66 L 38.03 136.77 L 42.95 136.85 L 48.22 136.88 L 53.57 136.88 L 58.75 136.83 L 63.51 136.74 L 67.61 136.62 L 70.87 136.47 L 73.12 136.30 L 74.38 136.06" />
+  <!-- 2. Lower Sphere Grid (Luminant Emerald #39FF14) -->
+  <g clip-path="url(#navDropClip)" stroke="#39FF14" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Ring 1 (z=0.327, r=0.945) -->
+    <path d="M 76.9 86.42 L 79.81 86.59 L 82.39 86.78 L 84.62 86.99 L 86.47 87.2 L 87.92 87.43 L 88.95 87.67 L 89.56 87.9 M 10.27 88.1 L 10.53 87.86 L 11.23 87.62 L 12.35 87.38 L 13.88 87.16 L 15.81 86.94 L 18.11 86.74 L 20.76 86.56 L 23.73 86.39 L 26.99 86.24 L 30.5 86.11 L 34.23 86 L 38.13 85.92 L 42.16 85.86 L 46.27 85.82 L 50.43 85.81 L 54.58 85.83 L 58.68 85.87 L 62.68 85.93 L 66.55 86.02 L 70.23 86.13 L 73.7 86.27 L 76.9 86.42" />
+    <!-- Ring 2 (z=-0.183, r=0.983) -->
+    <path d="M 77.98 107.78 L 81.01 107.96 L 83.7 108.16 L 86.01 108.37 L 87.94 108.6 L 89.44 108.83 L 90.52 109.08 L 91.15 109.33 M 8.67 109.53 L 8.94 109.28 L 9.67 109.03 L 10.83 108.79 L 12.42 108.55 L 14.43 108.33 L 16.82 108.12 L 19.58 107.93 L 22.67 107.75 L 26.07 107.59 L 29.72 107.46 L 33.59 107.35 L 37.65 107.26 L 41.84 107.2 L 46.12 107.16 L 50.44 107.15 L 54.76 107.16 L 59.03 107.21 L 63.19 107.27 L 67.21 107.37 L 71.05 107.48 L 74.65 107.62 L 77.98 107.78" />
+    <!-- Ring 3 (z=-0.694, r=0.720) -->
+    <path d="M 70.5 129.69 L 72.71 129.82 L 74.68 129.97 L 76.38 130.12 L 77.79 130.29 L 78.89 130.46 L 79.68 130.64 L 80.14 130.82 M 19.73 130.97 L 19.93 130.78 L 20.46 130.6 L 21.31 130.42 L 22.48 130.25 L 23.95 130.09 L 25.7 129.93 L 27.72 129.79 L 29.99 129.66 L 32.47 129.55 L 35.15 129.45 L 37.98 129.37 L 40.95 129.3 L 44.02 129.26 L 47.16 129.23 L 50.32 129.22 L 53.49 129.24 L 56.61 129.27 L 59.66 129.32 L 62.61 129.38 L 65.42 129.47 L 68.05 129.57 L 70.5 129.69" />
     <!-- Meridians -->
     <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
     <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
@@ -88,32 +84,40 @@
     <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
   </g>
 
-  <!-- 3. Upper Fluid Solid Fill (Cyan #00F0FF) -->
-  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
+  <!-- 3. Upper Fluid Solid Fill (Electric Cyan #00F0FF) -->
+  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" stroke="#00F0FF" stroke-width="4.8" stroke-linejoin="round" />
 
-  <!-- 4. Front Cut Curve Contour (Cyan #00F0FF) -->
-  <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" />
+  <!-- 4. Front Cut Curve Contour (Electric Cyan #00F0FF) -->
+  <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="5.2" stroke-linecap="round" />
 
-  <!-- 5A. Lower Sphere Outer Border (Neon Green #39FF14) -->
-  <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- 5A. Lower Sphere Outer Border (Precision Emerald Green #39FF14) -->
+  <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round" />
 
-  <!-- 5B. Upper Fluid Cone Outer Border (Cyan #00F0FF) -->
-  <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- 5B. Upper Fluid Cone Outer Border (Electric Cyan #00F0FF) -->
+  <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round" />
 </svg>
-      <span class="brand-text"><span class="brand-neo">Neo</span><span class="brand-fluid3d" style="color: var(--color-green); font-family: var(--font-mono); font-weight: 700;"><span class="brand-fluid" style="color: var(--color-green);">Fluid</span><span class="brand-3d" style="color: var(--color-green);"><span class="brand-exp" style="color: var(--color-green);">³</span><span class="brand-d" style="color: var(--color-green);">D</span></span></span></span>
+      <div class="brand-text-stacked">
+        <span class="brand-neo">NEO</span>
+        <span class="brand-fluid3d"><span class="brand-fluid">Fluid</span><span class="brand-3d"><span class="brand-exp">³</span><span class="brand-d">D</span></span></span>
+      </div>
     </a>
 
     <ul class="nav-links">
       <li><a href="#vision">01 Visión</a></li>
       <li><a href="#demos">02 Demos</a></li>
-      <li><a href="#isotype">03 Isotipo</a></li>
-      <li><a href="#logotype">04 Logotipo</a></li>
-      <li><a href="#imagotype">05 Imagotipo</a></li>
-      <li><a href="#possibilities">06 Posibilidades</a></li>
-      <li><a href="#modes">07 Modos</a></li>
-      <li><a href="#roadmap">08 Roadmap</a></li>
-      <li><a href="#contact" class="nav-cta">09 Contacto</a></li>
+      <li><a href="#benchmarks">03 GPU</a></li>
+      <li><a href="#sdk">04 Núcleo</a></li>
+      <li><a href="#modes">05 Modos</a></li>
+      <li><a href="#possibilities">06 B2B</a></li>
+      <li><a href="#roadmap">07 Roadmap</a></li>
+      <li><a href="#brand">08 ADN</a></li>
     </ul>
+
+    <div class="nav-actions">
+      <a href="brand-manual.html" target="_blank" rel="noopener noreferrer" class="nav-btn-tag nav-manual-tag" title="Manual de Marca Oficial (Vista Dedicada)">Manual PDF ↗</a>
+      <a href="presentation/index.html" target="_blank" rel="noopener noreferrer" class="nav-btn-tag nav-deck-tag" title="Presentación Interactiva de Diseño (Startup Deck)">Deck Diseño ⧉</a>
+      <a href="#contact" class="nav-btn-tag nav-cta" title="Ir a Sección de Contacto">09 Contacto</a>
+    </div>
   </nav>
 
   <!-- ═══════════════════════════════════════════════════════════
@@ -124,41 +128,45 @@
     <div class="ambient-glow glow-1" aria-hidden="true"></div>
     <div class="ambient-glow glow-2" aria-hidden="true"></div>
 
-    <!-- Centered Rotating 3D Drop with Ambient Radial Glow & Float Animation -->
-    <div class="hero-brand-symbol" aria-hidden="true">
-      <div class="hero-symbol-ambient-glow"></div>
-      <canvas id="hero-drop-3d" width="340" height="350"></canvas>
+    <!-- Unified Hero Brand Lockup: Canonical Stacked Imagotype (3D Rotating Drop on Left, Exact Blueprint Stacked Name on Right) -->
+    <div class="hero-brand-lockup" aria-label="NeoFluid3D">
+      <div class="hero-brand-symbol" aria-hidden="true">
+        <div class="hero-symbol-ambient-glow"></div>
+        <canvas id="hero-drop-3d" width="161" height="260"></canvas>
+      </div>
+      <h1 class="hero-title-stacked-wrap">
+        <svg class="hero-brand-text-svg" viewBox="315.8 50 485 260" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NEO Fluid³D">
+          <text x="315.8" y="171.0" font-family="'Clash Display', 'Poppins', sans-serif" font-weight="700" font-size="156" fill="#00F0FF" letter-spacing="-0.02em" filter="drop-shadow(0 0 25px rgba(0, 240, 255, 0.45))">NEO</text>
+          <text x="315.8" y="300.0" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="118" fill="#39FF14" letter-spacing="-0.025em" filter="drop-shadow(0 0 25px rgba(57, 255, 20, 0.4))">Fluid<tspan font-size="88" dy="-48">3</tspan><tspan font-size="118" dy="48">D</tspan></text>
+        </svg>
+      </h1>
     </div>
 
-    <h1 class="hero-title">
-      <span class="neo">Neo</span><span class="fluid3d">Fluid³D</span>
-    </h1>
-
     <p class="hero-desc">
-      Un motor de cálculo acelerado directamente en GPU concebido como <strong>plataforma fundacional</strong> para integrarse en soluciones industriales, gemelos digitales, simuladores interactivos y entornos de ingeniería avanzada.
+      Motor de cálculo acelerado directamente en GPU concebido como <strong>tecnología fundacional de simulación de fluidos</strong> para gemelos digitales industriales, prototipado pre-CFD, simuladores inmersivos y pipelines 3D avanzados.
     </p>
 
     <div class="hero-actions">
       <a href="#demos" class="btn-primary">Ver Demostraciones en Video</a>
-      <a href="#possibilities" class="btn-secondary">Explorar Posibilidades B2B</a>
+      <a href="#benchmarks" class="btn-secondary">Arquitectura de Cómputo</a>
     </div>
 
     <div class="hero-stat-ribbon">
       <div class="ribbon-item">
-        <div class="ribbon-val">100% GPU</div>
-        <div class="ribbon-lbl">Cálculo Paralelo en VRAM</div>
+        <div class="ribbon-val">Paralelización GPU</div>
+        <div class="ribbon-lbl">Cálculo Físico Directo en VRAM</div>
+      </div>
+      <div class="ribbon-item">
+        <div class="ribbon-val">Partículas SPH</div>
+        <div class="ribbon-lbl">Dinámica Sin Malla Rígida</div>
       </div>
       <div class="ribbon-item">
         <div class="ribbon-val">Tiempo Real</div>
-        <div class="ribbon-lbl">Respuesta Instantánea</div>
+        <div class="ribbon-lbl">Interactividad e Inspección Viva</div>
       </div>
       <div class="ribbon-item">
-        <div class="ribbon-val">Modular</div>
-        <div class="ribbon-lbl">Integrable en Pipelines</div>
-      </div>
-      <div class="ribbon-item">
-        <div class="ribbon-val">B2B Ready</div>
-        <div class="ribbon-lbl">Licenciamiento & Soluciones</div>
+        <div class="ribbon-val">Núcleo Autónomo</div>
+        <div class="ribbon-lbl">Arquitectura Nativa Desacoplada</div>
       </div>
     </div>
   </header>
@@ -178,7 +186,7 @@
       </p>
 
       <div class="vision-callout reveal reveal-d4">
-        <h4>De prototipo a plataforma comercial</h4>
+        <h4>De prototipo a solución y motor comercial</h4>
         <p>
           Estamos evolucionando de la fase de investigación hacia un modelo de tecnología licenciable y desarrollos a medida para empresas que requieran procesamiento de fluidos en tiempo real con latencia mínima.
         </p>
@@ -316,18 +324,585 @@
 </section>
 
   <!-- ═══════════════════════════════════════════════════════════
-       SECTION 3 : ISOTYPE - GENESIS & CONSTRUCCIÓN ℝ³ -> ℝ²
+       SECTION 03 : ARQUITECTURA DE CÓMPUTO & PARALELIZACIÓN GPU
        ═══════════════════════════════════════════════════════════ -->
-  <section id="isotype">
+  <section id="benchmarks">
     <div class="section-inner">
-      <div class="section-eyebrow reveal">Identidad Visual Matemática</div>
-      <h2 class="section-title reveal reveal-d1">
-        El <span class="hl-cyan">Isotipo</span>: Génesis & Construcción ℝ³ → ℝ²
-      </h2>
-      <p class="section-desc reveal reveal-d2">
-        La identidad visual de NeoFluid3D no es una ilustración arbitraria: es una construcción matemática rigurosa que evoluciona desde superficies paramétricas continuas en el espacio euclidiano tridimensional ℝ³ hasta su proyección canónica bidimensional ℝ².
-      </p>
+      <div class="section-header center">
+        <div class="section-eyebrow reveal">Arquitectura & Rendimiento</div>
+        <h2 class="section-title reveal reveal-d1">
+          Cómputo Paralelo y <span class="hl-cyan">Aceleración GPU</span>
+        </h2>
+        <p class="section-desc reveal reveal-d2">
+          Análisis de arquitectura comparativa entre el procesamiento masivo paralelo en memoria de video (VRAM) frente al cuello de botella tradicional de CPU secuencial, optimizando la fluidez y respuesta en tiempo real.
+        </p>
+      </div>
 
+      <div class="benchmarks-grid">
+        
+        <!-- Table Comparison Card: Theoretical Paradigms -->
+        <div class="benchmark-card reveal reveal-d1">
+          <div class="benchmark-header-row">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: #FFFFFF;">Comparativa Arquitectónica</h3>
+              <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.2rem;">Paradigmas de cálculo hidrodinámico</p>
+            </div>
+            <span class="benchmark-badge">Modelo Teórico</span>
+          </div>
+
+          <div class="benchmark-table-wrap">
+            <table class="benchmark-table">
+              <thead>
+                <tr>
+                  <th>Criterio Técnico</th>
+                  <th>CFD Clásico (CPU)</th>
+                  <th>Aproximación Gráfica</th>
+                  <th style="color: var(--color-cyan);">NeoFluid3D (GPU)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="highlight-row">
+                  <td>Paradigma de Cálculo</td>
+                  <td>Serial / Hilos de CPU</td>
+                  <td>Deformación de Vértices</td>
+                  <td style="color: var(--color-green);">SIMD Masivo en GPU</td>
+                </tr>
+                <tr>
+                  <td>Residencia de Datos</td>
+                  <td>RAM del Sistema (Bus PCIe)</td>
+                  <td>Memoria Gráfica Básica</td>
+                  <td style="color: var(--color-cyan);">100% VRAM (Cero Latencia de Bus)</td>
+                </tr>
+                <tr>
+                  <td>Topología del Fluido</td>
+                  <td>Malla Rígida (Remallado Lento)</td>
+                  <td>Animación Superficial</td>
+                  <td style="color: var(--color-green);">Masa Discreta de Partículas</td>
+                </tr>
+                <tr>
+                  <td>Capacidad de Respuesta</td>
+                  <td>Cálculo Fuera de Línea (Horas)</td>
+                  <td>Rápida sin Física Real</td>
+                  <td style="color: #FFFFFF;">Tiempo Real Interactivo</td>
+                </tr>
+                <tr>
+                  <td>Carga en el Host</td>
+                  <td>Saturación de Núcleos CPU</td>
+                  <td>Carga Moderada de CPU</td>
+                  <td style="color: var(--color-green);">CPU Libre para la Aplicación</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Simulation Pipeline Stages Card -->
+        <div class="benchmark-card reveal reveal-d2">
+          <div class="benchmark-header-row">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: #FFFFFF;">Pipeline del Ciclo de Simulación</h3>
+              <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.2rem;">Flujo de cálculo unificado ejecutado por fotograma</p>
+            </div>
+            <span class="benchmark-badge">Flujo VRAM</span>
+          </div>
+
+          <div class="pipeline-stages-list">
+            <div class="pipeline-stage-item">
+              <div class="stage-num-badge">01</div>
+              <div class="stage-info">
+                <h4 class="stage-title">Partición Espacial de Vecindad</h4>
+                <p class="stage-desc">Indexación espacial acelerada para ordenar las partículas en memoria contigua y optimizar la búsqueda de vecindad sin transferencias fuera de la GPU.</p>
+              </div>
+            </div>
+
+            <div class="pipeline-stage-item">
+              <div class="stage-num-badge">02</div>
+              <div class="stage-info">
+                <h4 class="stage-title">Evaluación de Densidad & Presión</h4>
+                <p class="stage-desc">Cálculo de la densidad volumétrica local de cada partícula mediante interpolación espacial y resolución de presiones hidrodinámicas.</p>
+              </div>
+            </div>
+
+            <div class="pipeline-stage-item">
+              <div class="stage-num-badge">03</div>
+              <div class="stage-info">
+                <h4 class="stage-title">Integración de Fuerzas Físicas</h4>
+                <p class="stage-desc">Computación simultánea de gradientes de presión, disipación por viscosidad cinemática, cohesión y aceleración de gravedad.</p>
+              </div>
+            </div>
+
+            <div class="pipeline-stage-item">
+              <div class="stage-num-badge">04</div>
+              <div class="stage-info">
+                <h4 class="stage-title">Avance Temporal & Colisión</h4>
+                <p class="stage-desc">Integración numérica del paso de tiempo, actualizando posiciones y resolviendo límites de contacto contra obstáculos sólidos.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 04 : ARQUITECTURA DEL NÚCLEO & HOJA DE RUTA
+       ═══════════════════════════════════════════════════════════ -->
+  <section id="sdk">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-eyebrow reveal">Arquitectura & Modularidad</div>
+        <h2 class="section-title reveal reveal-d1">
+          Núcleo Modular y <span class="hl-green">Estrategia de Integración</span>
+        </h2>
+        <p class="section-desc reveal reveal-d2">
+          Estructura de software concebida con separación estricta entre el cálculo físico y la representación gráfica, proyectada para integrarse progresivamente en diversos entornos de ingeniería y visualización.
+        </p>
+      </div>
+
+      <div class="sdk-grid">
+        
+        <!-- Left Column: Architectural Pillars & Roadmap -->
+        <div class="reveal reveal-d1">
+          <div style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 2rem; backdrop-filter: blur(12px);">
+            <h3 style="font-size: 1.2rem; color: #FFFFFF; font-weight: 700; margin-bottom: 1rem;">Pilares del Motor</h3>
+            
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 1.1rem; color: var(--color-text-muted); font-size: 0.88rem;">
+              <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
+                <span style="color: var(--color-green); font-weight: 700;">✓</span>
+                <div><strong style="color: #FFFFFF;">Desacoplamiento Solver / Render:</strong> El núcleo físico calcula estados hidrodinámicos sin depender de un motor gráfico particular, facilitando su futura incrustación modular.</div>
+              </li>
+              <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
+                <span style="color: var(--color-green); font-weight: 700;">✓</span>
+                <div><strong style="color: #FFFFFF;">Buffers de Memoria Contiguos:</strong> Estructura de arreglos compactos en GPU optimizada para lectura paralela de alto ancho de banda en VRAM.</div>
+              </li>
+              <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
+                <span style="color: var(--color-green); font-weight: 700;">✓</span>
+                <div><strong style="color: #FFFFFF;">Control Paramétrico en Vivo:</strong> Capacidad de modificar gravedad, viscosidad, densidad y condiciones de frontera durante la simulación activa.</div>
+              </li>
+              <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
+                <span style="color: var(--color-green); font-weight: 700;">✓</span>
+                <div><strong style="color: #FFFFFF;">Extracción Geométrica:</strong> Reconstrucción dinámica de isosuperficies de fluido para inspección analítica o visualización técnica.</div>
+              </li>
+            </ul>
+
+            <div style="margin-top: 1.8rem; border-top: 1px solid var(--color-border-subtle); padding-top: 1.2rem;">
+              <div style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--color-text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.8rem;">Hoja de Ruta de Interoperabilidad</div>
+              <div class="pipeline-badges-grid">
+                <span class="pipeline-badge" style="border-color: rgba(57, 255, 20, 0.4);"><span style="color: var(--color-green);">●</span> Fase 1: Núcleo Nativo & Simulador Standalone</span>
+                <span class="pipeline-badge" style="border-color: rgba(0, 240, 255, 0.4);"><span style="color: var(--color-cyan);">◐</span> Fase 2: Capa de Interoperabilidad C++ / Shaders</span>
+                <span class="pipeline-badge"><span style="color: var(--color-text-dim);">○</span> Fase 3: Conectores a Motores 3D & Pipelines Web</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Core Architecture Pipeline Diagram (Interactive, Zero Inert Code) -->
+        <div class="core-arch-card reveal reveal-d2">
+          <div class="core-arch-header">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: #FFFFFF;">Flujo de Arquitectura del Núcleo</h3>
+              <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.2rem;">Pipeline de cómputo físico y desacoplamiento de capas</p>
+            </div>
+            <span class="benchmark-badge" style="border-color: rgba(57, 255, 20, 0.4); color: var(--color-green);">Motor Standalone</span>
+          </div>
+
+          <div class="arch-pipeline-wrap">
+            
+            <!-- Layer 1: Host Application Interface -->
+            <div class="arch-layer-box" data-layer="1">
+              <span class="arch-layer-tag tag-cyan">CAPA 01</span>
+              <div class="arch-layer-content">
+                <div class="arch-layer-title">Interfaz de Entrada & Condiciones Límite</div>
+                <div class="arch-layer-desc">Inyección de geometría CAD contenedora, configuración de emisores continuos y parámetros globales de simulación (gravedad, viscosidad cinemática y densidad de reposo).</div>
+              </div>
+            </div>
+
+            <div class="arch-flow-arrow">▼ Transferencia de Parámetros a VRAM (Inicialización Única)</div>
+
+            <!-- Layer 2: Contiguous GPU VRAM Indexing -->
+            <div class="arch-layer-box highlight-vram" data-layer="2">
+              <span class="arch-layer-tag tag-green">CAPA 02</span>
+              <div class="arch-layer-content">
+                <div class="arch-layer-title">Partición Espacial & Buffers Contiguos (GPU)</div>
+                <div class="arch-layer-desc">Indexación de vecindad acelerada en memoria gráfica local. Los datos de posiciones y velocidades residen 100% en VRAM sin cruzar el bus PCIe durante la simulación activa.</div>
+              </div>
+            </div>
+
+            <div class="arch-flow-arrow">▼ Búsqueda de Vecindad Directa en Memoria Local</div>
+
+            <!-- Layer 3: Native SPH Physics Core -->
+            <div class="arch-layer-box highlight-vram" data-layer="3">
+              <span class="arch-layer-tag tag-green">CAPA 03</span>
+              <div class="arch-layer-content">
+                <div class="arch-layer-title">Núcleo Físico Hidrodinámico Autónomo</div>
+                <div class="arch-layer-desc">Resolución en paralelo de la ecuación de estado, gradientes de presión locales, dispersión viscosa, tensión superficial e integración temporal continua.</div>
+              </div>
+            </div>
+
+            <div class="arch-flow-arrow">▼ Salida Desacoplada sin Dependencias Gráficas</div>
+
+            <!-- Layer 4: Output & Visualization Layer -->
+            <div class="arch-layer-box" data-layer="4">
+              <span class="arch-layer-tag tag-cyan">CAPA 04</span>
+              <div class="arch-layer-content">
+                <div class="arch-layer-title">Extracción de Isosuperficies & Buffers de Salida</div>
+                <div class="arch-layer-desc">Generación de mallas en tiempo real (Marching Cubes), extracción de campos escalares de velocidad/presión y preparación de descriptores para renderizado o telemetría.</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="arch-spec-footer">
+            <div class="arch-spec-cell">
+              <span class="arch-spec-k">Carga en CPU</span>
+              <span class="arch-spec-v" style="color: var(--color-green);">&lt; 1.5%</span>
+            </div>
+            <div class="arch-spec-cell">
+              <span class="arch-spec-k">Residencia Datos</span>
+              <span class="arch-spec-v" style="color: var(--color-cyan);">100% VRAM</span>
+            </div>
+            <div class="arch-spec-cell">
+              <span class="arch-spec-k">Acoplamiento Gráfico</span>
+              <span class="arch-spec-v">Desacoplado</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 05 : CAPACIDADES ANALÍTICAS & MODOS DE RENDER
+       ═══════════════════════════════════════════════════════════ -->
+  <section id="modes">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-eyebrow reveal">Capacidades Analíticas</div>
+        <h2 class="section-title reveal reveal-d1">
+          Inspección visual <span class="hl-green">multicapa</span>
+        </h2>
+        <p class="section-desc reveal reveal-d2">
+          El motor permite alternar instantáneamente entre diferentes modos de análisis para examinar tanto la estética volumétrica como la coherencia física subyacente.
+        </p>
+      </div>
+
+      <div class="modes-grid">
+        <!-- Mode 1: Partículas -->
+        <div class="mode-card reveal reveal-d1">
+          <div class="mode-preview-wrap">
+            <img src="docs/Capturas/Untitled2.png" alt="Modo Partículas SPH GPU" class="mode-preview-img" loading="lazy" />
+            <div class="mode-preview-overlay"></div>
+          </div>
+          <div class="mode-caption">
+            <div>
+              <h4 class="mode-caption-title">Partículas Discretas</h4>
+              <p class="mode-caption-sub">Sombreado esférico GPU con cálculo de densidad SPH en VRAM.</p>
+            </div>
+            <span class="mode-tag">[1] Partículas</span>
+          </div>
+        </div>
+
+        <!-- Mode 2: Plexus -->
+        <div class="mode-card reveal reveal-d2">
+          <div class="mode-preview-wrap">
+            <img src="docs/Capturas/Untitled3.png" alt="Modo Plexus Red Vecinal" class="mode-preview-img" loading="lazy" />
+            <div class="mode-preview-overlay"></div>
+          </div>
+          <div class="mode-caption">
+            <div>
+              <h4 class="mode-caption-title">Red de Cohesión</h4>
+              <p class="mode-caption-sub">Topología de vecindad y radios de interacción del kernel.</p>
+            </div>
+            <span class="mode-tag">[2] Plexus</span>
+          </div>
+        </div>
+
+        <!-- Mode 3: Superficie -->
+        <div class="mode-card reveal reveal-d3">
+          <div class="mode-preview-wrap">
+            <img src="docs/Capturas/Untitled.png" alt="Modo Malla Superficie Marching Cubes" class="mode-preview-img" loading="lazy" />
+            <div class="mode-preview-overlay"></div>
+          </div>
+          <div class="mode-caption">
+            <div>
+              <h4 class="mode-caption-title">Malla Superficie</h4>
+              <p class="mode-caption-sub">Reconstrucción continua de isosuperficie líquida (Marching Cubes).</p>
+            </div>
+            <span class="mode-tag">[3] Superficie</span>
+          </div>
+        </div>
+
+        <!-- Mode 4: Vectores -->
+        <div class="mode-card reveal reveal-d1">
+          <div class="mode-preview-wrap">
+            <img src="docs/Capturas/Untitled4.png" alt="Modo Vectores Campo Velocidad" class="mode-preview-img" loading="lazy" />
+            <div class="mode-preview-overlay"></div>
+          </div>
+          <div class="mode-caption">
+            <div>
+              <h4 class="mode-caption-title">Campo Vectorial</h4>
+              <p class="mode-caption-sub">Matriz tridimensional de flechas con dirección y gradiente cinético.</p>
+            </div>
+            <span class="mode-tag">[4] Vectores</span>
+          </div>
+        </div>
+
+        <!-- Mode 5: Líneas de Flujo -->
+        <div class="mode-card reveal reveal-d2">
+          <div class="mode-preview-wrap">
+            <img src="docs/Capturas/Untitled6.png" alt="Modo Líneas de Flujo Estelas" class="mode-preview-img" loading="lazy" />
+            <div class="mode-preview-overlay"></div>
+          </div>
+          <div class="mode-caption">
+            <div>
+              <h4 class="mode-caption-title">Líneas de Flujo</h4>
+              <p class="mode-caption-sub">Estelas dinámicas que trazan corrientes laminares y turbulencias.</p>
+            </div>
+            <span class="mode-tag">[5] Flujo</span>
+          </div>
+        </div>
+
+        <!-- Mode 6: Mapa Térmico CFD -->
+        <div class="mode-card reveal reveal-d3">
+          <div class="mode-preview-wrap">
+            <img src="docs/Capturas/Untitled1.png" alt="Modo Mapa Térmico CFD Jet Colormap" class="mode-preview-img" loading="lazy" />
+            <div class="mode-preview-overlay"></div>
+          </div>
+          <div class="mode-caption">
+            <div>
+              <h4 class="mode-caption-title">Mapeo CFD Jet</h4>
+              <p class="mode-caption-sub">Gradiente térmico científico proporcional a la velocidad |v| del fluido.</p>
+            </div>
+            <span class="mode-tag">[6] Mapa CFD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 06 : SOLUCIONES B2B & SECTORES INDUSTRIALES
+       ═══════════════════════════════════════════════════════════ -->
+  <section id="possibilities">
+    <div class="section-inner">
+      <div class="section-header center">
+        <div class="section-eyebrow reveal">Hacia Dónde Vamos</div>
+        <h2 class="section-title reveal reveal-d1">
+          Posibilidades y <span class="hl-cyan">aplicaciones comerciales</span>
+        </h2>
+        <p class="section-desc reveal reveal-d2">
+          La base técnica actual está proyectada para evolucionar en módulos de alto valor agregado para diversas industrias que requieren simulación de fluidos ágil, precisa y visualmente convincente.
+        </p>
+      </div>
+
+      <div class="possibilities-grid">
+
+        <!-- Posibilidad 1: Gemelos Digitales & Monitoreo -->
+        <article class="pos-card featured reveal reveal-d1">
+          <div class="pos-header-row">
+            <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M17 18h1M12 18h1M7 18h1"></path></svg></div>
+            <span class="pos-badge">Industria 4.0</span>
+          </div>
+          <h3 class="pos-title">Gemelos Digitales & Plantas Industriales</h3>
+          <p class="pos-desc">
+            Integración en plataformas de <strong>monitoreo visual e interactivo</strong> de depósitos, plantas de tratamiento, sistemas de bombeo y tuberías. Permite a los operadores visualizar el comportamiento interno del líquido y simular escenarios de desborde o llenado en tiempo real sin cálculos lentos fuera de línea.
+          </p>
+          <ul class="pos-usecases">
+            <li>Visualización de niveles y flujos en tanques y contenedores</li>
+            <li>Predicción visual de tiempos de vaciado y presiones</li>
+            <li>Paneles de control y telemetría industrial con visualización 3D interactiva</li>
+          </ul>
+        </article>
+
+        <!-- Posibilidad 2: Prototipado en Ingeniería Hidráulica & Mecánica -->
+        <article class="pos-card reveal reveal-d2">
+          <div class="pos-header-row">
+            <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"></path><path d="M9.6 4.6A2 2 0 1 1 11 8H2"></path><path d="M12.6 19.4A2 2 0 1 0 14 16H2"></path></svg></div>
+            <span class="pos-badge">Ingeniería</span>
+          </div>
+          <h3 class="pos-title">Prototipado Rápido & Validación Pre-CFD</h3>
+          <p class="pos-desc">
+            Los paquetes CFD tradicionales tardan horas o días en calcular un solo escenario. NeoFluid3D ofrece un <strong>entorno de prueba rápida</strong> para validar conceptos preliminares, observar turbulencias y probar geometrías antes de enviar a cómputo de alta precisión.
+          </p>
+          <ul class="pos-usecases">
+            <li>Inspección preliminar de vertederos y compuertas</li>
+            <li>Evaluación de impacto de fluidos contra componentes mecánicos</li>
+            <li>Iteración de diseño CAD con respuesta inmediata</li>
+          </ul>
+        </article>
+
+        <!-- Posibilidad 3: Simuladores de Entrenamiento & Capacitación -->
+        <article class="pos-card reveal reveal-d3">
+          <div class="pos-header-row">
+            <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-2l-2-2h-4l-2 2H6a3 3 0 0 1-3-3Z"></path><circle cx="8" cy="12" r="2"></circle><circle cx="16" cy="12" r="2"></circle></svg></div>
+            <span class="pos-badge">Entrenamiento</span>
+          </div>
+          <h3 class="pos-title">Simuladores de Operación & Realidad Virtual</h3>
+          <p class="pos-desc">
+            Entornos de capacitación técnica inmersivos (VR/AR) donde operarios, bomberos o personal médico deben interactuar con líquidos con <strong>latencia cero</strong> y respuesta física verosímil ante manipulaciones con mandos o sensores.
+          </p>
+          <ul class="pos-usecases">
+            <li>Entrenamiento en manejo de materiales peligrosos y derrames</li>
+            <li>Simuladores quirúrgicos con dinámica de fluidos corporales</li>
+            <li>Capacitación en control de incendios y dispersión hidráulica</li>
+          </ul>
+        </article>
+
+        <!-- Posibilidad 4: Efectos Visuales & Producción Virtual -->
+        <article class="pos-card reveal reveal-d1">
+          <div class="pos-header-row">
+            <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-5 3v4l5 3V7Z"></path><circle cx="9.5" cy="12" r="2.5"></circle></svg></div>
+            <span class="pos-badge">VFX & Media</span>
+          </div>
+          <h3 class="pos-title">Middleware para Motores Gráficos & VFX</h3>
+          <p class="pos-desc">
+            Empaquetado como plugin o SDK nativo para integrarse en pipelines de <strong>producción virtual, Unreal Engine, Unity o motores propietarios</strong>, permitiendo a los directores y creadores previsualizar e interactuar con fluidos dinámicos en el set en tiempo real.
+          </p>
+          <ul class="pos-usecases">
+            <li>Previsualización en sets de rodaje con producción virtual</li>
+            <li>Física de líquidos reactiva en videojuegos y simuladores</li>
+            <li>Generación interactiva de mallas para exportación a DCCs</li>
+          </ul>
+        </article>
+
+        <!-- Posibilidad 5: Instalaciones Interactivas & Museografía -->
+        <article class="pos-card reveal reveal-d2">
+          <div class="pos-header-row">
+            <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="3"></rect><line x1="6" y1="12" x2="10" y2="12"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line></svg></div>
+            <span class="pos-badge">Experiencias</span>
+          </div>
+          <h3 class="pos-title">Experiencias Interactivas & Exhibiciones</h3>
+          <p class="pos-desc">
+            Soluciones visuales de alto impacto para centros de ciencia, museos y pabellones corporativos donde el público interactúa con el fluido mediante sensores de movimiento (Kinect, cámaras de profundidad o pantallas táctiles).
+          </p>
+          <ul class="pos-usecases">
+            <li>Kioscos interactivos de divulgación científica</li>
+            <li>Instalaciones de arte generativo y branding espacial</li>
+            <li>Visualizadores de fluidodinámica para ferias y congresos</li>
+          </ul>
+        </article>
+
+        <!-- Posibilidad 6: Soluciones a Medida & Licenciamiento B2B -->
+        <article class="pos-card featured reveal reveal-d3">
+          <div class="pos-header-row">
+            <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"></path><line x1="12" y1="8" x2="12" y2="11"></line></svg></div>
+            <span class="pos-badge">B2B Custom</span>
+          </div>
+          <h3 class="pos-title">Desarrollo a Medida & Licencia del Motor</h3>
+          <p class="pos-desc">
+            Adaptamos el núcleo a los requisitos particulares de hardware, restricciones de memoria y modelos matemáticos específicos de su empresa, garantizando <strong>propiedad intelectual y soporte técnico especializado</strong>.
+          </p>
+          <ul class="pos-usecases">
+            <li>Licenciamiento del código fuente del motor de cálculo</li>
+            <li>Desarrollo de módulos de física personalizados</li>
+            <li>Consultoría e integración en software corporativo existente</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 07 : HOJA DE RUTA HACIA LA MADUREZ COMERCIAL
+       ═══════════════════════════════════════════════════════════ -->
+  <section id="roadmap">
+    <div class="section-inner">
+      <div>
+        <div class="section-eyebrow reveal">Hoja de Ruta</div>
+        <h2 class="section-title reveal reveal-d1">
+          Rumbo a la <span class="hl-cyan">madurez comercial</span>
+        </h2>
+        <p class="section-desc reveal reveal-d2">
+          Avanzamos con una estrategia clara: consolidar la robustez del motor fundacional para luego abrir canales de integración directa y licenciamiento para el sector empresarial.
+        </p>
+
+        <div style="margin-top: 2rem;" class="reveal reveal-d3">
+          <a href="#contact" class="btn-primary">Solicitar Información Técnica</a>
+        </div>
+      </div>
+
+      <div class="roadmap-timeline">
+        
+        <div class="roadmap-item reveal reveal-d1">
+          <div class="roadmap-dot dot-done" aria-hidden="true"></div>
+          <div class="roadmap-phase">Fase 01 : Consolidada</div>
+          <h3 class="roadmap-heading">Motor Fundacional en GPU</h3>
+          <p class="roadmap-desc">
+            Motor de simulación gráfica de alta eficiencia, cómputo paralelo masivo en GPU y respuesta física instantánea a 60 FPS.
+          </p>
+          <span class="roadmap-tag tag-completed"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:3px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Completado</span>
+        </div>
+
+        <div class="roadmap-item reveal reveal-d2">
+          <div class="roadmap-dot dot-done" aria-hidden="true"></div>
+          <div class="roadmap-phase">Fase 02 : Consolidada</div>
+          <h3 class="roadmap-heading">Generación Dinámica de Mallas</h3>
+          <p class="roadmap-desc">
+            Reconstrucción continua de superficies líquidas y mallas fotorrealistas en tiempo real con refracción y sombreado avanzado.
+          </p>
+          <span class="roadmap-tag tag-completed"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:3px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Completado</span>
+        </div>
+
+        <div class="roadmap-item reveal reveal-d3">
+          <div class="roadmap-dot dot-wip" aria-hidden="true"></div>
+          <div class="roadmap-phase">Fase 03 : En Desarrollo Activo</div>
+          <h3 class="roadmap-heading">Capa de Control & Colisiones Dinámicas</h3>
+          <p class="roadmap-desc">
+            Entorno interactivo con ajuste dinámico de parámetros de fluido y soporte para interacción con sólidos y geometrías complejas.
+          </p>
+          <span class="roadmap-tag tag-active">● En Progreso</span>
+        </div>
+
+        <div class="roadmap-item reveal reveal-d4">
+          <div class="roadmap-dot dot-future" aria-hidden="true"></div>
+          <div class="roadmap-phase">Fase 04 : Próxima Etapa</div>
+          <h3 class="roadmap-heading">SDK Modular & API de Integración B2B</h3>
+          <p class="roadmap-desc">
+            SDK modular y suite de integración corporativa para incrustar el motor en aplicaciones, gemelos digitales y visores 3D.
+          </p>
+          <span class="roadmap-tag tag-planned">○ Planeado</span>
+        </div>
+
+        <div class="roadmap-item reveal reveal-d4">
+          <div class="roadmap-dot dot-future" aria-hidden="true"></div>
+          <div class="roadmap-phase">Fase 05 : Escalado Comercial</div>
+          <h3 class="roadmap-heading">Soluciones Llave en Mano para Empresas</h3>
+          <p class="roadmap-desc">
+            Licenciamiento empresarial, soporte técnico preferente y desarrollos a medida para industrias de ingeniería, media y software.
+          </p>
+          <span class="roadmap-tag tag-planned">○ Planeado</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 08 : ADN TÉCNICO & FUNDAMENTOS MATEMÁTICOS DEL SÍMBOLO
+       ═══════════════════════════════════════════════════════════ -->
+  <section id="brand">
+    <div class="section-inner">
+      <div class="section-header center">
+        <div class="section-eyebrow reveal">ADN del Proyecto</div>
+        <h2 class="section-title reveal reveal-d1">
+          Fundamentos <span class="hl-cyan">Matemáticos</span> del Símbolo
+        </h2>
+        <p class="section-desc reveal reveal-d2">
+          La identidad visual de NeoFluid3D se deriva directamente de superficies paramétricas tridimensionales $\mathbb{R}^3$, discretizadas en mallas computacionales y proyectadas canónicamente a $\mathbb{R}^2$.
+        </p>
+        <div class="reveal reveal-d2" style="margin-top: 14px;">
+          <a href="presentation/index.html#slide-3" target="_blank" rel="noopener noreferrer" class="btn-deck-launch" id="btn-open-deck-genesis" title="Abrir Presentación Interactiva de Diseño (Startup Deck)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <span>Ver Presentación Interactiva de Diseño (Startup Deck) ↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Genesis 3D Interactive Workbench -->
       <div id="genesis-panel" class="reveal reveal-d3">
         <!-- Genesis Top HUD -->
         <div class="genesis-hud-top">
@@ -396,913 +971,630 @@
         </div>
       </div>
 
-      <!-- 2. FUNDAMENTOS CONCEPTUALES & ANATOMÍA DEL ISOTIPO (COMPACT BENTO) -->
-      <div class="isotype-concept-card reveal reveal-d2">
-        <div class="concept-card-header">
-          <div class="concept-header-left">
-            <span class="stage-dot"></span>
-            <span class="concept-card-badge">FUNDAMENTOS DE DISEÑO &amp; SEMÁNTICA DEL ISOTIPO</span>
-          </div>
-          <span class="concept-card-spec">INSPIRACIÓN 80-90 • MATEMÁTICAS • CÓMPUTO GPU</span>
-        </div>
-
-        <!-- 4 Inspiration Pillars Row -->
-        <div class="isotype-compact-pillars">
-          
-          <div class="compact-pillar-item">
-            <div class="compact-pillar-top">
-              <span class="cp-tag tag-green">01 / TERMINAL</span>
-              <span class="cp-code">#39FF14 • CRT</span>
-            </div>
-            <h4 class="cp-title">Cultura Hacker &amp; Consola</h4>
-            <p class="cp-desc">Monitores de fósforo verde monocromático. Evoca el código en bajo nivel, shaders paralelos y cálculo matricial.</p>
-          </div>
-
-          <div class="compact-pillar-item">
-            <div class="compact-pillar-top">
-              <span class="cp-tag tag-green">02 / GRÁFICOS 3D</span>
-              <span class="cp-code">WIREFRAME</span>
-            </div>
-            <h4 class="cp-title">Mallas de Triangulación</h4>
-            <p class="cp-desc">Computación gráfica clásica (80-90). La base de alambre simboliza la discretización espacial poligonal.</p>
-          </div>
-
-          <div class="compact-pillar-item">
-            <div class="compact-pillar-top">
-              <span class="cp-tag tag-cyan">03 / FÍSICA PURA</span>
-              <span class="cp-code">#00F0FF • CFD</span>
-            </div>
-            <h4 class="cp-title">Dinámica Navier-Stokes</h4>
-            <p class="cp-desc">La cúpula sólida representa el agua continua, la tensión superficial y el comportamiento hidrodinámico macroscópico.</p>
-          </div>
-
-          <div class="compact-pillar-item">
-            <div class="compact-pillar-top">
-              <span class="cp-tag tag-cyan">04 / ALTO CONTRASTE</span>
-              <span class="cp-code">#000000 • HUD</span>
-            </div>
-            <h4 class="cp-title">Entorno Oscuro Vulkan</h4>
-            <p class="cp-desc">Fondo negro de la UI del simulador, maximizando el contraste y la luminancia de vectores y partículas neón.</p>
-          </div>
-
-        </div>
-
-        <!-- Dual Anatomy Split Bar -->
-        <div class="isotype-compact-anatomy">
-          <div class="anatomy-block anatomy-upper">
-            <div class="fusion-dot cyan"></div>
-            <div>
-              <span class="anatomy-lbl text-cyan">Cúpula Superior ($y > 0$) — Masa Líquida (Agua)</span>
-              <p class="anatomy-txt">Fluido continuo, materia orgánica y flujo hidrodinámico en estado puro.</p>
-            </div>
-          </div>
-
-          <div class="anatomy-divider">
-            <span class="anatomy-cut-tag">CORTE CANÓNICO A $30^\circ$</span>
-          </div>
-
-          <div class="anatomy-block anatomy-lower">
-            <div class="fusion-dot green"></div>
-            <div>
-              <span class="anatomy-lbl text-green">Base Inferior ($y \le 0$) — Malla Discreta (GPU)</span>
-              <p class="anatomy-txt">Red de elementos finitos y matriz computacional que calcula la física en tiempo real.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-<!-- SECTION 4: LOGOTIPO, MORFOLOGÍA, TIPOGRAFÍA & PALETA CROMÁTICA (#logotype) -->
-  <section id="logotype">
-    <div class="section-inner">
-      <div class="section-eyebrow reveal">Identidad Gráfica & Sistema Visual</div>
-      <h2 class="section-title reveal reveal-d1">
-        El <span class="hl-cyan">Logotipo</span>: Morfología, Tipografía & Paleta
-      </h2>
-      <p class="section-desc reveal reveal-d2">
-        Arquitectura tipográfica biconceptual de alta precisión, notación dimensional inspirada en la computación gráfica clásica y formulación cromática oficial de alto contraste tecnológico.
-      </p>
-
-      <!-- 1. OFFICIAL HORIZONTAL LOGOTYPE SHOWCASE STAGE -->
-      <div class="brand-stage-card reveal reveal-d2">
-        <div class="brand-stage-header">
-          <div class="stage-tag-left">
-            <span class="stage-dot"></span>
-            <span class="brand-spec-label" style="color: #FFFFFF; font-size: 0.85rem; letter-spacing: 0.08em;">LOCKUP HORIZONTAL CANÓNICO • ESCALA 1:1</span>
-          </div>
-          <div class="stage-tag-right">
-            <span class="brand-spec-val">FONDO NEGRO PURO #000000</span>
-          </div>
-        </div>
-
-        <!-- Center Logo Workbench Display -->
-        <div class="brand-display-workbench">
-          <div class="workbench-grid-bg" aria-hidden="true"></div>
-          <div class="workbench-crosshair top-left" aria-hidden="true"></div>
-          <div class="workbench-crosshair top-right" aria-hidden="true"></div>
-          <div class="workbench-crosshair bottom-left" aria-hidden="true"></div>
-          <div class="workbench-crosshair bottom-right" aria-hidden="true"></div>
-          
-          <!-- Live Brand Logotype Lockup -->
-          <div class="brand-master-lockup">
-            <span class="lockup-neo">Neo</span><span class="lockup-fluid3d"><span class="lockup-fluid">Fluid</span><span class="lockup-3d"><span class="lockup-exp">³</span><span class="lockup-d">D</span></span></span>
-          </div>
-
-          <!-- Baseline Guide Visual Overlay -->
-          <div class="lockup-baseline-guide" aria-hidden="true">
-            <span class="baseline-tag">LÍNEA BASE CONTINUA UNIFICADA ($y = 0$)</span>
-          </div>
-        </div>
-
-        <!-- Technical Metas Grid below Workbench -->
-        <div class="stage-metrics-bar">
-          <div class="metric-badge">
-            <span class="metric-lbl">JERARQUÍA</span>
-            <span class="metric-val text-cyan">Primaria / Principal</span>
-          </div>
-          <div class="metric-badge">
-            <span class="metric-lbl">KERNING INTERNO</span>
-            <span class="metric-val text-green">Óptico Continuo ($0\,\text{px}$)</span>
-          </div>
-          <div class="metric-badge">
-            <span class="metric-lbl">ESTRUCTURA ³D</span>
-            <span class="metric-val text-white">Superíndice + Base Unificada</span>
-          </div>
-          <div class="metric-badge">
-            <span class="metric-lbl">POLARIDAD</span>
-            <span class="metric-val text-cyan">Alto Contraste Tecnológico</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. MORPHOLOGY & CONCEPTUAL BREAKDOWN (NEO + UNIFIED FLUID³D CONTAINER) -->
-      <div class="morpho-cards-grid reveal reveal-d3">
+      <!-- Official Color System Swatches -->
+      <div style="margin-top: 2.5rem;" class="reveal reveal-d2">
+        <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; text-align: center;">Paleta Cromática Oficial: Primarios de Marca & Secundarios de Simulación</div>
         
-        <!-- Card 1: Neo (Prefijo Conceptual) -->
-        <div class="morpho-card morpho-neo">
-          <div class="morpho-header">
-            <span class="morpho-step-badge">01 / PREFIJO</span>
-            <span class="morpho-font-tag">POPPINS 900 BLACK</span>
-          </div>
-          <div class="morpho-visual">
-            <span class="morpho-glyph glyph-neo">Neo</span>
-          </div>
-          <h3 class="morpho-title">Impacto & Fluidez Dinámica</h3>
-          <p class="morpho-desc">
-            Tipografía geométrica sans-serif masiva. Adopta el color <strong>Cian (#00F0FF)</strong> como referencia directa al agua, la fluidez y la adaptabilidad hidrodinámica.
-          </p>
-          <div class="morpho-specs-table">
-            <div class="morpho-spec-row">
-              <span class="spec-k">Color Oficial:</span>
-              <span class="spec-v color-cyan-tag">Cian Fluido (#00F0FF) ➔ Agua</span>
-            </div>
-            <div class="morpho-spec-row">
-              <span class="spec-k">Tracking:</span>
-              <span class="spec-v">-0.03em (Condensado)</span>
-            </div>
-            <div class="morpho-spec-row">
-              <span class="spec-k">Semántica:</span>
-              <span class="spec-v">Vanguardia & Flujo Activo</span>
+        <div class="palette-swatches-grid">
+          
+          <!-- PRIMARIOS -->
+          <!-- Swatch 1: Celeste de Marca -->
+          <div class="swatch-card">
+            <div class="swatch-color-box" style="background: #00F0FF; box-shadow: 0 0 18px rgba(0, 240, 255, 0.45);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-header-row">
+                <div class="swatch-title-group">
+                  <span class="swatch-name text-cyan">Celeste de Marca</span>
+                  <span class="swatch-tag tag-cyan">PRIMARIO</span>
+                </div>
+                <span class="swatch-hex-pill">#00F0FF</span>
+              </div>
+              <div class="swatch-codes">
+                <span>RGB: 0, 240, 255</span> • <span>HSL: 184°, 100%, 50%</span>
+              </div>
+              <div class="swatch-role">
+                <strong style="color: var(--color-cyan);">Rol:</strong> Masa continua de fluido, dinamismo y prefijo Neo.
+              </div>
             </div>
           </div>
+
+          <!-- Swatch 2: Verde de Marca -->
+          <div class="swatch-card">
+            <div class="swatch-color-box" style="background: #39FF14; box-shadow: 0 0 18px rgba(57, 255, 20, 0.45);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-header-row">
+                <div class="swatch-title-group">
+                  <span class="swatch-name text-green">Verde de Marca</span>
+                  <span class="swatch-tag tag-green">PRIMARIO</span>
+                </div>
+                <span class="swatch-hex-pill">#39FF14</span>
+              </div>
+              <div class="swatch-codes">
+                <span>RGB: 57, 255, 20</span> • <span>HSL: 111°, 100%, 54%</span>
+              </div>
+              <div class="swatch-role">
+                <strong style="color: var(--color-green);">Rol:</strong> Malla discreta de cálculo, aceleración y sufijo Fluid³D.
+              </div>
+            </div>
+          </div>
+
+          <!-- Swatch 3: Pizarra Obsidiana -->
+          <div class="swatch-card">
+            <div class="swatch-color-box" style="background: #070B0E; border: 1.5px solid rgba(255, 255, 255, 0.25); box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-header-row">
+                <div class="swatch-title-group">
+                  <span class="swatch-name" style="color: #FFFFFF;">Obsidiana Deep</span>
+                  <span class="swatch-tag tag-base">BASE</span>
+                </div>
+                <span class="swatch-hex-pill">#070B0E</span>
+              </div>
+              <div class="swatch-codes">
+                <span>RGB: 7, 11, 14</span> • <span>HSL: 206°, 33%, 4%</span>
+              </div>
+              <div class="swatch-role">
+                <strong style="color: #FFFFFF;">Rol:</strong> Entorno de alto contraste y base tridimensional.
+              </div>
+            </div>
+          </div>
+
+          <!-- Swatch 4: Titanio Técnico -->
+          <div class="swatch-card">
+            <div class="swatch-color-box" style="background: #8FA6B2; box-shadow: 0 0 14px rgba(143, 166, 178, 0.35);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-header-row">
+                <div class="swatch-title-group">
+                  <span class="swatch-name" style="color: #D3E0E6;">Titanio Técnico</span>
+                  <span class="swatch-tag tag-hud">HUD</span>
+                </div>
+                <span class="swatch-hex-pill">#8FA6B2</span>
+              </div>
+              <div class="swatch-codes">
+                <span>RGB: 143, 166, 178</span> • <span>HSL: 201°, 19%, 63%</span>
+              </div>
+              <div class="swatch-role">
+                <strong style="color: var(--color-text-muted);">Rol:</strong> Telemetría, etiquetas analíticas y metadatos.
+              </div>
+            </div>
+          </div>
+
+          <!-- SECUNDARIOS (SIMULADOR / TELEMETRÍA / CFD) -->
+          <!-- Swatch 5: Azul Simulación -->
+          <div class="swatch-card">
+            <div class="swatch-color-box" style="background: #3B82F6; box-shadow: 0 0 18px rgba(59, 130, 246, 0.45);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-header-row">
+                <div class="swatch-title-group">
+                  <span class="swatch-name" style="color: #60A5FA;">Azul Simulación</span>
+                  <span class="swatch-tag tag-blue">SECUNDARIO</span>
+                </div>
+                <span class="swatch-hex-pill">#3B82F6</span>
+              </div>
+              <div class="swatch-codes">
+                <span>RGB: 59, 130, 246</span> • <span>HSL: 217°, 91%, 60%</span>
+              </div>
+              <div class="swatch-role">
+                <strong style="color: #3B82F6;">Uso:</strong> Presión hidrodinámica, vorticidad laminar y shaders GPU.
+              </div>
+            </div>
+          </div>
+
+          <!-- Swatch 6: Naranja Térmico -->
+          <div class="swatch-card">
+            <div class="swatch-color-box" style="background: #FF9100; box-shadow: 0 0 18px rgba(255, 145, 0, 0.45);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-header-row">
+                <div class="swatch-title-group">
+                  <span class="swatch-name" style="color: #FFA726;">Naranja Térmico</span>
+                  <span class="swatch-tag tag-orange">SECUNDARIO</span>
+                </div>
+                <span class="swatch-hex-pill">#FF9100</span>
+              </div>
+              <div class="swatch-codes">
+                <span>RGB: 255, 145, 0</span> • <span>HSL: 34°, 100%, 50%</span>
+              </div>
+              <div class="swatch-role">
+                <strong style="color: #FF9100;">Uso:</strong> Turbulencia, campos de temperatura y energía cinética.
+              </div>
+            </div>
+          </div>
+
         </div>
-
-        <!-- Card 2: Fluid³D (Palabra Unificada con Fluid + ³D integrados) -->
-        <div class="morpho-card morpho-fluid3d">
-          <div class="morpho-header">
-            <span class="morpho-step-badge">02 / PALABRA COMPUESTA</span>
-            <span class="morpho-font-tag">JETBRAINS MONO 700</span>
-          </div>
-          <div class="morpho-visual">
-            <span class="morpho-glyph glyph-fluid3d">
-              <span class="glyph-fluid-part">Fluid</span><span class="glyph-3d-part"><span class="exp-sub">³</span><span class="d-sub">D</span></span>
-            </span>
-          </div>
-          <h3 class="morpho-title">Cómputo Físico & Profundidad Plana</h3>
-          <p class="morpho-desc">
-            Palabra unificada en tipografía de código. Adopta el color <strong>Verde GPU (#39FF14)</strong> como referencia a la terminal hacker y a la computación gráfica 3D:
-          </p>
-
-          <!-- Internal Sub-blocks: Separating Fluid and ³D inside the single word container -->
-          <div class="morpho-subblocks-grid">
-            
-            <!-- Sub-block A: Fluid -->
-            <div class="morpho-subblock">
-              <div class="subblock-header">
-                <span class="subblock-badge">02.A / RAÍZ FÍSICA</span>
-                <span class="subblock-token">#39FF14</span>
-              </div>
-              <h4 class="subblock-title">Fluid (Cómputo CFD)</h4>
-              <p class="subblock-desc">
-                Ecuaciones de Navier-Stokes discretizadas y cálculo paralelo masivo en shaders de GPU.
-              </p>
-              <div class="subblock-meta">
-                <span>Tipografía: Monospace</span>
-                <span>Rol: Física de Fluidos</span>
-              </div>
-            </div>
-
-            <!-- Sub-block B: ³D -->
-            <div class="morpho-subblock">
-              <div class="subblock-header">
-                <span class="subblock-badge">02.B / RETRO 80-90</span>
-                <span class="subblock-token">U+00B3 + U+0044</span>
-              </div>
-              <h4 class="subblock-title">³D (Profundidad Plana)</h4>
-              <p class="subblock-desc">
-                Homenaje a la informática gráfica 80-90. El superíndice <code style="color:#39FF14;">³</code> y la <code style="color:#39FF14;">D</code> en línea base crean un efecto <em>flat-depth</em>.
-              </p>
-              <div class="subblock-meta">
-                <span>Base: $y = 0$ unificada</span>
-                <span>Efecto: Profundidad Plana</span>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Integrated Color Crossover Note -->
-          <div class="morpho-crossover-note">
-            <strong>Cruce Semántico de Color:</strong> <em>Neo</em> adopta el cian del agua y <em>Fluid³D</em> el verde de la terminal para simbolizar que la física de fluidos y la computación gráfica se fusionan en una sola entidad.
-          </div>
-        </div>
-
       </div>
 
-      <!-- 3. BRAND DETAILS & PALETTE SYSTEM (2 CARDS) -->
-      <div class="brand-details-grid reveal reveal-d3">
-        
-        <!-- Card: Anatomía & Reglas de Construcción -->
-        <div class="brand-id-card">
-          <div class="brand-card-header">
-            <span class="brand-spec-label" style="color: #FFFFFF;">ANATOMÍA & REGLAS DE CONSTRUCCIÓN</span>
-            <span class="brand-spec-val">CRITERIOS TÉCNICOS</span>
-          </div>
-
-          <div class="rules-spec-list">
-            <div class="rule-spec-item">
-              <div class="rule-icon-box">
-                <span class="rule-num">01</span>
-              </div>
-              <div class="rule-info">
-                <h4 class="rule-heading">Línea Base Unificada ($y = 0$)</h4>
-                <p class="rule-detail">
-                  El prefijo <strong class="text-cyan">Neo</strong>, <strong class="text-green">Fluid</strong> y la letra <strong class="text-green">D</strong> comparten exactamente la misma línea base horizontal. La 'D' no se eleva; el exponente '³' actúa como modulador superior.
-                </p>
-              </div>
-            </div>
-
-            <div class="rule-spec-item">
-              <div class="rule-icon-box">
-                <span class="rule-num">02</span>
-              </div>
-              <div class="rule-info">
-                <h4 class="rule-heading">Kerning Óptico Continuo ($0\,\text{px}$)</h4>
-                <p class="rule-detail">
-                  Contacto óptico directo y continuo entre <span class="text-cyan">Neo</span> y <span class="text-green">Fluid³D</span> sin espacios artificiales, simbolizando integración fluida sin fisuras.
-                </p>
-              </div>
-            </div>
-
-            <div class="rule-spec-item">
-              <div class="rule-icon-box">
-                <span class="rule-num">03</span>
-              </div>
-              <div class="rule-info">
-                <h4 class="rule-heading">Profundidad Plana (Flat-Depth)</h4>
-                <p class="rule-detail">
-                  El superíndice cúbico <span class="text-green">³</span> y la <span class="text-green">D</span> anclada a la base proyectan sensación de volumen ortográfico en un plano bidimensional.
-                </p>
-              </div>
-            </div>
-
-            <div class="rule-spec-item">
-              <div class="rule-icon-box">
-                <span class="rule-num">04</span>
-              </div>
-              <div class="rule-info">
-                <h4 class="rule-heading">Área de Reserva ($1u = H/4$)</h4>
-                <p class="rule-detail">
-                  Margen de protección perimetral mínimo de $1u = H/4$ libre de otros elementos para garantizar máxima legibilidad en cualquier soporte.
-                </p>
-              </div>
-            </div>
-          </div>
+      <!-- ═══════════════════════════════════════════════════════════
+           SUB-BLOQUE 08.B : EL LOGOTIPO — MORFOLOGÍA & ANATOMÍA
+           ═══════════════════════════════════════════════════════════ -->
+      <div style="margin-top: 4.5rem;" class="reveal reveal-d1">
+        <div class="section-header center" style="margin-bottom: 2rem;">
+          <div class="section-eyebrow">Identidad Tipográfica</div>
+          <h3 class="section-title" style="font-size: clamp(1.8rem, 3.5vw, 2.5rem);">
+            El <span class="hl-cyan">Logotipo</span>: Morfología & Arquitectura
+          </h3>
+          <p class="section-desc">
+            Arquitectura tipográfica biconceptual de alta precisión, notación dimensional inspirada en la computación gráfica clásica y formulación cromática oficial de alto contraste tecnológico.
+          </p>
         </div>
 
-        <!-- Card: Paleta Cromática Oficial -->
-        <div class="brand-id-card">
-          <div class="brand-card-header">
-            <span class="brand-spec-label" style="color: #FFFFFF;">PALETA CROMÁTICA OFICIAL</span>
-            <span class="brand-spec-val">4 VALORES HEX / RGB / HSL</span>
+        <!-- 1. OFFICIAL CANONICAL STACKED LOGOTYPE SHOWCASE STAGE (SOLO EL NOMBRE, SIN LA GOTA) -->
+        <div class="brand-stage-card reveal reveal-d2">
+          <div class="brand-stage-header">
+            <div class="stage-tag-left">
+              <span class="stage-dot"></span>
+              <span class="brand-spec-label" style="color: #FFFFFF; font-size: 0.85rem; letter-spacing: 0.08em;">LOGOTIPO OFICIAL APILADO (ESCALA 1:1)</span>
+            </div>
+            <div class="stage-tag-right">
+              <span class="brand-spec-val">FONDO OBSIDIANA #070B0E</span>
+            </div>
           </div>
 
-          <div class="palette-swatches-grid">
+          <!-- Center Logo Workbench Display -->
+          <div class="brand-display-workbench">
+            <div class="workbench-grid-bg" aria-hidden="true"></div>
+            <div class="workbench-crosshair top-left" aria-hidden="true"></div>
+            <div class="workbench-crosshair top-right" aria-hidden="true"></div>
+            <div class="workbench-crosshair bottom-left" aria-hidden="true"></div>
+            <div class="workbench-crosshair bottom-right" aria-hidden="true"></div>
             
-            <!-- Swatch 1: Cian Fluido -->
-            <div class="swatch-card">
-              <div class="swatch-color-box" style="background: #00F0FF; box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), inset 0 0 10px rgba(255,255,255,0.4);">
-                <span class="swatch-badge" style="color: #000;">CYAN</span>
+            <!-- Live Canonical Stacked Logotype with Caliper Scale -->
+            <div class="brand-master-lockup logo-only">
+              <!-- Left Scale Caliper Bar -->
+              <div class="logo-scale-caliper" aria-hidden="true">
+                <div class="caliper-tick tick-top"></div>
+                <div class="caliper-line"></div>
+                <div class="caliper-tick tick-mid"></div>
+                <div class="caliper-line"></div>
+                <div class="caliper-tick tick-bottom"></div>
+                <span class="caliper-label">4u</span>
               </div>
-              <div class="swatch-meta">
-                <div class="swatch-name-row">
-                  <span class="swatch-name">Cian Fluido</span>
-                  <span class="swatch-hex">#00F0FF</span>
-                </div>
-                <div class="swatch-codes">
-                  <span>RGB: 0, 240, 255</span> • <span>HSL: 184°, 100%, 50%</span>
-                </div>
-                <div class="swatch-role">
-                  <strong style="color: var(--color-cyan);">Uso:</strong> Masa de fluido continuo, prefijo Neo y cúpula superior.
-                </div>
-              </div>
+
+              <svg class="brand-stage-text-svg" viewBox="315.8 50 485 260" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logotipo Oficial NeoFluid3D">
+                <!-- Guide lines on SVG -->
+                <line x1="315.8" y1="50" x2="800" y2="50" stroke="rgba(0, 240, 255, 0.15)" stroke-dasharray="3 3"/>
+                <line x1="315.8" y1="180" x2="800" y2="180" stroke="rgba(0, 240, 255, 0.25)" stroke-dasharray="3 3"/>
+                <line x1="315.8" y1="310" x2="800" y2="310" stroke="rgba(57, 255, 20, 0.2)" stroke-dasharray="3 3"/>
+
+                <text x="315.8" y="171.0" font-family="'Clash Display', 'Poppins', sans-serif" font-weight="700" font-size="156" fill="#00F0FF" letter-spacing="-0.02em" filter="drop-shadow(0 0 25px rgba(0, 240, 255, 0.45))">NEO</text>
+                <text x="315.8" y="300.0" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="118" fill="#39FF14" letter-spacing="-0.025em" filter="drop-shadow(0 0 25px rgba(57, 255, 20, 0.4))">Fluid<tspan font-size="88" dy="-48">3</tspan><tspan font-size="118" dy="48">D</tspan></text>
+              </svg>
             </div>
 
-            <!-- Swatch 2: Verde GPU -->
-            <div class="swatch-card">
-              <div class="swatch-color-box" style="background: #39FF14; box-shadow: 0 0 20px rgba(57, 255, 20, 0.4), inset 0 0 10px rgba(255,255,255,0.4);">
-                <span class="swatch-badge" style="color: #000;">GREEN</span>
-              </div>
-              <div class="swatch-meta">
-                <div class="swatch-name-row">
-                  <span class="swatch-name">Verde GPU</span>
-                  <span class="swatch-hex">#39FF14</span>
-                </div>
-                <div class="swatch-codes">
-                  <span>RGB: 57, 255, 20</span> • <span>HSL: 111°, 100%, 54%</span>
-                </div>
-                <div class="swatch-role">
-                  <strong style="color: var(--color-green);">Uso:</strong> Malla 3D, sufijo Fluid³D y ejecución de cómputo GPU.
-                </div>
-              </div>
+            <!-- Alignment Guide Visual Overlay with Scale -->
+            <div class="lockup-baseline-guide" aria-hidden="true">
+              <span class="baseline-tag">ESCALA 1:1 : FILA 1 (NEO 2u) + FILA 2 (Fluid³D 2u) = 4u</span>
             </div>
+          </div>
 
-            <!-- Swatch 3: Negro Abisal -->
-            <div class="swatch-card">
-              <div class="swatch-color-box" style="background: #000000; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.1);">
-                <span class="swatch-badge" style="color: #fff;">BASE</span>
-              </div>
-              <div class="swatch-meta">
-                <div class="swatch-name-row">
-                  <span class="swatch-name">Negro Abisal</span>
-                  <span class="swatch-hex">#000000</span>
-                </div>
-                <div class="swatch-codes">
-                  <span>RGB: 0, 0, 0</span> • <span>HSL: 0°, 0%, 0%</span>
-                </div>
-                <div class="swatch-role">
-                  <strong style="color: #FFFFFF;">Uso:</strong> Base esférica sólida y entorno de alto contraste.
-                </div>
-              </div>
+          <!-- Technical Metas Grid below Workbench -->
+          <div class="stage-metrics-bar">
+            <div class="metric-badge">
+              <span class="metric-lbl">DISPOSICIÓN</span>
+              <span class="metric-val text-cyan">Logotipo Apilado</span>
             </div>
-
-            <!-- Swatch 4: Gris Técnico -->
-            <div class="swatch-card">
-              <div class="swatch-color-box" style="background: #689399; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);">
-                <span class="swatch-badge" style="color: #000;">HUD</span>
-              </div>
-              <div class="swatch-meta">
-                <div class="swatch-name-row">
-                  <span class="swatch-name">Gris Técnico</span>
-                  <span class="swatch-hex">#689399</span>
-                </div>
-                <div class="swatch-codes">
-                  <span>RGB: 104, 147, 153</span> • <span>HSL: 187°, 19%, 50%</span>
-                </div>
-                <div class="swatch-role">
-                  <strong style="color: #689399;">Uso:</strong> Cotas analíticas, guías de blueprint y etiquetas HUD.
-                </div>
-              </div>
+            <div class="metric-badge">
+              <span class="metric-lbl">PROPORCIÓN DUAL</span>
+              <span class="metric-val text-green">2u (NEO) + 2u (Fluid³D) = 4u</span>
             </div>
-
+            <div class="metric-badge">
+              <span class="metric-lbl">ESTRUCTURA</span>
+              <span class="metric-val text-white">Bloque Tipográfico Puro</span>
+            </div>
+            <div class="metric-badge">
+              <span class="metric-lbl">COLORIMETRÍA</span>
+              <span class="metric-val text-cyan">#00F0FF + #39FF14 Parejo</span>
+            </div>
           </div>
         </div>
 
+        <!-- 2. MORPHOLOGY & CONCEPTUAL BREAKDOWN (NEO + UNIFIED FLUID³D) -->
+        <div class="morpho-cards-grid reveal reveal-d3">
+          
+          <!-- Card 1: NEO (Fila 1 / Identidad de Fluidez) -->
+          <div class="morpho-card morpho-neo">
+            <div class="morpho-header">
+              <span class="morpho-step-badge">01 / FILA SUPERIOR (2u)</span>
+              <span class="morpho-font-tag">CLASH DISPLAY VARIABLE BOLD</span>
+            </div>
+            <div class="morpho-visual">
+              <span class="morpho-glyph glyph-neo">NEO</span>
+            </div>
+            <h3 class="morpho-title">Impacto & Fluidez Dinámica</h3>
+            <p class="morpho-desc">
+              Mayúsculas sólidas en tipografía geométrica de alto impacto. Adopta el <strong>Celeste de Marca (#00F0FF)</strong> en alusión a la tensión superficial del agua, la fluidez y el dinamismo hidrodinámico continuo.
+            </p>
+            <div class="morpho-specs-table">
+              <div class="morpho-spec-row">
+                <span class="spec-k">Color Oficial:</span>
+                <span class="spec-v color-cyan-tag">Celeste de Marca (#00F0FF) ➔ Agua</span>
+              </div>
+              <div class="morpho-spec-row">
+                <span class="spec-k">Altura Modular:</span>
+                <span class="spec-v">2u (50% del Alto de la Gota H)</span>
+              </div>
+              <div class="morpho-spec-row">
+                <span class="spec-k">Semántica:</span>
+                <span class="spec-v">Vanguardia & Dinamismo</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Fluid³D (Fila 2 / Identidad Computacional) -->
+          <div class="morpho-card morpho-fluid3d">
+            <div class="morpho-header">
+              <span class="morpho-step-badge">02 / FILA INFERIOR (2u)</span>
+              <span class="morpho-font-tag">JETBRAINS MONO BOLD (700)</span>
+            </div>
+            <div class="morpho-visual">
+              <span class="morpho-glyph glyph-fluid3d">
+                <span class="glyph-fluid-part">Fluid</span><span class="glyph-3d-part"><span class="exp-sub">³</span><span class="d-sub">D</span></span>
+              </span>
+            </div>
+            <h3 class="morpho-title">Cómputo Físico & Profundidad Plana</h3>
+            <p class="morpho-desc">
+              Palabra unificada en tipografía monoespaciada técnica. Toda la palabra compuesta se renderiza uniformemente en <strong>Verde de Marca (#39FF14)</strong>, simbolizando la terminal de cálculo, la aceleración GPU y la precisión del solver:
+            </p>
+
+            <!-- Internal Sub-blocks: Fluid + ³D in uniform green -->
+            <div class="morpho-subblocks-grid">
+              
+              <!-- Sub-block A: Fluid -->
+              <div class="morpho-subblock">
+                <div class="subblock-header">
+                  <span class="subblock-badge">02.A / RAÍZ FÍSICA</span>
+                  <span class="subblock-token">#39FF14</span>
+                </div>
+                <h4 class="subblock-title">Fluid (Cómputo CFD)</h4>
+                <p class="subblock-desc">
+                  Ecuaciones hidrodinámicas discretizadas y resueltas en paralelo masivo en memoria de video (VRAM).
+                </p>
+                <div class="subblock-meta">
+                  <span>Tipografía: Monospace</span>
+                  <span>Color: Verde Parejo</span>
+                </div>
+              </div>
+
+              <!-- Sub-block B: ³D -->
+              <div class="morpho-subblock">
+                <div class="subblock-header">
+                  <span class="subblock-badge">02.B / RETRO 80-90</span>
+                  <span class="subblock-token">U+00B3 + U+0044</span>
+                </div>
+                <h4 class="subblock-title">³D (Profundidad Plana)</h4>
+                <p class="subblock-desc">
+                  El superíndice <code style="color:#39FF14;">³</code> y la letra <code style="color:#39FF14;">D</code> en línea base crean el efecto <em>flat-depth</em> unificado en verde.
+                </p>
+                <div class="subblock-meta">
+                  <span>Base: $y = 0$ unificada</span>
+                  <span>Color: Verde Parejo</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Integrated Color Crossover Note -->
+            <div class="morpho-crossover-note">
+              <strong>Eje Conceptual Dual:</strong> <em>NEO</em> (Celeste) representa la fluidez física del agua, mientras que <em>Fluid³D</em> (Verde parejo) representa la computación gráfica GPU donde ocurre la simulación.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 3. BRAND DETAILS & CONSTRUCTION RULES -->
+        <div class="brand-details-grid reveal reveal-d3" style="margin-top: 2rem;">
+          <div class="brand-id-card" style="width: 100%;">
+            <div class="brand-card-header">
+              <span class="brand-spec-label" style="color: #FFFFFF;">ANATOMÍA & REGLAS DE CONSTRUCCIÓN APILADA</span>
+              <span class="brand-spec-val">CRITERIOS CANÓNICOS</span>
+            </div>
+
+            <div class="rules-spec-list">
+              <div class="rule-spec-item">
+                <div class="rule-icon-box">
+                  <span class="rule-num">01</span>
+                </div>
+                <div class="rule-info">
+                  <h4 class="rule-heading">Módulo Dual de Altura ($2u + 2u = 4u$)</h4>
+                  <p class="rule-detail">
+                    Tanto la fila superior <strong class="text-cyan">NEO</strong> como la fila inferior <strong class="text-green">Fluid³D</strong> miden exactamente la mitad ($2u = H/2$) de la altura total del isotipo ($4u = H$), conformando un bloque armónico perfecto.
+                  </p>
+                </div>
+              </div>
+
+              <div class="rule-spec-item">
+                <div class="rule-icon-box">
+                  <span class="rule-num">02</span>
+                </div>
+                <div class="rule-info">
+                  <h4 class="rule-heading">Color Primario Unificado por Fila</h4>
+                  <p class="rule-detail">
+                    Fila 1 <strong class="text-cyan">NEO</strong> se renderiza 100% en Celeste de Marca (<code style="color:var(--color-cyan);">#00F0FF</code>) y Fila 2 <strong class="text-green">Fluid³D</strong> se renderiza 100% parejo en Verde de Marca (<code style="color:var(--color-green);">#39FF14</code>), sin caracteres en blanco.
+                  </p>
+                </div>
+              </div>
+
+              <div class="rule-spec-item">
+                <div class="rule-icon-box">
+                  <span class="rule-num">03</span>
+                </div>
+                <div class="rule-info">
+                  <h4 class="rule-heading">Profundidad Plana (Flat-Depth) en Verde</h4>
+                  <p class="rule-detail">
+                    El superíndice cúbico <span class="text-green">³</span> y la letra <span class="text-green">D</span> anclada a la línea base comparten el mismo color verde de cómputo, proyectando volumen ortográfico tridimensional.
+                  </p>
+                </div>
+              </div>
+
+              <div class="rule-spec-item">
+                <div class="rule-icon-box">
+                  <span class="rule-num">04</span>
+                </div>
+                <div class="rule-info">
+                  <h4 class="rule-heading">Separación Modular ($gap = 1u$) & Área de Reserva</h4>
+                  <p class="rule-detail">
+                    Separación de $1u = H/4$ ($25\%$ de la altura) entre la tangente del isotipo y el texto, con un margen perimetral de reserva libre de al menos $1u$ en los 4 costados.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
 
-<!-- SECTION 5: IMAGOTIPO: CONSTRUCCIÓN CANÓNICA 4X (#imagotype) -->
-  <section id="imagotype">
-    <div class="section-inner">
-      <div class="section-eyebrow reveal">Proporciones & Construcción</div>
-      <h2 class="section-title reveal reveal-d1">
-        El <span class="hl-cyan">Imagotipo</span>: Construcción Canónica
-      </h2>
-      <p class="section-desc reveal reveal-d2">
-        Regla de las 4 partes ($u = H/4$): alineación óptica, separación áurea y proporción dimensional exacta del imagotipo.
-      </p>
+      <!-- ═══════════════════════════════════════════════════════════
+           SUB-BLOQUE 08.C : EL IMAGOTIPO — CONSTRUCCIÓN CANÓNICA 4X
+           ═══════════════════════════════════════════════════════════ -->
+      <div style="margin-top: 4.5rem;" class="reveal reveal-d1">
+        <div class="section-header center" style="margin-bottom: 2rem;">
+          <div class="section-eyebrow">Proporciones & Construcción</div>
+          <h3 class="section-title" style="font-size: clamp(1.8rem, 3.5vw, 2.5rem);">
+            El <span class="hl-cyan">Imagotipo</span>: Construcción Canónica Apilada (4u)
+          </h3>
+          <p class="section-desc">
+            Regla modular de las 4 partes ($u = H/4$): alineación óptica, separación modular ($1u$) y proporción dimensional exacta del imagotipo apilado oficial.
+          </p>
+        </div>
 
-      <div class="imagotype-blueprint-card reveal reveal-d3">
-        <div class="blueprint-svg-wrap">
-          <svg viewBox="0 0 1060 260" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="bp-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0, 240, 255, 0.08)" stroke-width="0.75"/>
-              </pattern>
-            </defs>
-            <rect x="0" y="0" width="1060" height="260" fill="url(#bp-grid)" rx="8"/>
-
-            <!-- 4 Quarters Horizontal Guides (H = 4u = 200px, 1u = 50px = 1/4 H) -->
-            <line x1="20" y1="30" x2="960" y2="30" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="3 3"/>
-            <text x="968" y="34" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5">ÁPICE (0/4)</text>
-
-            <line x1="20" y1="80" x2="960" y2="80" stroke="rgba(255, 255, 255, 0.45)" stroke-dasharray="4 4"/>
-            <text x="968" y="84" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5">1/4 H (TOPE COTA)</text>
-
-            <line x1="20" y1="130" x2="960" y2="130" stroke="rgba(255, 255, 255, 0.2)" stroke-dasharray="2 2"/>
-            <text x="968" y="134" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5">2/4 H (CENTRO)</text>
-
-            <line x1="20" y1="180" x2="960" y2="180" stroke="rgba(255, 255, 255, 0.45)" stroke-dasharray="4 4"/>
-            <text x="968" y="184" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5">3/4 H (BASE COTA)</text>
-
-            <line x1="20" y1="230" x2="960" y2="230" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="3 3"/>
-            <text x="968" y="234" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5">BASE (4/4)</text>
-
-            <!-- Caliper 1: Drop Height H = 4u (Left) -->
-            <line x1="26" y1="30" x2="26" y2="230" stroke="#FFFFFF" stroke-width="1.5"/>
-            <path d="M 21 30 L 31 30 M 21 230 L 31 230" stroke="#FFFFFF" stroke-width="1.5"/>
-            <text x="12" y="130" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="11" transform="rotate(-90 12 130)" text-anchor="middle">H = 4u</text>
-
-            <!-- CANONICAL ISOTYPE: USO GENERAL (BAJO CONTRASTE) DESDE EL GÉNESIS MATEMÁTICO -->
-            <svg id="isotype-uso-general" x="37.43" y="24.11" width="135.46" height="211.78" viewBox="4 4 92 143.83" fill="none" overflow="visible">
+        <div class="imagotype-blueprint-card reveal reveal-d3">
+          <div class="blueprint-svg-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140 360" width="100%" height="100%" fill="none">
               <defs>
-                <clipPath id="imagotypeDropClip">
-                  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" />
-                </clipPath>
+                <pattern id="blueprintGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#00D2FF" stroke-opacity="0.08" stroke-width="1"/>
+                </pattern>
               </defs>
-
-              <!-- 1. Full Drop Solid Base -->
-              <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#010408" />
-
-              <!-- 2. Lower Sphere Grid in Neon Green (#39FF14) -->
-              <g clip-path="url(#imagotypeDropClip)" stroke="#39FF14" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none">
-                <!-- Ring 1 -->
-                <path d="M 55.76 84.40 L 57.82 84.38 L 60.11 84.36 L 62.36 84.34 L 64.57 84.31 L 66.71 84.27 L 68.79 84.23 L 70.80 84.19 L 72.72 84.14 L 74.55 84.09 L 76.29 84.03 L 77.92 83.97 L 79.45 83.91 L 80.85 83.84 L 82.14 83.77 L 83.30 83.70 L 84.32 83.62 L 85.21 83.55 L 85.97 83.47 L 86.58 83.39 L 87.04 83.31 L 87.36 83.22 L 87.56 83.14" />
-                <!-- Ring 2 -->
-                <path d="M 35.37 102.12 L 39.14 102.16 L 43.01 102.19 L 46.94 102.21 L 50.89 102.21 L 54.84 102.20 L 58.74 102.18 L 62.57 102.15 L 66.28 102.10 L 69.85 102.04 L 73.24 101.97 L 76.43 101.88 L 79.38 101.79 L 82.07 101.69 L 84.48 101.58 L 86.58 101.46 L 88.36 101.33 L 89.80 101.20 L 90.88 101.07 L 91.60 100.93 L 91.95 100.79" />
-                <!-- Ring 3 -->
-                <path d="M 14.41 118.91 L 17.19 119.10 L 20.78 119.27 L 25.09 119.42 L 30.01 119.54 L 35.42 119.64 L 41.19 119.70 L 47.18 119.74 L 53.24 119.74 L 59.22 119.70 L 64.97 119.63 L 70.35 119.54 L 75.24 119.41 L 79.50 119.26 L 83.03 119.08 L 85.75 118.89 L 87.59 118.69 L 88.58 118.43" />
-                <!-- Ring 4 -->
-                <path d="M 25.64 136.07 L 27.51 136.36 L 30.12 136.52 L 33.68 136.66 L 38.03 136.77 L 42.95 136.85 L 48.22 136.88 L 53.57 136.88 L 58.75 136.83 L 63.51 136.74 L 67.61 136.62 L 70.87 136.47 L 73.12 136.30 L 74.38 136.06" />
-                <!-- Meridians -->
-                <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
-                <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
-                <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
-                <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
-              </g>
-
-              <!-- 3. Upper Fluid Solid Fill (Cyan #00F0FF) -->
-              <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
-
-              <!-- 4. Front Cut Curve Contour (Cyan #00F0FF) -->
-              <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" />
-
-              <!-- 5A. Lower Sphere Outer Border (Neon Green #39FF14) -->
-              <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-
-              <!-- 5B. Upper Fluid Cone Outer Border (Cyan #00F0FF) -->
-              <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              <rect width="1140" height="360" fill="#070B0E"/>
+              <rect width="1140" height="360" fill="url(#blueprintGrid)"/>
+              <rect x="18" y="18" width="1104" height="324" fill="none" stroke="#00D2FF" stroke-opacity="0.22" stroke-dasharray="4 4" rx="6"/>
+              <line x1="25" y1="50.0" x2="1115" y2="50.0" stroke="#FFFFFF" stroke-opacity="0.25" stroke-dasharray="2 2"/>
+              <line x1="25" y1="115.0" x2="1115" y2="115.0" stroke="#00D2FF" stroke-opacity="0.35" stroke-dasharray="2 2"/>
+              <line x1="25" y1="180.0" x2="1115" y2="180.0" stroke="#00D2FF" stroke-opacity="0.45" stroke-dasharray="2 2"/>
+              <line x1="25" y1="245.0" x2="1115" y2="245.0" stroke="#00D2FF" stroke-opacity="0.35" stroke-dasharray="2 2"/>
+              <line x1="25" y1="310.0" x2="1115" y2="310.0" stroke="#FFFFFF" stroke-opacity="0.25" stroke-dasharray="2 2"/>
+              <line x1="50" y1="50.0" x2="50" y2="310.0" stroke="#FFFFFF" stroke-width="1.6"/>
+              <path d="M 44 50.0 L 56 50.0 M 44 310.0 L 56 310.0" stroke="#FFFFFF" stroke-width="1.6"/>
+              <text x="36" y="180.0" fill="#FFFFFF" font-family="'JetBrains Mono', 'Courier New', monospace" font-weight="700" font-size="14" letter-spacing="0.04em" transform="rotate(-90 36 180.0)" text-anchor="middle">H = 4u</text>
+              <svg x="90.00" y="50.00" width="160.79" height="260.00" viewBox="4 4 92 143.83" fill="none">
+                <g stroke="#39FF14" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                  <path d="M 76.9 86.42 L 79.81 86.59 L 82.39 86.78 L 84.62 86.99 L 86.47 87.2 L 87.92 87.43 L 88.95 87.67 L 89.56 87.9 M 10.27 88.1 L 10.53 87.86 L 11.23 87.62 L 12.35 87.38 L 13.88 87.16 L 15.81 86.94 L 18.11 86.74 L 20.76 86.56 L 23.73 86.39 L 26.99 86.24 L 30.5 86.11 L 34.23 86 L 38.13 85.92 L 42.16 85.86 L 46.27 85.82 L 50.43 85.81 L 54.58 85.83 L 58.68 85.87 L 62.68 85.93 L 66.55 86.02 L 70.23 86.13 L 73.7 86.27 L 76.9 86.42" />
+                  <path d="M 77.98 107.78 L 81.01 107.96 L 83.7 108.16 L 86.01 108.37 L 87.94 108.6 L 89.44 108.83 L 90.52 109.08 L 91.15 109.33 M 8.67 109.53 L 8.94 109.28 L 9.67 109.03 L 10.83 108.79 L 12.42 108.55 L 14.43 108.33 L 16.82 108.12 L 19.58 107.93 L 22.67 107.75 L 26.07 107.59 L 29.72 107.46 L 33.59 107.35 L 37.65 107.26 L 41.84 107.2 L 46.12 107.16 L 50.44 107.15 L 54.76 107.16 L 59.03 107.21 L 63.19 107.27 L 67.21 107.37 L 71.05 107.48 L 74.65 107.62 L 77.98 107.78" />
+                  <path d="M 70.5 129.69 L 72.71 129.82 L 74.68 129.97 L 76.38 130.12 L 77.79 130.29 L 78.89 130.46 L 79.68 130.64 L 80.14 130.82 M 19.73 130.97 L 19.93 130.78 L 20.46 130.6 L 21.31 130.42 L 22.48 130.25 L 23.95 130.09 L 25.7 129.93 L 27.72 129.79 L 29.99 129.66 L 32.47 129.55 L 35.15 129.45 L 37.98 129.37 L 40.95 129.3 L 44.02 129.26 L 47.16 129.23 L 50.32 129.22 L 53.49 129.24 L 56.61 129.27 L 59.66 129.32 L 62.61 129.38 L 65.42 129.47 L 68.05 129.57 L 70.5 129.69" />
+                  <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+                  <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+                  <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+                  <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+                </g>
+                <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
+                <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" />
+                <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <line x1="250.8" y1="35" x2="250.8" y2="325" stroke="#FFFFFF" stroke-opacity="0.25" stroke-dasharray="2 2"/>
+              <line x1="315.8" y1="35" x2="315.8" y2="325" stroke="#FFFFFF" stroke-opacity="0.25" stroke-dasharray="2 2"/>
+              <line x1="250.8" y1="180.0" x2="315.8" y2="180.0" stroke="#FFFFFF" stroke-width="1.6"/>
+              <path d="M 250.8 172.0 L 250.8 188.0 M 315.8 172.0 L 315.8 188.0" stroke="#FFFFFF" stroke-width="1.6"/>
+              <text x="283.3" y="160.0" fill="#FFFFFF" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="13" font-weight="700" text-anchor="middle">
+                <tspan x="283.3" dy="0">gap = 1u</tspan>
+                <tspan x="283.3" dy="15" fill="#00D2FF" fill-opacity="0.95">(1/4 H)</tspan>
+              </text>
+              <rect x="315.8" y="50.0" width="485.0" height="260.0" fill="#FFFFFF" fill-opacity="0.02" stroke="#FFFFFF" stroke-opacity="0.35" stroke-dasharray="3 3" rx="4"/>
+              <line x1="315.8" y1="180.0" x2="800.8" y2="180.0" stroke="#FFFFFF" stroke-opacity="0.28" stroke-dasharray="3 3"/>
+              <line x1="800.8" y1="35" x2="800.8" y2="325" stroke="#FFFFFF" stroke-opacity="0.25" stroke-dasharray="2 2"/>
+              <text x="315.8" y="171.0" font-family="'Clash Display', 'Poppins', sans-serif" font-weight="700" font-size="156" fill="#00F0FF" letter-spacing="-0.02em">NEO</text>
+              <text x="315.8" y="300.0" font-family="'JetBrains Mono', 'Courier New', monospace" font-weight="700" font-size="118" fill="#39FF14" letter-spacing="-0.025em">Fluid<tspan font-size="88" dy="-48">3</tspan><tspan font-size="118" dy="48">D</tspan></text>
+              <line x1="835.8" y1="50.0" x2="835.8" y2="310.0" stroke="#FFFFFF" stroke-width="1.6"/>
+              <path d="M 829.7892218213944 50.0 L 841.7892218213944 50.0 M 829.7892218213944 310.0 L 841.7892218213944 310.0" stroke="#FFFFFF" stroke-width="1.6"/>
+              <text x="851.7892218213944" y="180.0" fill="#FFFFFF" font-family="'JetBrains Mono', 'Courier New', monospace" font-weight="700" font-size="14" letter-spacing="0.04em" transform="rotate(90 851.7892218213944 180.0)" text-anchor="middle">H = 4u</text>
+              <text x="870.8" y="54.0" fill="#FFFFFF" fill-opacity="0.85" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="12.5" font-weight="700">ÁPICE (0/4)</text>
+              <text x="870.8" y="119.0" fill="#00D2FF" fill-opacity="0.95" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="12.5" font-weight="700">1/4 H (TOPE COTA)</text>
+              <text x="870.8" y="184.0" fill="#00F0FF" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="12.5" font-weight="700">2/4 H (CENTRO)</text>
+              <text x="870.8" y="249.0" fill="#00D2FF" fill-opacity="0.95" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="12.5" font-weight="700">3/4 H (BASE COTA)</text>
+              <text x="870.8" y="314.0" fill="#FFFFFF" fill-opacity="0.85" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="12.5" font-weight="700">BASE (4/4)</text>
             </svg>
+          </div>
 
-            <!-- Vertical guide at right tangent of drop (x = 167) -->
-            <line x1="167" y1="20" x2="167" y2="240" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="2 2"/>
+          <div class="blueprint-rules-grid">
+            <div class="blueprint-rule-item">
+              <div class="rule-math-tag">1. SEPARACIÓN MODULAR (gap = 1u = 1/4 H)</div>
+              <div class="rule-text">La distancia horizontal desde la silueta tangente del isotipo hasta el inicio del bloque tipográfico apilado es exactamente <em>1u (1/4 de la altura H)</em>.</div>
+            </div>
 
-            <!-- Vertical guide at start of text (x = 217) -->
-            <line x1="217" y1="20" x2="217" y2="240" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="2 2"/>
+            <div class="blueprint-rule-item">
+              <div class="rule-math-tag">2. COMPOSICIÓN APILADA DUAL (NEO / Fluid³D)</div>
+              <div class="rule-text">Fila superior <em>NEO</em> en <strong>Clash Display Variable Bold</strong>, fila inferior <em>Fluid³D</em> en <strong>JetBrains Mono Bold</strong>, con proporción armónica enmarcada en <em>4u</em>.</div>
+            </div>
 
-            <!-- Caliper 2: Gap = 1u = 1/4 H (50px) between Drop (x=167) and Name (x=217) -->
-            <line x1="167" y1="130" x2="217" y2="130" stroke="#FFFFFF" stroke-width="1.5"/>
-            <path d="M 167 122 L 167 138 M 217 122 L 217 138" stroke="#FFFFFF" stroke-width="1.5"/>
-            <text x="192" y="104" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" text-anchor="middle">
-              <tspan x="192" dy="0">gap = 1u</tspan>
-              <tspan x="192" dy="11">(1/4 H)</tspan>
-            </text>
-
-            <!-- LOGOTYPE BOUNDING BOX (Height = 2u = 100px, from y=80 to y=180, Width = 680px, ends at x=897) -->
-            <rect x="217" y="80" width="680" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.3)" stroke-dasharray="3 3" rx="4"/>
-
-            <!-- Vertical guide at end of text bounding box (x = 897) -->
-            <line x1="897" y1="20" x2="897" y2="240" stroke="rgba(255, 255, 255, 0.25)" stroke-dasharray="2 2"/>
-            
-            <!-- CANONICAL UNIFIED LOGOTYPE: Fluid³D with native Unicode ³ exponent, D as regular uppercase on baseline -->
-            <!-- Baseline at y=175 (touches 3/4 H with 5px margin), Top touches 1/4 H line -->
-            <text x="217" y="175"><tspan font-family="'Poppins', sans-serif" font-weight="900" font-size="112" fill="#00F0FF" letter-spacing="-0.02em">Neo</tspan><tspan font-family="'JetBrains Mono', monospace" font-weight="700" font-size="110" fill="#39FF14">Fluid³D</tspan></text>
-
-            <!-- Caliper 3: Text Height 2u = H/2 (100px) AFTER THE BOUNDING BOX (x=925) -->
-            <line x1="925" y1="80" x2="925" y2="180" stroke="#FFFFFF" stroke-width="1.5"/>
-            <path d="M 920 80 L 930 80 M 920 180 L 930 180" stroke="#FFFFFF" stroke-width="1.5"/>
-            <text x="942" y="130" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="9" transform="rotate(90 942 130)" text-anchor="middle">2u = H/2</text>
-          </svg>
+            <div class="blueprint-rule-item">
+              <div class="rule-math-tag">3. LÍNEA BASE & PROPORCIÓN CANÓNICA 4u</div>
+              <div class="rule-text">El superíndice <strong>³</strong> y la letra <strong>D</strong> comparten anclaje con el bloque textual, manteniendo una altura total uniforme de <em>4u</em> perfectamente alineada con la gota.</div>
+            </div>
+          </div>
         </div>
 
-        <div class="blueprint-rules-grid">
-          <div class="blueprint-rule-item">
-            <div class="rule-math-tag">1. SEPARACIÓN DE MARCA (gap = 1u = 1/4 H)</div>
-            <div class="rule-text">La distancia horizontal desde la silueta tangente del isotipo general hasta la <em>'N'</em> de <em>Neo</em> es exactamente <em>1u (1/4 de la altura H)</em>.</div>
+        <!-- ═══════════════════════════════════════════════════════════
+             SUB-BLOQUE 08.D : MANUAL DE MARCA OFICIAL (VISTA DEDICADA)
+             ═══════════════════════════════════════════════════════════ -->
+        <div id="manual-de-marca" class="brand-manual-callout-card reveal reveal-d2">
+          <div class="manual-callout-info">
+            <div class="subblock-kicker">08.D // DOCUMENTACIÓN OFICIAL NORMATIVA</div>
+            <h3 class="manual-callout-title">
+              Manual de Marca <span class="hl-cyan">Oficial</span>: Documento Canónico
+            </h3>
+            <p class="manual-callout-desc">
+              Accede a la vista dedicada e interactiva del manual oficial de identidad visual y formulación geométrica de NeoFluid3D (19 páginas técnicas de cotas, isotipos, tipografía y reglas de no deformación para el Hackathon Nicaragua 2026).
+            </p>
+            <div class="manual-callout-chips">
+              <span class="manual-chip">19 PÁGINAS</span>
+              <span class="manual-chip">1.6 MB</span>
+              <span class="manual-chip">CANÓNICO</span>
+              <span class="manual-chip chip-green">HACKATHON 2026</span>
+            </div>
           </div>
-
-          <div class="blueprint-rule-item">
-            <div class="rule-math-tag">2. ACOTACIÓN PLENA EN 2u (H_caja = 2u = H/2)</div>
-            <div class="rule-text">La caja modular abarca <em>2u</em> (del 25% al 75%), enmarcando el logotipo <em>NeoFluid³D</em> con el superíndice <strong>³</strong> y la <strong>D</strong> sobre la línea base.</div>
-          </div>
-
-          <div class="blueprint-rule-item">
-            <div class="rule-math-tag">3. CONTINUIDAD TIPOGRÁFICA NATURAL</div>
-            <div class="rule-text"><em>Neo</em> y <em>Fluid³D</em> se acoplan de forma continua sin espacios artificiales; el espaciado intrínseco de la <em>'F'</em> en <strong>JetBrains Mono</strong> aporta la holgura óptica exacta.</div>
+          <div class="manual-callout-actions">
+            <a href="brand-manual.html" class="btn-primary" style="white-space: nowrap;">
+              <span>Ver Manual de Marca ↗</span>
+            </a>
+            <a href="docs/Manual%20de%20marca%20NEO.pdf" download="Manual_de_Marca_NeoFluid3D.pdf" class="btn-ghost" style="white-space: nowrap;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Descargar PDF</span>
+            </a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-<section id="possibilities">
-  <div class="section-inner">
-    <div class="section-header center">
-      <div class="section-eyebrow reveal">Hacia Dónde Vamos</div>
-      <h2 class="section-title reveal reveal-d1">
-        Posibilidades y <span class="hl-cyan">aplicaciones comerciales</span>
-      </h2>
-      <p class="section-desc reveal reveal-d2">
-        La base técnica actual está proyectada para evolucionar en módulos de alto valor agregado para diversas industrias que requieren simulación de fluidos ágil, precisa y visualmente convincente.
-      </p>
-    </div>
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 09 : ALIANZAS & CONTACTO CORPORATIVO B2B
+       ═══════════════════════════════════════════════════════════ -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="contact-container reveal">
+        
+        <div class="contact-info">
+          <div class="section-eyebrow">Alianzas & Negocios</div>
+          <h3>¿Le interesa integrar esta tecnología?</h3>
+          <p>
+            Estamos abiertos a conversaciones con empresas de ingeniería, estudios de desarrollo y socios estratégicos que deseen explorar el potencial de NeoFluid3D para sus productos.
+          </p>
 
-    <div class="possibilities-grid">
+          <ul class="contact-perks">
+            <li class="contact-perk-item">
+              <div class="perk-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <div class="perk-text">
+                <h5>Demostraciones Técnicas Privadas</h5>
+                <p>Presentaciones en vivo adaptadas a sus casos de uso específicos.</p>
+              </div>
+            </li>
 
-      <!-- Posibilidad 1: Gemelos Digitales & Monitoreo -->
-      <article class="pos-card featured reveal reveal-d1">
-        <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M17 18h1M12 18h1M7 18h1"></path></svg></div>
-          <span class="pos-badge">Industria 4.0</span>
+            <li class="contact-perk-item">
+              <div class="perk-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <div class="perk-text">
+                <h5>Licenciamiento & Acceso Temprano</h5>
+                <p>Opciones flexibles para evaluación tecnológica y prototipado inicial.</p>
+              </div>
+            </li>
+
+            <li class="contact-perk-item">
+              <div class="perk-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <div class="perk-text">
+                <h5>Desarrollo e Integración a Medida</h5>
+                <p>Adaptación del motor a sus estándares de software y hardware.</p>
+              </div>
+            </li>
+          </ul>
         </div>
-        <h3 class="pos-title">Gemelos Digitales & Plantas Industriales</h3>
-        <p class="pos-desc">
-          Integración en plataformas de <strong>monitoreo visual e interactivo</strong> de depósitos, plantas de tratamiento, sistemas de bombeo y tuberías. Permite a los operadores visualizar el comportamiento interno del líquido y simular escenarios de desborde o llenado en tiempo real sin cálculos lentos fuera de línea.
-        </p>
-        <ul class="pos-usecases">
-          <li>Visualización de niveles y flujos en tanques y contenedores</li>
-          <li>Predicción visual de tiempos de vaciado y presiones</li>
-          <li>Paneles de control y telemetría industrial con visualización 3D interactiva</li>
-        </ul>
-      </article>
 
-      <!-- Posibilidad 2: Prototipado en Ingeniería Hidráulica & Mecánica -->
-      <article class="pos-card reveal reveal-d2">
-        <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"></path><path d="M9.6 4.6A2 2 0 1 1 11 8H2"></path><path d="M12.6 19.4A2 2 0 1 0 14 16H2"></path></svg></div>
-          <span class="pos-badge">Ingeniería</span>
-        </div>
-        <h3 class="pos-title">Prototipado Rápido & Validación Pre-CFD</h3>
-        <p class="pos-desc">
-          Los paquetes CFD tradicionales tardan horas o días en calcular un solo escenario. NeoFluid3D ofrece un <strong>entorno de prueba rápida</strong> para validar conceptos preliminares, observar turbulencias y probar geometrías antes de enviar a cómputo de alta precisión.
-        </p>
-        <ul class="pos-usecases">
-          <li>Inspección preliminar de vertederos y compuertas</li>
-          <li>Evaluación de impacto de fluidos contra componentes mecánicos</li>
-          <li>Iteración de diseño CAD con respuesta inmediata</li>
-        </ul>
-      </article>
-
-      <!-- Posibilidad 3: Simuladores de Entrenamiento & Capacitación -->
-      <article class="pos-card reveal reveal-d3">
-        <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-2l-2-2h-4l-2 2H6a3 3 0 0 1-3-3Z"></path><circle cx="8" cy="12" r="2"></circle><circle cx="16" cy="12" r="2"></circle></svg></div>
-          <span class="pos-badge">Entrenamiento</span>
-        </div>
-        <h3 class="pos-title">Simuladores de Operación & Realidad Virtual</h3>
-        <p class="pos-desc">
-          Entornos de capacitación técnica inmersivos (VR/AR) donde operarios, bomberos o personal médico deben interactuar con líquidos con <strong>latencia cero</strong> y respuesta física verosímil ante manipulaciones con mandos o sensores.
-        </p>
-        <ul class="pos-usecases">
-          <li>Entrenamiento en manejo de materiales peligrosos y derrames</li>
-          <li>Simuladores quirúrgicos con dinámica de fluidos corporales</li>
-          <li>Capacitación en control de incendios y dispersión hidráulica</li>
-        </ul>
-      </article>
-
-      <!-- Posibilidad 4: Efectos Visuales & Producción Virtual -->
-      <article class="pos-card reveal reveal-d1">
-        <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-5 3v4l5 3V7Z"></path><circle cx="9.5" cy="12" r="2.5"></circle></svg></div>
-          <span class="pos-badge">VFX & Media</span>
-        </div>
-        <h3 class="pos-title">Middleware para Motores Gráficos & VFX</h3>
-        <p class="pos-desc">
-          Empaquetado como plugin o SDK nativo para integrarse en pipelines de <strong>producción virtual, Unreal Engine, Unity o motores propietarios</strong>, permitiendo a los directores y creadores previsualizar e interactuar con fluidos dinámicos en el set en tiempo real.
-        </p>
-        <ul class="pos-usecases">
-          <li>Previsualización en sets de rodaje con producción virtual</li>
-          <li>Física de líquidos reactiva en videojuegos y simuladores</li>
-          <li>Generación interactiva de mallas para exportación a DCCs</li>
-        </ul>
-      </article>
-
-      <!-- Posibilidad 5: Instalaciones Interactivas & Museografía -->
-      <article class="pos-card reveal reveal-d2">
-        <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="3"></rect><line x1="6" y1="12" x2="10" y2="12"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line></svg></div>
-          <span class="pos-badge">Experiencias</span>
-        </div>
-        <h3 class="pos-title">Experiencias Interactivas & Exhibiciones</h3>
-        <p class="pos-desc">
-          Soluciones visuales de alto impacto para centros de ciencia, museos y pabellones corporativos donde el público interactúa con el fluido mediante sensores de movimiento (Kinect, cámaras de profundidad o pantallas táctiles).
-        </p>
-        <ul class="pos-usecases">
-          <li>Kioscos interactivos de divulgación científica</li>
-          <li>Instalaciones de arte generativo y branding espacial</li>
-          <li>Visualizadores de fluidodinámica para ferias y congresos</li>
-        </ul>
-      </article>
-
-      <!-- Posibilidad 6: Soluciones a Medida & Licenciamiento B2B -->
-      <article class="pos-card featured reveal reveal-d3">
-        <div class="pos-header-row">
-          <div class="pos-icon-box" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"></path><line x1="12" y1="8" x2="12" y2="11"></line></svg></div>
-          <span class="pos-badge">B2B Custom</span>
-        </div>
-        <h3 class="pos-title">Desarrollo a Medida & Licencia del Motor</h3>
-        <p class="pos-desc">
-          Adaptamos el núcleo a los requisitos particulares de hardware, restricciones de memoria y modelos matemáticos específicos de su empresa, garantizando <strong>propiedad intelectual y soporte técnico especializado</strong>.
-        </p>
-        <ul class="pos-usecases">
-          <li>Licenciamiento del código fuente del motor de cálculo</li>
-          <li>Desarrollo de módulos de física personalizados</li>
-          <li>Consultoría e integración en software corporativo existente</li>
-        </ul>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-<section id="modes">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-eyebrow reveal">Capacidades Analíticas</div>
-      <h2 class="section-title reveal reveal-d1">
-        Inspección visual <span class="hl-green">multicapa</span>
-      </h2>
-      <p class="section-desc reveal reveal-d2">
-        El motor permite alternar instantáneamente entre diferentes modos de análisis para examinar tanto la estética volumétrica como la coherencia física subyacente.
-      </p>
-    </div>
-
-    <div class="modes-grid">
-      
-      <!-- Mode 1 -->
-      <div class="mode-card reveal reveal-d1">
-        <canvas class="mode-canvas" id="mc-p1" aria-hidden="true"></canvas>
-        <div class="mode-scanner" aria-hidden="true"></div>
-        <div class="mode-caption">
-          <div>
-            <div class="mode-caption-title">Malla Volumétrica Fotorrealista</div>
-            <div class="mode-caption-sub">Reconstrucción de superficie continua con refracción</div>
+        <!-- Action Form Box -->
+        <form class="contact-action-box" id="contact-form" onsubmit="handleContactSubmit(event)">
+          <div class="form-group">
+            <label for="contact-name">Nombre / Cargo</label>
+            <input type="text" id="contact-name" class="form-input" placeholder="Ej. Dra. Elena Rostova / Lead Engine Dev" required />
           </div>
-          <span class="mode-tag">Isosuperficie</span>
+          <div class="form-group">
+            <label for="contact-company">Empresa u Organización</label>
+            <input type="text" id="contact-company" class="form-input" placeholder="Ej. Quantum Dynamics Corp" required />
+          </div>
+          <div class="form-group">
+            <label for="contact-email">Correo Electrónico Corporativo</label>
+            <input type="email" id="contact-email" class="form-input" placeholder="contacto@empresa.com" required />
+          </div>
+          <div class="form-group">
+            <label for="contact-interest">Área de Interés Principal</label>
+            <select id="contact-interest" class="form-input" style="background: var(--color-bg); color: var(--color-text);">
+              <option value="licensing">Licenciamiento SDK / Motor GPU</option>
+              <option value="poc">Evaluación Técnica / PoC para Gemelo Digital</option>
+              <option value="vfx">Integración en Pipeline VFX / Unreal Engine</option>
+              <option value="custom">Desarrollo de Módulo de Simulación a Medida</option>
+              <option value="other">Otra Consulta Corporativa</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+            Solicitar Contacto / Demo
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <svg class="footer-brand-logo" width="38" height="60" viewBox="4 4 92 143.83" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Isotipo NeoFluid3D">
+          <!-- 1. Lower Sphere Grid (3 Rings + Meridians from docs/imagotipo_apilado_blueprint.svg) -->
+          <g stroke="#39FF14" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <path d="M 76.9 86.42 L 79.81 86.59 L 82.39 86.78 L 84.62 86.99 L 86.47 87.2 L 87.92 87.43 L 88.95 87.67 L 89.56 87.9 M 10.27 88.1 L 10.53 87.86 L 11.23 87.62 L 12.35 87.38 L 13.88 87.16 L 15.81 86.94 L 18.11 86.74 L 20.76 86.56 L 23.73 86.39 L 26.99 86.24 L 30.5 86.11 L 34.23 86 L 38.13 85.92 L 42.16 85.86 L 46.27 85.82 L 50.43 85.81 L 54.58 85.83 L 58.68 85.87 L 62.68 85.93 L 66.55 86.02 L 70.23 86.13 L 73.7 86.27 L 76.9 86.42" />
+            <path d="M 77.98 107.78 L 81.01 107.96 L 83.7 108.16 L 86.01 108.37 L 87.94 108.6 L 89.44 108.83 L 90.52 109.08 L 91.15 109.33 M 8.67 109.53 L 8.94 109.28 L 9.67 109.03 L 10.83 108.79 L 12.42 108.55 L 14.43 108.33 L 16.82 108.12 L 19.58 107.93 L 22.67 107.75 L 26.07 107.59 L 29.72 107.46 L 33.59 107.35 L 37.65 107.26 L 41.84 107.2 L 46.12 107.16 L 50.44 107.15 L 54.76 107.16 L 59.03 107.21 L 63.19 107.27 L 67.21 107.37 L 71.05 107.48 L 74.65 107.62 L 77.98 107.78" />
+            <path d="M 70.5 129.69 L 72.71 129.82 L 74.68 129.97 L 76.38 130.12 L 77.79 130.29 L 78.89 130.46 L 79.68 130.64 L 80.14 130.82 M 19.73 130.97 L 19.93 130.78 L 20.46 130.6 L 21.31 130.42 L 22.48 130.25 L 23.95 130.09 L 25.7 129.93 L 27.72 129.79 L 29.99 129.66 L 32.47 129.55 L 35.15 129.45 L 37.98 129.37 L 40.95 129.3 L 44.02 129.26 L 47.16 129.23 L 50.32 129.22 L 53.49 129.24 L 56.61 129.27 L 59.66 129.32 L 62.61 129.38 L 65.42 129.47 L 68.05 129.57 L 70.5 129.69" />
+            <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
+            <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
+            <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
+            <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
+          </g>
+
+          <!-- 2. Upper Fluid Solid Fill (#00F0FF) -->
+          <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
+
+          <!-- 3. Cut Curve (#00F0FF) -->
+          <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" />
+
+          <!-- 4. Lower Sphere Arc (#39FF14) -->
+          <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+
+          <!-- 5. Upper Cone Arc (#00F0FF) -->
+          <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div class="footer-brand-text-stacked">
+          <span class="brand-neo">NEO</span>
+          <span class="brand-fluid3d"><span class="footer-fluid">Fluid</span><span class="footer-3d"><span class="footer-exp">³</span><span class="footer-d">D</span></span></span>
         </div>
       </div>
 
-      <!-- Mode 2 -->
-      <div class="mode-card reveal reveal-d2">
-        <canvas class="mode-canvas" id="mc-p2" aria-hidden="true"></canvas>
-        <div class="mode-scanner" style="animation-delay: -1.5s;" aria-hidden="true"></div>
-        <div class="mode-caption">
-          <div>
-            <div class="mode-caption-title">Nube de Elementos Discretos</div>
-            <div class="mode-caption-sub">Seguimiento de alta densidad y dinámica de partículas interactivas</div>
-          </div>
-          <span class="mode-tag">Partículas</span>
-        </div>
-      </div>
-
-      <!-- Mode 3 -->
-      <div class="mode-card reveal reveal-d3">
-        <canvas class="mode-canvas" id="mc-p3" aria-hidden="true"></canvas>
-        <div class="mode-scanner" style="animation-delay: -0.7s;" aria-hidden="true"></div>
-        <div class="mode-caption">
-          <div>
-            <div class="mode-caption-title">Red de Tensión Superficial</div>
-            <div class="mode-caption-sub">Grafo de interacciones y cohesión entre vecinos cercanos</div>
-          </div>
-          <span class="mode-tag">Plexus Graph</span>
-        </div>
-      </div>
-
-      <!-- Mode 4 -->
-      <div class="mode-card reveal reveal-d4">
-        <canvas class="mode-canvas" id="mc-p4" aria-hidden="true"></canvas>
-        <div class="mode-scanner" style="animation-delay: -2.2s;" aria-hidden="true"></div>
-        <div class="mode-caption">
-          <div>
-            <div class="mode-caption-title">Campo Vectorial de Velocidades</div>
-            <div class="mode-caption-sub">Dirección, aceleración y magnitud de las corrientes</div>
-          </div>
-          <span class="mode-tag">Vectores</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section id="roadmap">
-  <div class="section-inner">
-    <div>
-      <div class="section-eyebrow reveal">Hoja de Ruta</div>
-      <h2 class="section-title reveal reveal-d1">
-        Rumbo a la <span class="hl-cyan">madurez comercial</span>
-      </h2>
-      <p class="section-desc reveal reveal-d2">
-        Avanzamos con una estrategia clara: consolidar la robustez del motor fundacional para luego abrir canales de integración directa y licenciamiento para el sector empresarial.
+      <p class="footer-summary">
+        Motor de cálculo y tecnología de dinámica de fluidos en tiempo real.<br>
+        Simulación acelerada en GPU para aplicaciones industriales, gemelos digitales y medios interactivos.
       </p>
 
-      <div style="margin-top: 2rem;" class="reveal reveal-d3">
-        <a href="#contact" class="btn-primary">Solicitar Información Técnica</a>
+      <ul class="footer-nav">
+        <li><a href="#vision">01 Visión</a></li>
+        <li><a href="#demos">02 Demos</a></li>
+        <li><a href="#benchmarks">03 Cómputo GPU</a></li>
+        <li><a href="#sdk">04 Núcleo & API</a></li>
+        <li><a href="#modes">05 Modos</a></li>
+        <li><a href="#possibilities">06 Soluciones B2B</a></li>
+        <li><a href="#roadmap">07 Roadmap</a></li>
+        <li><a href="#brand">08 ADN</a></li>
+        <li><a href="#contact">09 Contacto</a></li>
+      </ul>
+
+      <div class="footer-bottom-bar">
+        <span>© 2025–2026 NeoFluid3D : Todos los derechos reservados</span>
       </div>
     </div>
-
-    <div class="roadmap-timeline">
-      
-      <div class="roadmap-item reveal reveal-d1">
-        <div class="roadmap-dot dot-done" aria-hidden="true"></div>
-        <div class="roadmap-phase">Fase 01 : Consolidada</div>
-        <h3 class="roadmap-heading">Motor Fundacional en GPU</h3>
-        <p class="roadmap-desc">
-          Motor de simulación gráfica de alta eficiencia, cómputo paralelo masivo en GPU y respuesta física instantánea a 60 FPS.
-        </p>
-        <span class="roadmap-tag tag-completed"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:3px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Completado</span>
-      </div>
-
-      <div class="roadmap-item reveal reveal-d2">
-        <div class="roadmap-dot dot-done" aria-hidden="true"></div>
-        <div class="roadmap-phase">Fase 02 : Consolidada</div>
-        <h3 class="roadmap-heading">Generación Dinámica de Mallas</h3>
-        <p class="roadmap-desc">
-          Reconstrucción continua de superficies líquidas y mallas fotorrealistas en tiempo real con refracción y sombreado avanzado.
-        </p>
-        <span class="roadmap-tag tag-completed"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:3px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Completado</span>
-      </div>
-
-      <div class="roadmap-item reveal reveal-d3">
-        <div class="roadmap-dot dot-wip" aria-hidden="true"></div>
-        <div class="roadmap-phase">Fase 03 : En Desarrollo Activo</div>
-        <h3 class="roadmap-heading">Capa de Control & Colisiones Dinámicas</h3>
-        <p class="roadmap-desc">
-          Entorno interactivo con ajuste dinámico de parámetros de fluido y soporte para interacción con sólidos y geometrías complejas.
-        </p>
-        <span class="roadmap-tag tag-active">● En Progreso</span>
-      </div>
-
-      <div class="roadmap-item reveal reveal-d4">
-        <div class="roadmap-dot dot-future" aria-hidden="true"></div>
-        <div class="roadmap-phase">Fase 04 : Próxima Etapa</div>
-        <h3 class="roadmap-heading">SDK Modular & API de Integración B2B</h3>
-        <p class="roadmap-desc">
-          SDK modular y suite de integración corporativa para incrustar el motor en aplicaciones, gemelos digitales y visores 3D.
-        </p>
-        <span class="roadmap-tag tag-planned">○ Planeado</span>
-      </div>
-
-      <div class="roadmap-item reveal reveal-d4">
-        <div class="roadmap-dot dot-future" aria-hidden="true"></div>
-        <div class="roadmap-phase">Fase 05 : Escalado Comercial</div>
-        <h3 class="roadmap-heading">Soluciones Llave en Mano para Empresas</h3>
-        <p class="roadmap-desc">
-          Licenciamiento empresarial, soporte técnico preferente y desarrollos a medida para industrias de ingeniería, media y software.
-        </p>
-        <span class="roadmap-tag tag-planned">○ Planeado</span>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section id="contact">
-  <div class="section-inner">
-    <div class="contact-container reveal">
-      
-      <div class="contact-info">
-        <div class="section-eyebrow">Alianzas & Negocios</div>
-        <h3>¿Le interesa integrar esta tecnología?</h3>
-        <p>
-          Estamos abiertos a conversaciones con empresas de ingeniería, estudios de desarrollo y socios estratégicos que deseen explorar el potencial de NeoFluid3D para sus productos.
-        </p>
-
-        <ul class="contact-perks">
-          <li class="contact-perk-item">
-            <div class="perk-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-            <div class="perk-text">
-              <h5>Demostraciones Técnicas Privadas</h5>
-              <p>Presentaciones en vivo adaptadas a sus casos de uso específicos.</p>
-            </div>
-          </li>
-
-          <li class="contact-perk-item">
-            <div class="perk-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-            <div class="perk-text">
-              <h5>Licenciamiento & Acceso Temprano</h5>
-              <p>Opciones flexibles para evaluación tecnológica y prototipado inicial.</p>
-            </div>
-          </li>
-
-          <li class="contact-perk-item">
-            <div class="perk-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-            <div class="perk-text">
-              <h5>Desarrollo e Integración a Medida</h5>
-              <p>Adaptación del motor a sus estándares de software y hardware.</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Action Form Box -->
-      <form class="contact-action-box" id="contact-form" onsubmit="handleContactSubmit(event)">
-        <div class="form-group">
-          <label for="contact-name">Nombre o Empresa</label>
-          <input type="text" id="contact-name" class="form-input" placeholder="Ej. HydroTech Solutions" required />
-        </div>
-        <div class="form-group">
-          <label for="contact-email">Correo Electrónico de Contacto</label>
-          <input type="email" id="contact-email" class="form-input" placeholder="contacto@empresa.com" required />
-        </div>
-        <div class="form-group">
-          <label for="contact-interest">Área de Interés</label>
-          <input type="text" id="contact-interest" class="form-input" placeholder="Gemelos Digitales / VFX / Licencia / Otro" required />
-        </div>
-        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-          Solicitar Contacto / Demo
-        </button>
-      </form>
-
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <svg class="footer-brand-logo" width="32" height="42" viewBox="4 4 92 143.83" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <!-- NeoFluid3D Principal High-Contrast Isotype -->
-  <defs>
-    <clipPath id="ftDropClip">
-      <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" />
-    </clipPath>
-  </defs>
-
-  <!-- 1. Full Drop Solid Black Base -->
-  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.84 121.42 L 14.84 124.81 L 17.87 128.89 L 21.80 132.96 L 27.09 137.04 L 33.45 140.44 L 42.48 143.15 L 50.00 143.83 L 57.52 143.15 L 66.55 140.44 L 72.91 137.04 L 78.20 132.96 L 82.13 128.89 L 85.16 124.81 L 87.51 120.74 L 89.30 116.66 L 90.60 112.59 L 91.47 108.51 L 91.87 105.12 L 92.00 102.40 L 91.90 99.01 L 91.53 95.61 L 90.88 92.22 L 89.92 88.82 L 88.65 85.42 L 87.04 82.03 L 85.34 78.63 L 83.30 74.56 L 80.92 69.80 L 78.54 65.05 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#000000" />
-
-  <!-- 2. Lower Grid (Neon Green) -->
-  <g clip-path="url(#ftDropClip)" stroke="#39FF14" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <path d="M 55.76 84.40 L 57.82 84.38 L 60.11 84.36 L 62.36 84.34 L 64.57 84.31 L 66.71 84.27 L 68.79 84.23 L 70.80 84.19 L 72.72 84.14 L 74.55 84.09 L 76.29 84.03 L 77.92 83.97 L 79.45 83.91 L 80.85 83.84 L 82.14 83.77 L 83.30 83.70 L 84.32 83.62 L 85.21 83.55 L 85.97 83.47 L 86.58 83.39 L 87.04 83.31 L 87.36 83.22 L 87.56 83.14" />
-    <path d="M 35.37 102.12 L 39.14 102.16 L 43.01 102.19 L 46.94 102.21 L 50.89 102.21 L 54.84 102.20 L 58.74 102.18 L 62.57 102.15 L 66.28 102.10 L 69.85 102.04 L 73.24 101.97 L 76.43 101.88 L 79.38 101.79 L 82.07 101.69 L 84.48 101.58 L 86.58 101.46 L 88.36 101.33 L 89.80 101.20 L 90.88 101.07 L 91.60 100.93 L 91.95 100.79" />
-    <path d="M 14.41 118.91 L 17.19 119.10 L 20.78 119.27 L 25.09 119.42 L 30.01 119.54 L 35.42 119.64 L 41.19 119.70 L 47.18 119.74 L 53.24 119.74 L 59.22 119.70 L 64.97 119.63 L 70.35 119.54 L 75.24 119.41 L 79.50 119.26 L 83.03 119.08 L 85.75 118.89 L 87.59 118.69 L 88.58 118.43" />
-    <path d="M 25.64 136.07 L 27.51 136.36 L 30.12 136.52 L 33.68 136.66 L 38.03 136.77 L 42.95 136.85 L 48.22 136.88 L 53.57 136.88 L 58.75 136.83 L 63.51 136.74 L 67.61 136.62 L 70.87 136.47 L 73.12 136.30 L 74.38 136.06" />
-    <path d="M 50.00 143.83 L 59.56 141.75 L 64.77 138.29 L 68.24 134.75 L 70.86 131.19 L 72.91 127.60 L 74.54 124.00 L 75.84 120.38 L 76.84 116.75 L 77.58 113.12 L 78.09 109.47 L 78.37 105.82 L 78.44 102.15 L 78.28 98.48 L 77.90 94.80 L 77.29 91.11 L 76.44 87.41 L 75.31 83.70 L 74.07 79.99 L 72.83 76.28 L 71.18 71.32" />
-    <path d="M 50.00 143.83 L 64.61 141.23 L 72.53 137.30 L 77.77 133.37 L 81.68 129.44 L 84.71 125.50 L 87.08 121.57 L 88.91 117.63 L 90.28 113.69 L 91.23 109.76 L 91.78 105.82 L 91.96 101.88 L 91.77 97.94 L 91.21 94.00 L 90.26 90.06 L 88.88 86.12 L 87.05 82.18 L 85.08 78.24 L 83.12 74.30 L 81.15 70.35 L 78.54 65.08" />
-    <path d="M 50.00 143.83 L 49.38 141.63 L 49.07 138.25 L 48.87 134.79 L 48.71 131.28 L 48.59 127.75 L 48.51 125.09 L 48.45 122.41 L 48.39 119.73 L 48.35 117.04 L 48.31 114.34 L 48.29 111.63 L 48.27 108.92 L 48.26 106.20 L 48.25 103.48 L 48.25 100.75 L 48.27 98.01 L 48.28 95.27 L 48.31 92.52 L 48.33 90.68" />
-    <path d="M 50.00 143.83 L 43.25 143.04 L 39.43 141.64 L 36.76 140.21 L 34.62 138.76 L 32.82 137.30 L 31.25 135.84 L 29.87 134.36 L 28.64 132.89 L 27.53 131.40 L 26.52 129.92 L 25.61 128.43 L 24.78 126.94 L 24.02 125.44 L 23.33 123.95 L 22.71 122.45 L 22.14 120.95 L 21.63 119.45 L 21.17 117.95 L 20.77 116.44 L 20.30 114.43" />
-  </g>
-
-  <!-- 3. Upper Fluid Solid Fill (Cyan #00F0FF) -->
-  <path d="M 50.00 8.00 L 47.96 12.07 L 45.92 16.15 L 43.88 20.22 L 41.85 24.30 L 39.81 28.37 L 37.77 32.45 L 35.73 36.52 L 33.69 40.60 L 31.65 44.67 L 29.61 48.75 L 27.57 52.82 L 25.54 56.90 L 23.50 60.97 L 21.46 65.05 L 19.42 69.12 L 17.38 73.20 L 15.34 77.27 L 13.30 81.35 L 12.43 83.09 L 11.07 86.10 L 9.86 89.50 L 8.97 92.89 L 8.37 96.29 L 8.06 99.69 L 8.00 102.40 L 8.19 105.80 L 8.65 109.19 L 9.40 112.59 L 10.45 115.99 L 11.84 119.38 L 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07 L 78.54 65.05 L 77.86 63.69 L 76.50 60.97 L 74.80 57.58 L 73.11 54.18 L 71.07 50.11 L 68.69 45.35 L 66.31 40.60 L 63.59 35.17 L 60.87 29.73 L 57.82 23.62 L 54.76 17.51 L 52.04 12.07 L 50.00 8.00 Z" fill="#00F0FF" />
-
-  <!-- 4. Front Cut Curve Contour (Cyan #00F0FF) -->
-  <path d="M 12.60 120.95 L 14.14 119.65 L 15.93 118.13 L 17.91 116.46 L 20.42 114.33 L 23.50 111.72 L 27.17 108.61 L 31.42 105.00 L 36.18 100.97 L 41.29 96.64 L 46.54 92.19 L 51.67 87.85 L 56.42 83.83 L 61.59 79.45 L 66.73 75.09 L 71.41 71.13 L 75.21 67.91 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" />
-
-  <!-- 5A. Lower Sphere Outer Border (Neon Green #39FF14) -->
-  <path d="M 78.55 65.07 L 80.92 69.80 L 83.30 74.56 L 85.34 78.63 L 87.04 82.03 L 88.65 85.42 L 89.92 88.82 L 90.88 92.22 L 91.53 95.61 L 91.90 99.01 L 92.00 102.40 L 91.87 105.12 L 91.47 108.51 L 90.60 112.59 L 89.30 116.66 L 87.51 120.74 L 85.16 124.81 L 82.13 128.89 L 78.20 132.96 L 72.91 137.04 L 66.55 140.44 L 57.52 143.15 L 50.00 143.83 L 42.48 143.15 L 33.45 140.44 L 27.09 137.04 L 21.80 132.96 L 17.87 128.89 L 14.84 124.81 L 12.84 121.42 L 12.60 120.95" fill="none" stroke="#39FF14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-
-  <!-- 5B. Upper Fluid Cone Outer Border (Cyan #00F0FF) -->
-  <path d="M 12.60 120.95 L 11.84 119.38 L 10.45 115.99 L 9.40 112.59 L 8.65 109.19 L 8.19 105.80 L 8.00 102.40 L 8.06 99.69 L 8.37 96.29 L 8.97 92.89 L 9.86 89.50 L 11.07 86.10 L 12.43 83.09 L 13.30 81.35 L 15.34 77.27 L 17.38 73.20 L 19.42 69.12 L 21.46 65.05 L 23.50 60.97 L 25.54 56.90 L 27.57 52.82 L 29.61 48.75 L 31.65 44.67 L 33.69 40.60 L 35.73 36.52 L 37.77 32.45 L 39.81 28.37 L 41.85 24.30 L 43.88 20.22 L 45.92 16.15 L 47.96 12.07 L 50.00 8.00 L 52.04 12.07 L 54.76 17.51 L 57.82 23.62 L 60.87 29.73 L 63.59 35.17 L 66.31 40.60 L 68.69 45.35 L 71.07 50.11 L 73.11 54.18 L 74.80 57.58 L 76.50 60.97 L 77.86 63.69 L 78.54 65.05 L 78.55 65.07" fill="none" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-</svg>
-      <span><span class="neo" style="margin-right: 0;">Neo</span><span class="fluid3d"><span class="footer-fluid">Fluid</span><span class="footer-3d"><span class="footer-exp">³</span><span class="footer-d">D</span></span></span></span>
-    </div>
-
-    <p class="footer-summary">
-      Plataforma y motor de cálculo de dinámica de fluidos en tiempo real.<br>
-      Tecnología de simulación acelerada en GPU para aplicaciones industriales, gemelos digitales y medios interactivos.
-    </p>
-
-    <ul class="footer-nav">
-      <li><a href="#vision">01 Visión</a></li>
-      <li><a href="#demos">02 Demos</a></li>
-      <li><a href="#isotype">03 Isotipo</a></li>
-      <li><a href="#logotype">04 Logotipo</a></li>
-      <li><a href="#imagotype">05 Imagotipo</a></li>
-      <li><a href="#possibilities">06 Posibilidades</a></li>
-      <li><a href="#modes">07 Modos</a></li>
-      <li><a href="#roadmap">08 Roadmap</a></li>
-      <li><a href="#contact">09 Contacto</a></li>
-    </ul>
-
-    <div class="footer-bottom-bar">
-      <span>© 2025–2026 NeoFluid3D : Todos los derechos reservados</span>
-    </div>
-  </div>
-</footer>
+  </footer>
 
   <!-- Modular Specialized Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>

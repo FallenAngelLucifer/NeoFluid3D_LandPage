@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeoFluid3D — Consola Remota & Libreto de Pitch</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Oxanium:wght@500;600;700;800&family=Poppins:wght@800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --color-bg: #070B0E;
+      --color-navy: #080C26;
+      --color-cyan: #00F0FF;
+      --color-green: #39FF14;
+      --color-titanium: #8FA6B2;
+      --color-text: #E6F1F5;
+      --border-line: rgba(0, 240, 255, 0.2);
+      --border-subtle: rgba(143, 166, 178, 0.15);
+      --font-display: 'Oxanium', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'IBM Plex Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top Console Header */
+    header {
+      height: 54px;
+      background: rgba(8, 12, 38, 0.85);
+      border-bottom: 1px solid var(--border-line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .brand-tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sync-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--color-green);
+    }
+
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-green);
+      box-shadow: 0 0 8px var(--color-green);
+      animation: pulseSync 1.5s infinite;
+    }
+
+    @keyframes pulseSync {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Main Console Grid */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      overflow: hidden;
+    }
+
+    /* Left Column: Remote Controls & Telemetry */
+    aside {
+      background: rgba(7, 11, 14, 0.95);
+      border-right: 1px solid var(--border-line);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+
+    .timer-block {
+      background: rgba(0, 240, 255, 0.04);
+      border: 1px solid var(--border-line);
+      padding: 16px;
+      text-align: center;
+      border-radius: 4px;
+    }
+
+    .timer-display {
+      font-family: var(--font-mono);
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--color-green);
+      letter-spacing: 0.05em;
+      margin: 8px 0;
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-action {
+      background: transparent;
+      border: 1px solid var(--border-line);
+      color: var(--color-titanium);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 6px 14px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action:hover {
+      border-color: var(--color-cyan);
+      color: var(--color-cyan);
+      background: rgba(0, 240, 255, 0.08);
+    }
+
+    .btn-action.active {
+      border-color: var(--color-green);
+      color: var(--color-green);
+      background: rgba(57, 255, 20, 0.1);
+    }
+
+    .nav-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn-nav-large {
+      padding: 16px;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid var(--color-cyan);
+      color: #FFF;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-nav-large:hover {
+      background: var(--color-cyan);
+      color: #070B0E;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    }
+
+    .next-preview-box {
+      border: 1px solid var(--border-subtle);
+      padding: 14px;
+      border-radius: 4px;
+      background: rgba(8, 14, 24, 0.5);
+    }
+
+    .next-preview-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--color-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .next-preview-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: #FFF;
+      font-weight: 600;
+    }
+
+    .slide-jumper-select {
+      width: 100%;
+      background: #070B0E;
+      border: 1px solid var(--border-line);
+      color: var(--color-text);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 8px;
+      border-radius: 3px;
+    }
+
+    /* Right Column: Active Script & Speaking Points */
+    section.script-stage {
+      padding: 36px 48px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .slide-indicator-badge {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--color-cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .current-headline {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #FFF;
+      line-height: 1.2;
+      border-bottom: 1px solid var(--border-line);
+      padding-bottom: 16px;
+    }
+
+    .speech-time-hint {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--color-green);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(57, 255, 20, 0.06);
+      padding: 4px 10px;
+      border-radius: 2px;
+      border: 1px solid rgba(57, 255, 20, 0.2);
+      align-self: flex-start;
+    }
+
+    .script-text-body {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: #D6E4EB;
+    }
+
+    .script-text-body p {
+      margin-bottom: 16px;
+    }
+
+    .script-text-body strong {
+      color: var(--color-cyan);
+      font-weight: 700;
+    }
+
+    .key-points-list {
+      background: rgba(0, 240, 255, 0.03);
+      border-left: 3px solid var(--color-cyan);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .key-points-list h4 {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--color-cyan);
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .key-points-list ul {
+      padding-left: 20px;
+      line-height: 1.7;
+      font-size: 1rem;
+      color: var(--color-text);
+    }
+
+    .jury-q-card {
+      background: rgba(57, 255, 20, 0.03);
+      border-left: 3px solid var(--color-green);
+      padding: 16px 20px;
+      margin-top: 10px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .jury-q-card h4 {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--color-green);
+      margin-bottom: 6px;
+    }
+
+    .jury-q-card p {
+      font-size: 0.95rem;
+      color: var(--color-titanium);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-tag">
+      <strong style="color:var(--color-cyan); font-family:var(--font-display); font-size:1.05rem;">NEOFLUID³D</strong>
+      <span style="color:var(--color-titanium);">// CONTROL REMOTO & LIBRETO</span>
+    </div>
+
+    <div class="sync-status">
+      <div id="sync-indicator" class="sync-dot"></div>
+      <span id="sync-label">VINCULADO A: <span id="sync-target-id" style="color:var(--color-cyan); font-weight:700;">VENTANA PRINCIPAL</span></span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Left Column: Controls -->
+    <aside>
+      <div class="timer-block">
+        <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-titanium);">CRONÓMETRO DE PITCH</div>
+        <div id="remote-timer" class="timer-display">00:00</div>
+        <div class="timer-controls">
+          <button id="btn-timer-toggle" class="btn-action">Iniciar</button>
+          <button id="btn-timer-reset" class="btn-action">Reiniciar</button>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button id="btn-remote-prev" class="btn-nav-large">◄ Anterior</button>
+        <button id="btn-remote-next" class="btn-nav-large">Siguiente ►</button>
+      </div>
+
+      <div>
+        <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--color-titanium); margin-bottom:6px;">SALTAR A LÁMINA:</div>
+        <select id="remote-slide-select" class="slide-jumper-select"></select>
+      </div>
+
+      <div class="next-preview-box">
+        <div class="next-preview-label">SIGUIENTE LÁMINA:</div>
+        <div id="remote-next-title" class="next-preview-title">Cargando...</div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button id="btn-remote-fullscreen" class="btn-action" style="width:100%; text-align:center;">Alternar Pantalla Completa</button>
+      </div>
+    </aside>
+
+    <!-- Right Column: Pitch Script & Speaking Points -->
+    <section class="script-stage">
+      <div class="slide-indicator-badge">
+        <span id="remote-slide-tag" style="font-weight:700;">LÁMINA 01 / 19</span>
+        <span style="opacity:0.4;">|</span>
+        <span id="remote-slide-category" style="color:var(--color-titanium);">PORTADA & EJE</span>
+      </div>
+
+      <h2 id="remote-slide-title" class="current-headline">NeoFluid3D — Blueprint de Diseño & Identidad</h2>
+
+      <div id="remote-time-hint" class="speech-time-hint">
+        ⏱ Tiempo sugerido: 45s
+      </div>
+
+      <div id="remote-script-body" class="script-text-body">
+        <!-- Script inserted dynamically -->
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════════
+    // SYNC WITH MAIN PRESENTATION VIA BROADCASTCHANNEL & STORAGE
+    // ═══════════════════════════════════════════════════════════════
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetInstance = urlParams.get('instance') || '';
+
+    // Initialize UI binding display
+    window.addEventListener('DOMContentLoaded', () => {
+      const targetElem = document.getElementById('sync-target-id');
+      if (targetElem) {
+        targetElem.textContent = targetInstance ? targetInstance : 'MODO GLOBAL';
+      }
+    });
+
+    const syncChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('neofluid_deck_sync') : null;
+    let currentSlide = 0;
+    const totalSlides = 19;
+
+    // Pitch Scripts & Speaking Points
+    const SCRIPTS = [
+      {
+        title: "NeoFluid3D — Blueprint de Diseño & Identidad",
+        category: "PORTADA CANÓNICA",
+        time: "45 segundos",
+        body: `<p>Buenas tardes al jurado calificador. Presentamos <strong>NeoFluid3D</strong>, un motor de simulación hidrodinámica 3D en tiempo real acelerado en GPU, desarrollado bajo el marco Startup del Hackathon Nicaragua 2026.</p>
+        <p>Esta presentación no es una plantilla web estándar: es un <strong>blueprint técnico y proporcional</strong> fundamentado 100% en nuestro Manual de Marca. Cada curva, color y proporción responde a dos fuerzas rectoras: la <em>Fluidez</em> del agua y la <em>Computación</em> de hardware.</p>`,
+        points: ["Presentar el nombre y propósito del motor SPH.", "Destacar el rigor del Manual de Marca como base técnica.", "Mencionar que el diseño está aplicado en código en producción."]
+      },
+      {
+        title: "1. Propósito: Los 5 Aspectos Transversales",
+        category: "CRITERIOS GENERALES",
+        time: "50 segundos",
+        body: `<p>Para cumplir con los criterios de evaluación, definimos cinco pilares fundamentales:</p>
+        <p><strong>1. Coherencia:</strong> Todo elemento visual deriva del eje Fluidez + Computación.<br>
+        <strong>2. Consistencia:</strong> Mismas reglas en Web, Simulador Desktop, Documentación SDK y Pitch.<br>
+        <strong>3. Intencionalidad:</strong> Nada es decorativo por capricho; los contrastes y tonalidades responden a telemetría y ergonomía de pantalla.<br>
+        <strong>4. Sistematización:</strong> Sistema modular basado en la unidad $1u$, grilla de $4 \times 2.4\\text{ cm}$ y escala de 8px.<br>
+        <strong>5. Aplicación:</strong> No es un mockup; es una arquitectura viva y funcional.</p>`,
+        points: ["Mencionar que se satisfacen los 5 pilares transversales de las bases.", "Enfatizar que el diseño resuelve un problema de ingeniería."]
+      },
+      {
+        title: "1. Eje Conceptual Dual: Fluidez vs Computación",
+        category: "IDENTIDAD DE MARCA",
+        time: "60 segundos",
+        body: `<p>Nuestra identidad nace de una tensión armónica:</p>
+        <p>Por un lado, la <strong>Fluidez</strong>: el agua en movimiento, la masa líquida continua y las ecuaciones diferenciales de Navier-Stokes. Está representada por el prefijo <em>Neo</em> y el color <em>Celeste (#00F0FF)</em>.</p>
+        <p>Por el otro, la <strong>Computación</strong>: la discretización espacial, la precisión matemática y los Compute Shaders en hardware GPU. Está representada por el sufijo <em>Fluid³D</em> y el color <em>Verde Neón (#39FF14)</em>.</p>
+        <p>La síntesis canónica es la gota bipartita: arriba lisa, abajo mallada.</p>`,
+        points: ["Explicar el contraste cromático Celeste vs Verde.", "Explicar la gota dividida como metáfora del software y la física."]
+      },
+      {
+        title: "2. El Isotipo: Anatomía de la Gota Bipartita",
+        category: "ANATOMÍA DEL SÍMBOLO",
+        time: "45 segundos",
+        body: `<p>Analicemos la anatomía ortogonal del símbolo:</p>
+        <p>La <strong>Cima Lisa</strong> representa la tensión superficial y el volumen de fluido libre con un relleno sólido continuo.</p>
+        <p>La <strong>Base Mallada</strong> posee tres anillos latitudinales y meridianos que representan la cuadrícula espacial donde el solver de GPU discretiza el espacio.</p>
+        <p>El <strong>Corte Curvo Frontal</strong> es el punto de unión matemático entre ambas naturalezas.</p>`,
+        points: ["Resaltar que no hay degradados difusos; es un límite físico.", "Proporción áurea de altura 3.27 por 2.0 de ancho."]
+      },
+      {
+        title: "2. Identificador: Composición del Imagotipo",
+        category: "TIPOGRAFÍA DE LOGO",
+        time: "40 segundos",
+        body: `<p>El imagotipo apilado combina dos personalidades:</p>
+        <p><em>Clash Display Variable</em> en 'NEO' para otorgar peso de marca, solidez geométrica y vanguardia.</p>
+        <p><em>JetBrains Mono</em> en 'Fluid³D' para denotar desarrollo de software, algoritmos y consola.</p>
+        <p>El exponente <strong>³D</strong> fusiona el concepto físico de volumen tridimensional ($m^3$) con la dimensión espacial sobre una misma línea base.</p>`,
+        points: ["Justificar el contraste tipográfico (Display vs Monospace).", "Mencionar el detalle de ingeniería en el exponente ³D."]
+      },
+      {
+        title: "5. Construcción Modular: Plano Técnico (H = 4u)",
+        category: "MANUAL DE MARCA",
+        time: "60 segundos",
+        body: `<p>En esta lámina observamos el plano técnico acotado directamente del Manual de Marca.</p>
+        <p>La altura total de la gota define el módulo $H = 4u$. El espaciado entre el isotipo y el texto es exactamente $\\text{gap} = 1u$, que equivale a una cuarta parte de la altura. Además, se define un área de reserva perimetral de $1u$ en los 4 costados.</p>
+        <p>Los tamaños mínimos garantizan legibilidad: 16px en favicon, 32px en interfaz y 5mm en material impreso.</p>`,
+        points: ["Demostrar el cumplimiento estricto del Manual de Marca.", "Resaltar el sistema modular matemático."]
+      },
+      {
+        title: "3A. Paleta Cromática: 6 Tokens Oficiales",
+        category: "SISTEMA DE COLOR",
+        time: "50 segundos",
+        body: `<p>Nuestra paleta está estrictamente cerrada en 6 tokens con valores de laboratorio:</p>
+        <p>Los dos primarios: <strong>Celeste de Marca</strong> (#00F0FF) y <strong>Verde Neón</strong> (#39FF14).<br>
+        La base estructural: <strong>Obsidiana Deep</strong> (#070B0E), que ahorra energía y previene fatiga visual.<br>
+        La telemetría: <strong>Titanio Técnico</strong> (#8FA6B2).<br>
+        Y dos colores de simulación física CFD: <strong>Azul</strong> (#3B82F6) para flujo laminar y <strong>Naranja</strong> (#FF9100) para turbulencia y vórtices.</p>`,
+        points: ["Mencionar que no se usan colores arbitrarios.", "Destacar el contraste validado WCAG sobre fondo oscuro."]
+      },
+      {
+        title: "3B. Tipografías: Jerarquía & Construcción",
+        category: "SISTEMA TIPOGRÁFICO",
+        time: "45 segundos",
+        body: `<p>Cada tipografía cumple una función unívoca:</p>
+        <p><em>Clash Display</em>: Logotipo e impacto.<br>
+        <em>JetBrains Mono</em>: Código fuente, fórmulas y telemetría.<br>
+        <em>Oxanium</em>: Títulos de interfaz HUD con estética sci-fi/ingeniería.<br>
+        <em>IBM Plex Sans</em>: Subtítulos y parámetros numéricos.<br>
+        <em>Inter</em>: Párrafos de lectura optimizados para pantallas.</p>`,
+        points: ["Explicar que la jerarquía es fija y no intercambiable.", "Demostrar consistencia entre la web y la aplicación nativa."]
+      },
+      {
+        title: "4. Coherencia: Los 4 Puntos de Contacto",
+        category: "MATRIZ DE COHERENCIA",
+        time: "50 segundos",
+        body: `<p>Para demostrar la consistencia transversal, auditamos los 4 puntos de contacto:</p>
+        <p>El <strong>Sitio Web Oficial</strong> con shaders en WebGL y navegación interactiva.<br>
+        El <strong>Simulador Desktop</strong> con aceleración por GPU y HUD ergonómico.<br>
+        La <strong>Documentación SDK</strong> con especificación de APIs en Rust y C++.<br>
+        Y este <strong>Material de Pitch</strong>, que respeta la misma geometría y paleta.</p>`,
+        points: ["Mostrar que la marca es un ecosistema completo.", "Señalizar los íconos oficiales aplicados a cada contexto."]
+      },
+      {
+        title: "6. Jerarquía Visual: Los 3 Planos de Profundidad",
+        category: "ESTRUCTURA VISUAL",
+        time: "45 segundos",
+        body: `<p>El espacio visual se organiza en tres planos de profundidad espacial:</p>
+        <p><strong>Plano 1 (Fondo):</strong> Obsidiana Deep (#070B0E) con retícula métrica, diseñado para descansar la vista.<br>
+        <strong>Plano 2 (Contenido):</strong> Paneles translúcidos con efecto de vidrio esmerilado de 1px que agrupan variables.<br>
+        <strong>Plano 3 (Acción):</strong> Botones y acentos luminosos en Celeste y Verde que guían la atención del operador.</p>`,
+        points: ["Explicar el diagrama isométrico 3D.", "Racionalizar la jerarquía de interacción."]
+      },
+      {
+        title: "7A. Componentes UI: Los 3 Estados Interactivos",
+        category: "SISTEMA DE COMPONENTES",
+        time: "45 segundos",
+        body: `<p>Todos los controles de la interfaz responden a 3 estados canónicos:</p>
+        <p><strong>Reposo:</strong> Tonalidad neutra con bordes a baja opacidad para no distraer.<br>
+        <strong>Hover / Foco:</strong> Halo luminoso Celeste (#00F0FF) que confirma la interactividad.<br>
+        <strong>Activo / ON:</strong> Relleno Verde Neón (#39FF14) que valida la confirmación de cómputo en hardware.</p>`,
+        points: ["Demostrar la estandarización del UI Kit.", "Mencionar que los componentes flotan sobre la retícula sin cajas pesadas."]
+      },
+      {
+        title: "7C. Iconografía: 13 Íconos Vectoriales (2px)",
+        category: "ICONOGRAFÍA OFICIAL",
+        time: "40 segundos",
+        body: `<p>Contamos con una familia unificada de 13 glifos vectoriales SVG, todos construidos con grosor constante de 2px y terminaciones redondeadas:</p>
+        <p>Desde 'Zap' para alertas de cálculo, 'Cpu' para hardware y shaders, hasta 'Wind' para flujo hidrodinámico y 'Check' para confirmaciones. Cero emojis; pura iconografía de marca.</p>`,
+        points: ["Enfatizar el rechazo a emojis y uso exclusivo de SVG oficial.", "Grosor constante y terminaciones redondeadas."]
+      },
+      {
+        title: "7D. Modos de Fluido: 6 Modos de Renderizado",
+        category: "SIMULADOR EN VIVO",
+        time: "60 segundos",
+        body: `<p>El simulador integra 6 modos de visualización física que pueden probar en vivo con las teclas del 1 al 6:</p>
+        <p>Partículas individuales SPH, red topológica de Plexus, superficie Marching Cubes, vectores tridimensionales de velocidad, estelas de flujo y mapas térmicos de velocidad CFD.</p>`,
+        points: ["Invitar a interactuar o presionar teclas 1-6 para cambiar de modo.", "Demostrar que el canvas corre en tiempo real a 60 FPS."]
+      },
+      {
+        title: "7E/F. Escala Térmica Jet & Geometría 3D",
+        category: "VISUALIZACIÓN CIENTÍFICA",
+        time: "45 segundos",
+        body: `<p>Para visualización científica utilizamos la escala Jet estandarizada:</p>
+        <p>Va desde azul oscuro (0 m/s, régimen laminar) hasta rojo vivo (8 m/s, máxima turbulencia). El operador puede deslizar la probeta para inspeccionar velocidades.</p>
+        <p>Además, los obstáculos 3D soportan 4 modos: Sólido, Wireframe, Silueta transparente y Oculto.</p>`,
+        points: ["Destacar el estándar industrial CFD de la escala Jet.", "Demostrar la probeta interactiva."]
+      },
+      {
+        title: "7G. Arquitectura HUD: 5 Zonas Funcionales",
+        category: "ERGONOMÍA DE INTERFAZ",
+        time: "45 segundos",
+        body: `<p>La pantalla del simulador está distribuida en 5 zonas ergonómicas:</p>
+        <p>Barra superior de telemetría y FPS, panel izquierdo de constantes físicas (densidad, viscosidad), viewport central 3D para el fluido, panel derecho de emisores de fluidos, y barra inferior con guía de atajos de teclado.</p>`,
+        points: ["Explicar que la distribución evita la oclusión del fluido.", "Pensado para operadores en estaciones de trabajo y monitores ultra-wide."]
+      },
+      {
+        title: "8. Reglas de Diseño: Métrica de 8px & Trazo",
+        category: "REGLAS DEL SISTEMA",
+        time: "40 segundos",
+        body: `<p>El sistema se rige por 4 reglas universales:</p>
+        <p>Paleta cerrada de 6 tokens sin degradados no autorizados, grosor uniforme de trazo en 1-2px, sistema modular en múltiplos de 8px para todos los espaciados, y jerarquía tipográfica fija para garantizar consistencia entre desarrolladores.</p>`,
+        points: ["Demostrar la reproducibilidad del sistema.", "Facilidad de adopción para nuevos ingenieros del equipo."]
+      },
+      {
+        title: "4. Checklist de Evidencias: 100% Cumplido",
+        category: "AUDITORÍA OFICIAL",
+        time: "40 segundos",
+        body: `<p>En esta tabla consolidamos la auditoría formal frente a las bases del Hackathon:</p>
+        <p>Los 12 criterios exigidos en la categoría Startup están 100% cumplidos y documentados en el entregable formal de diseño.</p>`,
+        points: ["Confirmar que todos los criterios exigidos fueron cubiertos.", "Hacer énfasis en la exhaustividad del documento de entrega."]
+      },
+      {
+        title: "5. Síntesis de Evaluación: Respuestas Clave",
+        category: "DEFENSA ANTE EL JURADO",
+        time: "60 segundos",
+        body: `<p>Resumimos las 4 preguntas esenciales para el jurado:</p>
+        <p>¿Identidad definida y coherente? <strong>Sí</strong>, respaldada en el eje Fluidez + Computación.<br>
+        ¿Documentación consistente? <strong>Sí</strong>, con un Manual de Marca riguroso en módulo $1u$.<br>
+        ¿Elementos reutilizables organizados? <strong>Sí</strong>, con UI Kit de 3 estados, 13 íconos SVG y 6 modos.<br>
+        ¿Misma lógica compartida? <strong>Sí</strong>, gobernada por la paleta cerrada, trazo uniforme y grilla de 8px.</p>`,
+        points: ["Responder directamente a los 4 ítems de la rúbrica de calificación.", "Transmitir seguridad y madurez técnica."]
+      },
+      {
+        title: "NeoFluid3D: Conclusión & Cierre",
+        category: "CIERRE & Q&A",
+        time: "30 segundos",
+        body: `<p>En conclusión: NeoFluid3D combina rigor científico, una identidad visual consolidada y aceleración hidrodinámica en tiempo real.</p>
+        <p>Estamos listos para sus preguntas y comentarios. ¡Muchas gracias!</p>`,
+        points: ["Agradecer al jurado.", "Abrir espacio para la ronda de preguntas y respuestas."]
+      }
+    ];
+
+    // Populate Slide Select Dropdown
+    const selectElem = document.getElementById('remote-slide-select');
+    SCRIPTS.forEach((s, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.textContent = `[${String(idx + 1).padStart(2, '0')}] ${s.title.substring(0, 35)}...`;
+      selectElem.appendChild(opt);
+    });
+
+    // Render Script View
+    function renderScript(index) {
+      currentSlide = index;
+      selectElem.value = index;
+      const s = SCRIPTS[index] || SCRIPTS[0];
+
+      document.getElementById('remote-slide-tag').textContent = `LÁMINA ${String(index + 1).padStart(2, '0')} / ${totalSlides}`;
+      document.getElementById('remote-slide-category').textContent = s.category;
+      document.getElementById('remote-slide-title').textContent = s.title;
+      document.getElementById('remote-time-hint').textContent = `⏱ Tiempo sugerido: ${s.time}`;
+
+      let html = s.body;
+      if (s.points && s.points.length > 0) {
+        html += `<div class="key-points-list">
+          <h4>PUNTOS CLAVE PARA EL ORADOR:</h4>
+          <ul>${s.points.map(p => `<li>${p}</li>`).join('')}</ul>
+        </div>`;
+      }
+      document.getElementById('remote-script-body').innerHTML = html;
+
+      // Next preview
+      const nextSlide = SCRIPTS[index + 1];
+      if (nextSlide) {
+        document.getElementById('remote-next-title').textContent = `[${String(index + 2).padStart(2, '0')}] ${nextSlide.title}`;
+      } else {
+        document.getElementById('remote-next-title').textContent = "Fin de la presentación (Ronda de Preguntas)";
+      }
+    }
+
+    // Send command to main window (strictly targeting the origin instance)
+    function sendCommand(action, value) {
+      const msg = {
+        type: 'REMOTE_COMMAND',
+        targetInstance: targetInstance,
+        action,
+        value,
+        timestamp: Date.now()
+      };
+      // 1. Direct postMessage to opener window if accessible
+      if (window.opener && !window.opener.closed) {
+        try { window.opener.postMessage(msg, '*'); } catch (e) {}
+      }
+      // 2. BroadcastChannel
+      if (syncChannel) syncChannel.postMessage(msg);
+      // 3. Storage fallback with instance key
+      if (targetInstance) {
+        localStorage.setItem(`neofluid_cmd_${targetInstance}`, JSON.stringify(msg));
+      }
+      localStorage.setItem('neofluid_remote_sync', JSON.stringify(msg));
+    }
+
+    // Navigation Click Handlers
+    document.getElementById('btn-remote-next').onclick = () => {
+      if (currentSlide < totalSlides - 1) {
+        renderScript(currentSlide + 1);
+        sendCommand('GOTO', currentSlide);
+      }
+    };
+
+    document.getElementById('btn-remote-prev').onclick = () => {
+      if (currentSlide > 0) {
+        renderScript(currentSlide - 1);
+        sendCommand('GOTO', currentSlide);
+      }
+    };
+
+    selectElem.onchange = (e) => {
+      const idx = parseInt(e.target.value, 10);
+      renderScript(idx);
+      sendCommand('GOTO', idx);
+    };
+
+    document.getElementById('btn-remote-fullscreen').onclick = () => {
+      sendCommand('TOGGLE_FULLSCREEN');
+    };
+
+    // Listen for Sync from Main Window (strictly filtered by instance)
+    function handleIncomingSync(data) {
+      if (!data) return;
+      // If our remote is bound to an instance, ignore notifications from others
+      if (targetInstance && data.sourceInstance && data.sourceInstance !== targetInstance) {
+        return;
+      }
+      if (data.type === 'SLIDE_CHANGED') {
+        renderScript(data.slide);
+      }
+    }
+
+    if (syncChannel) {
+      syncChannel.onmessage = (e) => {
+        handleIncomingSync(e.data);
+      };
+    }
+
+    window.addEventListener('message', (e) => {
+      handleIncomingSync(e.data);
+    });
+
+    window.addEventListener('storage', (e) => {
+      if (targetInstance && e.key === `neofluid_deck_slide_${targetInstance}`) {
+        const idx = parseInt(e.newValue, 10);
+        if (!isNaN(idx) && idx !== currentSlide) {
+          renderScript(idx);
+        }
+      } else if (!targetInstance && e.key === 'neofluid_presentation_active_slide') {
+        const idx = parseInt(e.newValue, 10);
+        if (!isNaN(idx) && idx !== currentSlide) {
+          renderScript(idx);
+        }
+      }
+    });
+
+    // Pitch Timer Engine
+    let timerSeconds = 0;
+    let timerRunning = false;
+    let timerInterval = null;
+    const timerElem = document.getElementById('remote-timer');
+    const timerToggleBtn = document.getElementById('btn-timer-toggle');
+    const timerResetBtn = document.getElementById('btn-timer-reset');
+
+    function updateTimerDisplay() {
+      const m = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+      const s = String(timerSeconds % 60).padStart(2, '0');
+      timerElem.textContent = `${m}:${s}`;
+    }
+
+    timerToggleBtn.onclick = () => {
+      if (timerRunning) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        timerToggleBtn.textContent = 'Reanudar';
+        timerToggleBtn.classList.remove('active');
+      } else {
+        timerRunning = true;
+        timerToggleBtn.textContent = 'Pausar';
+        timerToggleBtn.classList.add('active');
+        timerInterval = setInterval(() => {
+          timerSeconds++;
+          updateTimerDisplay();
+        }, 1000);
+      }
+    };
+
+    timerResetBtn.onclick = () => {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerSeconds = 0;
+      updateTimerDisplay();
+      timerToggleBtn.textContent = 'Iniciar';
+      timerToggleBtn.classList.remove('active');
+    };
+
+    // Keyboard Shortcuts inside Remote
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        document.getElementById('btn-remote-next').click();
+      } else if (e.key === 'ArrowLeft') {
+        document.getElementById('btn-remote-prev').click();
+      }
+    });
+
+    // Read initial slide from URL or storage
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialSlide = parseInt(urlParams.get('slide'), 10) || parseInt(localStorage.getItem('neofluid_presentation_active_slide'), 10) || 0;
+    renderScript(initialSlide);
+  </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+=== PAGE 1 ===
+MANUAL
+NEO
+Fluid³D
+
+=== PAGE 2 ===
+Introducción
+NeoFluid³D comenzó por una genuina 
+curiosidad técnica, cuando en el marco 
+de un curso de simulación surgió la 
+iniciativa de superar los ejercicios 
+convencionales para modelar el 
+comportamiento de vórtices en el 
+agua. Lo que inició como un prototipo 
+bidimensional formulado con funciones 
+vectoriales en Python continuó 
+evolucionando al buscar representar 
+masas de fluido en tres dimensiones 
+mediante partículas con colisión física 
+real, un objetivo que pronto evidenció 
+las limitaciones de rendimiento de los 
+motores comerciales. 
+El proceso de resolver problemas 
+numéricos complejos por simple rigor 
+técnico y disciplina de programación dio 
+como resultado un software capaz de 
+procesar dinámicas hidrodinámicas 
+fluidas en tiempo real. Al contrastar estos 
+resultados con docentes y especialistas, 
+e integrar un estricto marco matemático y 
+físico, aquel proyecto independiente 
+maduró hasta consolidarse formalmente 
+como NeoFluid³D: una herramienta de 
+ingeniería que une la naturaleza del agua 
+con la precisión del cómputo de alto 
+rendimiento.
+
+=== PAGE 3 ===
+Logo
+Gráficos computarizados
+Primitivas gráficas (puras)
+Gráficos noventeros
+Terminal/Consola (estilo "hacker")
+Estilo cyberpunk/neón
+Matemáticas y Física
+Superficies y curvas matemáticas
+Física de fluidos
+La gota mide 3.27 de alto, y 2 de ancho, la mitad de esa altura 
+se usa como altura de ambas partes del nombre (Neo y Fluid³D)
+La separación del nombre y de la gota es de 1/4 de altura de gota
+
+=== PAGE 4 ===
+Logo Reglas
+Delimitar el tamaño a 4×2.4cm define el tamaño proporcional de trabajo y asegura 
+que la esfera del globo y el triángulo de la gota mantengan un encaje geométrico 
+perfecto dentro del área asignada. 
+ISOTIPO
+LOGOTIPO
+IMAGOTIPO
+GRILLA
+4x2.4 CM  
+
+=== PAGE 5 ===
+Logo Variantes
+Isotipo
+El Imagotipo fue diseñado bajo un sistema cromámatico flexible, garantizando el 
+contraste óptimo y la correcta visualización evitando la perdi de visibilidad la 
+saturación cromatica. Se asegura que el isotipo y el imagotipo mantengan siempre 
+su peso visual. 
+Su independencia es esencial para aplicaciones donde el texto no cabe o pierde 
+legibilidad, tales como favicons de sitios web, fotos de perfil en redes sociales, 
+bordados en uniformes o iconos de aplicaciones móviles.
+En fondos claros o intermedios, la versión con líneas en el globo mantiene excelente 
+visibilidad. En fondos oscuros o de alto contraste, las versiones con relleno sólido 
+garantizan que el símbolo no pierda presencia.
+
+=== PAGE 6 ===
+Negativo/Positivo
+Icono
+El paso de una versión a otra respeta la silueta del isotipo (la gota) impide que los 
+detalles finos se pierdan al cambiar el contraste de fondo.
+16 px (Límite Mínimo Digital): Para favicons y 
+pestañas web. Menos de esto empasta los 
+trazados del icono.
+32 px (Estándar UI): Para menús, listas de 
+apps y avatares secundarios.
+48 px (Destacado UI): Para accesos directos, 
+tarjetas (cards) e interfaces móviles.
+5 mm (Límite Impreso): Tamaño mínimo 
+absoluto en papel o serigrafía para evitar 
+la pérdida de detalles finos.
+16 32 48
+Reglas de Aplicación por Formato Digital
+
+=== PAGE 7 ===
+No deformar ni estirar: Prohibido alterar las proporciones espectrales (escala vertical 
+u horizontal). El escalado debe ser siempre proporcional.
+No modificar los colores institucionales: No se permite aplicar tonos fuera de la 
+paleta oficial ni alterar la jerarquía cromática del isotipo y logotipo.
+No alterar la composición o alineación: Prohibido mover, rotar, reorganizar o cambiar 
+las distancias estipuladas entre el isotipo y la tipografía.
+No usar fondos sin suficiente contraste: Queda prohibido aplicar la marca sobre 
+fondos cuya intensidad cromática o brillo comprometan la visibilidad de las líneas 
+finas del globo o del texto.
+USO INCORRECTOS
+
+=== PAGE 8 ===
+Cian brillante
+HEX: #00F0FF
+RGB:(0, 240, 255)
+HSL:(184° , 100%, 50%)
+Paleta de Colores
+Verde Neón
+HEX: #39FF14
+RGB:(57, 255, 20)
+HSL:(111° , 100%, 54%)
+Naranja Vivo
+HEX: #FF9100
+RGB:(255, 145, 0)
+HSL:(34° , 100%, 50%)
+Azul Brillante
+HEX: #3B82F6
+RGB:(59, 130, 246)
+HSL:(217° , 91%, 60%)
+Blanco
+HEX: #FFFFFF
+RGB: rgb(255, 255, 255)
+HSL: hsl(0° , 0%, 100%)
+Negro
+HEX: #000000
+RGB: rgb(0, 0, 0)
+HSL: hsl(0° , 0%, 0%)
+Azul Oscuro / Marino
+HEX: #080C26
+RGB:(8, 12, 38)
+HSL:(232° , 65%, 9%)
+Principal Secundaria
+Fondo
+Fondo
+
+=== PAGE 9 ===
+Aa
+ABCDEFGHIJKLMNÑOPQRSTUVWXYZ
+abcdefghijklmnñopqrstuvwxyz
+0123456789
+ABCDEFGHIJKLMNÑOPQRSTUVWXYZ
+abcdefghijklmnñopqrstuvwxyz
+0123456789
+ABCDEFGHIJKLMNÑOPQRSTUVWXYZ
+abcdefghijklmnñopqrstuvwxyz
+0123456789
+IBM Plex Sans Regular
+Sub-titulo
+Tipografia logo
+Titulo
+InterI Regular
+Texto
+Clash Display Variable Bold
+Aa
+Aa
+Aa
+Aa
+JetBrains Mono Bold
+Oxanium Medium
+
+=== PAGE 10 ===
+Las barras verticales fragmentadas 
+simulan la entrada y registro continuo 
+de datos, emulando la transmisión de 
+información en tiempo real, códigos de 
+barras o historiales de seguimiento.
+El hexágono es la forma geométrica más 
+eficiente de la naturaleza para optimizar 
+el espacio sin dejar huecos. Representa 
+organización sistemática, encaje perfecto, 
+solidez y una arquitectura de 
+datos/procesos bien estructurada.
+Elementos graficos
+Trazabilidad
+Velocidad
+Precisión
+Eﬁciencia
+Orden
+
+=== PAGE 11 ===
+Diseñada bajo un grosor de trazo uniforme 
+y sobre contenedores modulares oscuros, 
+optimizada para interfaces en Dark Mode 
+y navegación web.
+Queda prohibido deformar proporciones, 
+cambiar los colores institucionales, alterar 
+la posición del texto o aplicar la marca 
+sobre fondos de bajo contraste.
+Iconografia
+Zap CPU Refresh Globo Sliders
+GamepadVideoGamepad 2VientoClapperboard
+Check Putero Copiar Network
+
+=== PAGE 12 ===
+MANUAL DE MARCA
+

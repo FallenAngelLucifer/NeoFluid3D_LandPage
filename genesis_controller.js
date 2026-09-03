@@ -222,11 +222,11 @@
       num: 11,
       phase: "Fase 2 : Desarrollo 3D",
       subphase: "2.1 R² → R³",
-      title: "Anillos Horizontales a partir del Centroide",
-      alias: String.raw`Paralelos : $\Delta z = \text{salto} \approx 0.4204$`,
-      latex: String.raw`z_k = y_0 - k\Delta z, \quad r_k = \sqrt{1 - z_k^2} \quad (k = 0, 1, 2, 3)`,
-      desc: "Se trazan los 4 anillos horizontales (paralelos) con espaciado vertical constante $\\Delta z = h_{\\max} - y_0 \\approx 0.4204$, partiendo desde la tangencia y el centroide hacia la base.",
-      note: "Niveles de altura: $z_1 = 0.4472, z_2 = 0.0268, z_3 = -0.3937, z_4 = -0.8141$.",
+      title: "Anillos Horizontales Distribuidos",
+      alias: String.raw`Paralelos : $\Delta z = \frac{3}{2}\text{salto} \approx 0.6306$`,
+      latex: String.raw`z_1 \approx 0.327, \quad z_2 \approx -0.183, \quad z_3 \approx -0.694`,
+      desc: "Se trazan los 3 anillos horizontales (paralelos) distribuidos uniformemente a lo largo de la semiesfera inferior, con desplazamiento suave en los extremos para optimizar la proporción visual de la malla.",
+      note: "Niveles de altura: $z_1 = y_0 - 0.12 \\approx 0.3272, \\; z_2 = y_0 - 0.6306 \\approx -0.1834, \\; z_3 = y_0 - 1.2613 + 0.12 \\approx -0.6941$.",
       dim: 3,
       camRot: { x: 0.45, y: -0.9 }
     },
@@ -249,7 +249,7 @@
       title: "Puntos de Intersección con Meridianos y Anillos",
       alias: String.raw`Intersecciones Exactas : $(\theta_1, \theta_2)$`,
       latex: String.raw`\theta_1 = \phi + \arccos\left(\frac{k_c}{R}\right), \quad \theta_2 = \phi - \arccos\left(\frac{k_c}{R}\right)`,
-      desc: "<strong>Se retira el plano de corte</strong> y se marcan con <strong>puntos brillantes</strong> las intersecciones exactas de la curva de corte con los 8 meridianos y con cada uno de los 4 anillos horizontales $(\\theta_1, \\theta_2)$.",
+      desc: "<strong>Se retira el plano de corte</strong> y se marcan con <strong>puntos brillantes</strong> las intersecciones exactas de la curva de corte con los 8 meridianos y con los anillos horizontales $(\\theta_1, \\theta_2)$.",
       note: String.raw`Puntos de corte definidos por los ángulos límites $[\theta_2, \theta_1]$ en cada cota.`,
       dim: 3,
       camRot: { x: 0.45, y: -0.8 }
@@ -307,9 +307,9 @@
       phase: "Fase 3 : Retorno a 2D",
       subphase: "3.2 Limpieza y Coloreado",
       title: "Aplicación de la Paleta Cromática de Marca",
-      alias: "Celeste Neón (#00F0FF) + Verde Neón (#39FF14)",
-      latex: String.raw`\text{Cima: Celeste Neón (\#00F0FF)}, \quad \text{Base: Verde Neón (\#39FF14)}`,
-      desc: "<strong>Coloreado de Marca:</strong> Se aplica la identidad visual oficial con degradado sólido en celeste neón `#00F0FF` en el dominio superior y trazos en verde neón `#39FF14` sobre la cuadrícula inferior.",
+      alias: "Cian Eléctrico (#00F0FF) + Verde Esmeralda (#39FF14)",
+      latex: String.raw`\text{Cima: Cian Eléctrico (\#00F0FF)}, \quad \text{Base: Verde Esmeralda (\#39FF14)}`,
+      desc: "<strong>Coloreado de Marca:</strong> Se aplica la identidad visual oficial con degradado sólido en cian eléctrico `#00F0FF` en el dominio superior y trazos en verde esmeralda `#39FF14` sobre la cuadrícula inferior.",
       note: "Sella la armonía entre fluidodinámica suave y cómputo GPU de alta precisión.",
       dim: 2,
       camRot: { x: 0, y: 0 }
@@ -323,18 +323,6 @@
       latex: String.raw`\text{Principal (AC/BC)} \;\big|\; \text{Monocromo (AC/BC)} \;\big|\; \text{Simple (AC)}`,
       desc: "Se consolidan las <strong>5 variantes oficiales de la marca</strong> con sus bases y siluetas vectoriales completas: (1) Uso principal AC, (2) Monocromático AC, (3) Simple AC, (4) Uso principal BC y (5) Monocromático BC con base negra y cuadrícula blanca.",
       note: "El manual de identidad y las variantes vectoriales quedan plenamente consolidados.",
-      dim: 2,
-      camRot: { x: 0, y: 0 }
-    },
-    {
-      num: 20,
-      phase: "Fase 4 : Variantes de Escala",
-      subphase: "4.1 Tamaños Mínimos",
-      title: "Variantes para Tamaños Mínimos (Escala Micro)",
-      alias: "4 Variantes Micro : Favicons, App Icons y UI Compacta",
-      latex: String.raw`\text{Micro AC (Color/Mono)} \;\big|\; \text{Micro BC (Color/Mono)}`,
-      desc: "Cuando el isotipo se reduce a <strong>escalas mínimas</strong> ($\\le 32\\text{px}$, favicons, botones compactos o avatares), la cuadrícula tridimensional se simplifica a <strong>bloques cromáticos puros</strong> y contrastes absolutos para evitar el empaste visual y maximizar la legibilidad en cualquier interfaz.",
-      note: "Estructura 2x2 optimizada: (1) Color Fondo Oscuro, (2) Monocromo Fondo Oscuro, (3) Color con Contorno Fondo Claro, y (4) Monocromo Fondo Claro.",
       dim: 2,
       camRot: { x: 0, y: 0 }
     }
@@ -571,25 +559,6 @@
       return;
     }
 
-    // 7. FORWARD: Step 19 -> Step 20 (Micro Variants 2x2 Grid)
-    if (fromIdx === 18 && targetIdx === 19) {
-      animState.active = true;
-      animState.mode = '19_TO_20';
-      animState.startTime = performance.now();
-      animState.duration = 700;
-      animState.deployT = 0.0;
-      return;
-    }
-
-    // 8. BACKWARD: Step 20 -> Step 19 (Micro Variants Retraction)
-    if (fromIdx === 19 && targetIdx === 18) {
-      animState.active = true;
-      animState.mode = '20_TO_19';
-      animState.startTime = performance.now();
-      animState.duration = 650;
-      animState.deployT = 1.0;
-      return;
-    }
 
     // STANDARD NAVIGATION (Preserves camera in R^3 steps without unwanted resets)
     animState.active = false;
@@ -964,11 +933,12 @@
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
 
+      const SALTO_NEW = 3 * SALTO / 2;
+      const NUDGE_G = 0.12;
       const ringConfigs = [
-        { z: Y0, r: X0 },
-        { z: Y0 - SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - SALTO)**2)) },
-        { z: Y0 - 2 * SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - 2 * SALTO)**2)) },
-        { z: Y0 - 3 * SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - 3 * SALTO)**2)) }
+        { z: Y0 - NUDGE_G,                 r: Math.sqrt(Math.max(0, 1 - (Y0 - NUDGE_G)**2)) },
+        { z: Y0 - SALTO_NEW,               r: Math.sqrt(Math.max(0, 1 - (Y0 - SALTO_NEW)**2)) },
+        { z: Y0 - 2*SALTO_NEW + NUDGE_G,   r: Math.sqrt(Math.max(0, 1 - (Y0 - 2*SALTO_NEW + NUDGE_G)**2)) }
       ];
 
       ringConfigs.forEach(ring => {
@@ -1216,14 +1186,14 @@
       // 1. Principal AC (Top-Left)
       {
         x: startX_row1, y: startY_row1,
-        bgFill: '#000000', borderStroke: 'rgba(0, 240, 255, 0.4)',
-        opts: { fullBackingFill: '#000000', upperFill: '#00F0FF', upperStroke: '#00F0FF', cutStroke: '#00F0FF', gridStroke: '#39FF14', lowerContourStroke: '#39FF14', withBackCulling: true, lineWidth: 2.0 }
+        bgFill: '#070B0E', borderStroke: 'rgba(0, 210, 255, 0.4)',
+        opts: { fullBackingFill: '#070B0E', upperFill: '#00F0FF', upperStroke: '#00F0FF', cutStroke: '#00F0FF', gridStroke: '#39FF14', lowerContourStroke: '#39FF14', withBackCulling: true, lineWidth: 2.0 }
       },
       // 2. Monocromático AC (Top-Center)
       {
         x: startX_row1 + cardW + gapX, y: startY_row1,
-        bgFill: '#000000', borderStroke: 'rgba(255, 255, 255, 0.3)',
-        opts: { fullBackingFill: '#000000', upperFill: '#FFFFFF', upperStroke: '#FFFFFF', cutStroke: '#FFFFFF', gridStroke: '#FFFFFF', lowerContourStroke: '#FFFFFF', withBackCulling: true, lineWidth: 2.0 }
+        bgFill: '#070B0E', borderStroke: 'rgba(255, 255, 255, 0.3)',
+        opts: { fullBackingFill: '#070B0E', upperFill: '#FFFFFF', upperStroke: '#FFFFFF', cutStroke: '#FFFFFF', gridStroke: '#FFFFFF', lowerContourStroke: '#FFFFFF', withBackCulling: true, lineWidth: 2.0 }
       },
       // 3. Simple AC (Top-Right)
       {
@@ -1561,18 +1531,6 @@
           animState.active = false;
           animState.deployT = 0.0;
         }
-      } else if (animState.mode === '19_TO_20') {
-        animState.deployT = p;
-        if (p >= 1.0) {
-          animState.active = false;
-          animState.deployT = 1.0;
-        }
-      } else if (animState.mode === '20_TO_19') {
-        animState.deployT = 1.0 - p;
-        if (p >= 1.0) {
-          animState.active = false;
-          animState.deployT = 0.0;
-        }
       }
     } else {
       rotX += (targetRotX - rotX) * 0.14;
@@ -1592,52 +1550,10 @@
     const zCenter = (SQRT5 - 1.0) / 2;
     const cy = h / 2 + zCenter * scale;
 
-    // STEP 19 <-> STEP 20 UNIFIED FULL-SCENE ZOOM TRANSITION (PANELS + DROPS AS A SINGLE WHOLE)
-    if (animState.active && (animState.mode === '19_TO_20' || animState.mode === '20_TO_19')) {
-      const t = animState.deployT; // 0.0 = Step 19, 1.0 = Step 20
-      const ease = easeInOutCubic(t);
-
-      // 1. Step 19 whole deck zooms out as a group and fades out
-      const exitOpacity = Math.max(0, 1.0 - ease * 1.4);
-      if (exitOpacity > 0.001) {
-        const exitZoom = 1.0 + ease * 2.2;
-        ctx.save();
-        ctx.translate(w / 2, h / 2);
-        ctx.scale(exitZoom, exitZoom);
-        ctx.translate(-w / 2, -h / 2);
-        ctx.globalAlpha = exitOpacity;
-        renderVariantsGridWithAnimation(w, h, 1.0);
-        ctx.restore();
-      }
-
-      // 2. Step 20 whole 2x2 grid zooms in from 0.35 -> 1.0 as a group and fades in
-      const enterOpacity = Math.min(1.0, Math.max(0, (ease - 0.15) / 0.85));
-      if (enterOpacity > 0.001) {
-        const enterZoom = 0.35 + 0.65 * ease;
-        ctx.save();
-        ctx.translate(w / 2, h / 2);
-        ctx.scale(enterZoom, enterZoom);
-        ctx.translate(-w / 2, -h / 2);
-        ctx.globalAlpha = enterOpacity;
-        renderMiniVariantsGridWithAnimation(w, h, 1.0);
-        ctx.restore();
-      }
-
-      requestAnimationFrame(drawGenesisFrame);
-      return;
-    }
-
     // STEP 19 & CLEAN SLIDING TRANSITIONS (18 <-> 19)
     if (stepNum === 19 || (animState.active && (animState.mode === '18_TO_19' || animState.mode === '19_TO_18'))) {
       const deployT = animState.active ? animState.deployT : 1.0;
       renderVariantsGridWithAnimation(w, h, deployT);
-      requestAnimationFrame(drawGenesisFrame);
-      return;
-    }
-
-    // STEP 20 STANDALONE
-    if (stepNum === 20) {
-      renderMiniVariantsGridWithAnimation(w, h, 1.0, 1.0, 1.0);
       requestAnimationFrame(drawGenesisFrame);
       return;
     }
@@ -1978,17 +1894,18 @@
           }
         }
 
-        // Step 11+: 4 Horizontal Parallel Rings
+        // Step 11+: 3 Horizontal Parallel Rings (uniformly distributed)
         if (!isReturningTo2D && (stepNum >= 11 || isHandling15to16Transition || (exitState.active && exitState.exitingStepNum === 11))) {
+          const SALTO_NEW2 = 3 * SALTO / 2;
+          const NUDGE_G2 = 0.12;
           const rings = [
-            { z: Y0, r: X0 },
-            { z: Y0 - SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - SALTO)**2)) },
-            { z: Y0 - 2*SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - 2*SALTO)**2)) },
-            { z: Y0 - 3*SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - 3*SALTO)**2)) }
+            { z: Y0 - NUDGE_G2,               r: Math.sqrt(Math.max(0, 1 - (Y0 - NUDGE_G2)**2)) },
+            { z: Y0 - SALTO_NEW2,             r: Math.sqrt(Math.max(0, 1 - (Y0 - SALTO_NEW2)**2)) },
+            { z: Y0 - 2*SALTO_NEW2 + NUDGE_G2, r: Math.sqrt(Math.max(0, 1 - (Y0 - 2*SALTO_NEW2 + NUDGE_G2)**2)) }
           ];
 
           const rProg = (stepNum >= 11) ? ((stepNum === 11 && stepNavDir === 1) ? stepProg : 1.0) : exitProg;
-          const maxRings = Math.max(1, Math.floor(4 * rProg));
+          const maxRings = Math.max(1, Math.floor(3 * rProg));
 
           for (let rIdx = 0; rIdx < maxRings; rIdx++) {
             const ring = rings[rIdx];
@@ -2052,11 +1969,12 @@
               ctx.beginPath(); ctx.arc(pt.px, pt.py, 5.0, 0, Math.PI * 2); ctx.fill();
             }
 
+            const SALTO_NEW3 = 3 * SALTO / 2;
+            const NUDGE_G3 = 0.12;
             const rings = [
-              { z: Y0, r: X0 },
-              { z: Y0 - SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - SALTO)**2)) },
-              { z: Y0 - 2*SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - 2*SALTO)**2)) },
-              { z: Y0 - 3*SALTO, r: Math.sqrt(Math.max(0, 1 - (Y0 - 3*SALTO)**2)) }
+              { z: Y0 - NUDGE_G3,               r: Math.sqrt(Math.max(0, 1 - (Y0 - NUDGE_G3)**2)) },
+              { z: Y0 - SALTO_NEW3,             r: Math.sqrt(Math.max(0, 1 - (Y0 - SALTO_NEW3)**2)) },
+              { z: Y0 - 2*SALTO_NEW3 + NUDGE_G3, r: Math.sqrt(Math.max(0, 1 - (Y0 - 2*SALTO_NEW3 + NUDGE_G3)**2)) }
             ];
 
             rings.forEach(ring => {
