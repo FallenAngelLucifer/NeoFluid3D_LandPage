@@ -737,57 +737,293 @@
   }
 
   // Slide 13: Live 6-Mode Fluid Simulation Canvas
+        // ═══════════════════════════════════════════════════════════════
+  // SLIDE 13: 3D VULKAN ENGINE SIMULATOR (ORGANIC SPH + CFD SURFACE MESH)
+  // ═══════════════════════════════════════════════════════════════
   let currentFluidMode = 1;
   let fluidModeKeyBound = false;
+  let simAnimFrameId = null;
+
+  const MODE_INFO = {
+    1: { name: 'Partículas', desc: 'Simulación SPH de alta densidad con volumen orgánico, dispersión hidrodinámica y sombreado esférico GPU', hasSpeed: false },
+    2: { name: 'Plexus', desc: 'Red topológica vecinal conectando partículas en 3D con radio de interacción h (Topología Vulkan)', hasSpeed: false },
+    3: { name: 'Malla Superficie', desc: 'Reconstrucción continua de isosuperficie líquida Marching Cubes con volumen y estanque', hasSpeed: false },
+    4: { name: 'Vectores', desc: 'Campo de vectores de velocidad 3D orientados según el flujo y coloreados por gradiente cinético', hasSpeed: true },
+    5: { name: 'Líneas Flujo', desc: 'Estelas dinámicas de corriente laminar continua desde la boquilla hasta el estanque', hasSpeed: true },
+    6: { name: 'Mapa CFD', desc: 'Malla de superficie continua texturizada con gradiente térmico científico Jet Colormap (0.0 a 6.2 m/s)', hasSpeed: true }
+  };
 
   function initFluidModeSimulator() {
-    const simImg = document.getElementById('vulkan-sim-image');
+    const canvas = document.getElementById('vulkan-3d-canvas');
     const modeNameElem = document.getElementById('sim-current-mode-name');
     const modeDescElem = document.getElementById('sim-current-mode-desc');
     const speedBar = document.getElementById('vulkan-speed-bar');
+    const timeElem = document.getElementById('vulkan-live-simtime');
+    const fpsElem = document.getElementById('vulkan-live-fps');
+    const coordsElem = document.getElementById('vulkan-live-coords');
     const tabs = document.querySelectorAll('.sim-mode-item');
 
-    const MODE_ASSETS = {
-      1: {
-        img: '../docs/Capturas/Untitled2.png',
-        name: 'Partículas',
-        desc: 'Partículas individuales con sombreado esférico GPU en VRAM',
-        hasSpeed: false
-      },
-      2: {
-        img: '../docs/Capturas/Untitled3.png',
-        name: 'Plexus',
-        desc: 'Red topológica conectando partículas en radio de vecindad h',
-        hasSpeed: false
-      },
-      3: {
-        img: '../docs/Capturas/Untitled.png',
-        name: 'Malla Superficie',
-        desc: 'Reconstrucción continua volumétrica de agua pura (Marching Cubes)',
-        hasSpeed: false
-      },
-      4: {
-        img: '../docs/Capturas/Untitled4.png',
-        name: 'Vectores',
-        desc: 'Matriz vectorial 3D con flechas de dirección y magnitud de velocidad',
-        hasSpeed: true
-      },
-      5: {
-        img: '../docs/Capturas/Untitled6.png',
-        name: 'Líneas Flujo',
-        desc: 'Estelas cinéticas continuas que trazan corrientes y vórtices',
-        hasSpeed: true
-      },
-      6: {
-        img: '../docs/Capturas/Untitled1.png',
-        name: 'Mapa CFD',
-        desc: 'Gradiente térmico científico Jet Colormap proporcional a |v|',
-        hasSpeed: true
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.round(rect.width) || 800;
+      const h = Math.round(rect.height) || 500;
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
       }
+      return { w, h };
+    }
+
+    // ── 3D Camera Orbit State ──
+    let camTheta = 0.58;     // azimuth
+    let camPhi = 0.38;       // elevation
+    let camDist = 5.6;       // distance
+    let isDragging = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+
+    canvas.onmousedown = (e) => {
+      isDragging = true;
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+      canvas.style.cursor = 'grabbing';
     };
 
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - lastMouseX;
+      const dy = e.clientY - lastMouseY;
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+      camTheta += dx * 0.009;
+      camPhi = Math.max(-0.25, Math.min(1.2, camPhi + dy * 0.009));
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        canvas.style.cursor = 'grab';
+      }
+    });
+
+    // Touch support
+    canvas.ontouchstart = (e) => {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        lastMouseX = e.touches[0].clientX;
+        lastMouseY = e.touches[0].clientY;
+      }
+    };
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging || e.touches.length === 0) return;
+      const dx = e.touches[0].clientX - lastMouseX;
+      const dy = e.touches[0].clientY - lastMouseY;
+      lastMouseX = e.touches[0].clientX;
+      lastMouseY = e.touches[0].clientY;
+      camTheta += dx * 0.01;
+      camPhi = Math.max(-0.25, Math.min(1.2, camPhi + dy * 0.01));
+    });
+    window.addEventListener('touchend', () => { isDragging = false; });
+
+    // ── Jet Colormap Function (0.0 to 6.2 m/s) ──
+    function getJetColor(speed, alpha = 1) {
+      const t = Math.max(0, Math.min(1, speed / 6.2));
+      let r, g, b;
+      if (t < 0.125) {
+        r = 0; g = 0; b = 0.5 + 4 * t;
+      } else if (t < 0.375) {
+        r = 0; g = 4 * (t - 0.125); b = 1;
+      } else if (t < 0.625) {
+        r = 4 * (t - 0.375); g = 1; b = 1 - 4 * (t - 0.375);
+      } else if (t < 0.875) {
+        r = 1; g = 1 - 4 * (t - 0.625); b = 0;
+      } else {
+        r = 1 - 2 * (t - 0.875); g = 0; b = 0;
+      }
+      return 'rgba(' + Math.floor(r * 255) + ',' + Math.floor(g * 255) + ',' + Math.floor(b * 255) + ',' + alpha + ')';
+    }
+
+    // ── 3D Projection Math ──
+    function project3D(x, y, z, cx, cy, scale) {
+      const cosT = Math.cos(camTheta);
+      const sinT = Math.sin(camTheta);
+      const x1 = x * cosT - z * sinT;
+      const z1 = x * sinT + z * cosT;
+
+      const cosP = Math.cos(camPhi);
+      const sinP = Math.sin(camPhi);
+      const y2 = y * cosP - z1 * sinP;
+      const z2 = y * sinP + z1 * cosP + camDist;
+
+      if (z2 <= 0.1) return null;
+      const fov = scale / z2;
+      return { x: cx + x1 * fov, y: cy - y2 * fov, z: z2, fov: fov };
+    }
+
+    // ── Wireframe Bounding Box ──
+    const boxMinX = -2.2, boxMaxX = 2.2;
+    const boxMinY = -2.2, boxMaxY = 1.8;
+    const boxMinZ = -2.2, boxMaxZ = 2.2;
+    const boxEdges = [
+      [[boxMinX, boxMinY, boxMinZ], [boxMaxX, boxMinY, boxMinZ]],
+      [[boxMaxX, boxMinY, boxMinZ], [boxMaxX, boxMinY, boxMaxZ]],
+      [[boxMaxX, boxMinY, boxMaxZ], [boxMinX, boxMinY, boxMaxZ]],
+      [[boxMinX, boxMinY, boxMaxZ], [boxMinX, boxMinY, boxMinZ]],
+      [[boxMinX, boxMaxY, boxMinZ], [boxMaxX, boxMaxY, boxMinZ]],
+      [[boxMaxX, boxMaxY, boxMinZ], [boxMaxX, boxMaxY, boxMaxZ]],
+      [[boxMaxX, boxMaxY, boxMaxZ], [boxMinX, boxMaxY, boxMaxZ]],
+      [[boxMinX, boxMaxY, boxMaxZ], [boxMinX, boxMaxY, boxMinZ]],
+      [[boxMinX, boxMinY, boxMinZ], [boxMinX, boxMaxY, boxMinZ]],
+      [[boxMaxX, boxMinY, boxMinZ], [boxMaxX, boxMaxY, boxMinZ]],
+      [[boxMaxX, boxMinY, boxMaxZ], [boxMaxX, boxMaxY, boxMaxZ]],
+      [[boxMinX, boxMinY, boxMaxZ], [boxMinX, boxMaxY, boxMaxZ]],
+    ];
+
+    // Spline Anchor Points
+    const pNozzle = { x: 1.1, y: 0.9, z: -0.1 };
+    const pMid = { x: 0.2, y: 0.1, z: 0.2 };
+    const pImpact = { x: -0.6, y: -1.75, z: 0.45 };
+
+    // ── Generate 550 Organic Natural SPH Particles ──
+    const NUM_PARTS = 550;
+    const organicParticles = [];
+    for (let i = 0; i < NUM_PARTS; i++) {
+      const zone = i < 90 ? 'bottle' : (i < 360 ? 'jet' : 'pool');
+      organicParticles.push({
+        zone: zone,
+        t: Math.random(),
+        speedMult: 0.88 + Math.random() * 0.25,
+        seedX: (Math.random() - 0.5) * 2,
+        seedY: (Math.random() - 0.5) * 2,
+        seedZ: (Math.random() - 0.5) * 2,
+        radius: 0.038 + Math.random() * 0.035
+      });
+    }
+
+    function getOrganicParticlePos(p, time) {
+      if (p.zone === 'bottle') {
+        // Sloshing in bottle lower belly
+        const f = 0.25 + p.t * 0.70;
+        const bx = 1.1 * (1 - f) + 2.1 * f;
+        const by = 0.9 * (1 - f) + 1.8 * f - 0.12 + Math.sin(time * 2.2 + p.seedX * 4) * 0.035;
+        const bz = -0.1 * (1 - f) + -0.6 * f;
+        return {
+          x: bx + p.seedX * 0.16,
+          y: by + p.seedY * 0.10,
+          z: bz + p.seedZ * 0.16,
+          speed: 0.8 + Math.abs(p.seedX) * 0.5
+        };
+      } else if (p.zone === 'jet') {
+        // Continuous dense stream pouring down
+        const t = (p.t + time * 0.68 * p.speedMult) % 1;
+        const u = 1 - t;
+        const bx = u * u * pNozzle.x + 2 * u * t * pMid.x + t * t * pImpact.x;
+        const by = u * u * pNozzle.y + 2 * u * t * pMid.y + t * t * pImpact.y;
+        const bz = u * u * pNozzle.z + 2 * u * t * pMid.z + t * t * pImpact.z;
+        const dispersion = 0.04 + t * 0.14;
+        const speed = 1.2 + 5.0 * (t * t);
+        return {
+          x: bx + p.seedX * dispersion,
+          y: by + p.seedY * dispersion * 0.85,
+          z: bz + p.seedZ * dispersion,
+          speed: speed
+        };
+      } else {
+        // Natural organic volumetric pool (NOT a spiral!)
+        const ang = p.t * Math.PI * 2 + time * 0.45 * (p.seedX > 0 ? 1 : -1);
+        const dist = Math.sqrt(Math.abs(p.seedY)) * 0.95 + 0.08;
+        const px = pImpact.x + Math.cos(ang) * dist * 1.25 + p.seedX * 0.09;
+        const pz = pImpact.z + Math.sin(ang) * dist * 0.95 + p.seedZ * 0.09;
+        const wave = Math.sin(time * 3.8 - dist * 6.5 + p.seedX * 2.5) * 0.045;
+        let py = -1.82 + wave;
+        // Bouncing splash droplets near impact
+        if (p.seedZ > 0.55 && dist < 0.45) {
+          const splashT = (time * 2.0 + p.seedY) % 1;
+          py += Math.sin(splashT * Math.PI) * 0.32;
+        }
+        const speed = Math.max(0.4, 3.2 - dist * 2.7);
+        return { x: px, y: py, z: pz, speed: speed };
+      }
+    }
+
+    // ── Build 3D Surface Mesh Quads (Marching Cubes Representation) ──
+    function createSurfaceMesh(time) {
+      const quads = [];
+      const numRings = 26;
+      const numPts = 10;
+      const rings = [];
+
+      for (let r = 0; r <= numRings; r++) {
+        const t = r / numRings;
+        const u = 1 - t;
+        const cx = u * u * pNozzle.x + 2 * u * t * pMid.x + t * t * pImpact.x;
+        const cy = u * u * pNozzle.y + 2 * u * t * pMid.y + t * t * pImpact.y;
+        const cz = u * u * pNozzle.z + 2 * u * t * pMid.z + t * t * pImpact.z;
+
+        const radX = 0.11 + Math.sin(t * Math.PI * 0.85) * 0.22 + Math.sin(t * 12 - time * 6) * 0.018;
+        const radY = 0.09 + Math.sin(t * Math.PI * 0.85) * 0.16;
+
+        const ring = [];
+        for (let k = 0; k < numPts; k++) {
+          const ang = (k / numPts) * Math.PI * 2;
+          const jitter = Math.sin(ang * 3 + t * 8 + time * 4) * 0.015;
+          const px = cx + Math.cos(ang) * (radX + jitter);
+          const py = cy + Math.sin(ang) * (radY + jitter);
+          const pz = cz + Math.sin(ang) * (radX + jitter) * 0.7;
+          const speed = 1.0 + 5.2 * (t * t);
+          ring.push({ x: px, y: py, z: pz, speed: speed });
+        }
+        rings.push(ring);
+      }
+
+      for (let r = 0; r < numRings; r++) {
+        const ringA = rings[r];
+        const ringB = rings[r + 1];
+        for (let k = 0; k < numPts; k++) {
+          const nextK = (k + 1) % numPts;
+          quads.push({
+            p1: ringA[k], p2: ringA[nextK], p3: ringB[nextK], p4: ringB[k],
+            speed: (ringA[k].speed + ringB[k].speed) * 0.5,
+            isPool: false
+          });
+        }
+      }
+
+      // Add pool surface disc quads at bottom
+      const poolRings = 5;
+      const poolSectors = 12;
+      for (let pr = 0; pr < poolRings; pr++) {
+        const rA = (pr / poolRings) * 1.18;
+        const rB = ((pr + 1) / poolRings) * 1.18;
+        for (let s = 0; s < poolSectors; s++) {
+          const angA = (s / poolSectors) * Math.PI * 2;
+          const angB = ((s + 1) / poolSectors) * Math.PI * 2;
+
+          const waveA = Math.sin(time * 3.8 - rA * 6.0) * 0.04;
+          const waveB = Math.sin(time * 3.8 - rB * 6.0) * 0.04;
+
+          const p1 = { x: pImpact.x + Math.cos(angA) * rA * 1.25, y: -1.82 + waveA, z: pImpact.z + Math.sin(angA) * rA * 0.95, speed: Math.max(0.4, 2.5 - rA * 2.0) };
+          const p2 = { x: pImpact.x + Math.cos(angB) * rA * 1.25, y: -1.82 + waveA, z: pImpact.z + Math.sin(angB) * rA * 0.95, speed: Math.max(0.4, 2.5 - rA * 2.0) };
+          const p3 = { x: pImpact.x + Math.cos(angB) * rB * 1.25, y: -1.82 + waveB, z: pImpact.z + Math.sin(angB) * rB * 0.95, speed: Math.max(0.4, 2.5 - rB * 2.0) };
+          const p4 = { x: pImpact.x + Math.cos(angA) * rB * 1.25, y: -1.82 + waveB, z: pImpact.z + Math.sin(angA) * rB * 0.95, speed: Math.max(0.4, 2.5 - rB * 2.0) };
+
+          quads.push({
+            p1, p2, p3, p4,
+            speed: (p1.speed + p3.speed) * 0.5,
+            isPool: true
+          });
+        }
+      }
+
+      return quads;
+    }
+
+    // ── Mode Switching Logic ──
     function switchMode(modeNum) {
-      const target = MODE_ASSETS[modeNum];
+      const target = MODE_INFO[modeNum];
       if (!target) return;
       currentFluidMode = modeNum;
 
@@ -800,15 +1036,6 @@
       if (modeDescElem) modeDescElem.textContent = target.desc;
       if (speedBar) speedBar.style.display = target.hasSpeed ? 'flex' : 'none';
 
-      if (simImg) {
-        simImg.style.opacity = '0.4';
-        simImg.style.transform = 'scale(0.99)';
-        setTimeout(() => {
-          simImg.src = target.img;
-          simImg.style.opacity = '1';
-          simImg.style.transform = 'scale(1)';
-        }, 80);
-      }
       showToast('Modo [' + modeNum + '] ' + target.name + ' Activado');
     }
 
@@ -816,12 +1043,11 @@
 
     tabs.forEach(tab => {
       tab.onclick = () => {
-        const modeNum = parseInt(tab.getAttribute('data-mode'), 10) || 1;
-        switchMode(modeNum);
+        const m = parseInt(tab.getAttribute('data-mode'), 10) || 1;
+        switchMode(m);
       };
     });
 
-    // Keyboard 1-6 support
     if (!fluidModeKeyBound) {
       fluidModeKeyBound = true;
       window.addEventListener('keydown', (e) => {
@@ -834,7 +1060,375 @@
       });
     }
 
-    // Set initial
+    // ── Main Render Loop ──
+    let lastTime = performance.now();
+    let simTime = 1.040;
+    let fpsFrames = 0;
+    let fpsTimer = performance.now();
+    let curFps = 60.0;
+
+    function renderLoop(now) {
+      now = (typeof now === 'number' && !isNaN(now)) ? now : performance.now();
+      const dt = Math.min(Math.max((now - lastTime) / 1000, 0.001), 0.05);
+      lastTime = now;
+      simTime += dt;
+
+      fpsFrames++;
+      if (now - fpsTimer >= 500) {
+        curFps = Math.round((fpsFrames * 1000) / (now - fpsTimer) * 10) / 10;
+        fpsFrames = 0;
+        fpsTimer = now;
+        if (fpsElem) fpsElem.textContent = 'FPS: ' + curFps.toFixed(1);
+      }
+
+      if (timeElem) timeElem.textContent = 'SIM_TIME: ' + simTime.toFixed(3) + ' s';
+      if (coordsElem) {
+        coordsElem.textContent = 'X: ' + (Math.cos(camTheta) * 5.2).toFixed(1) + ' | Y: ' + (camPhi * 4.0).toFixed(1) + ' | Z: ' + (Math.sin(camTheta) * 5.2).toFixed(1);
+      }
+
+      const { w, h } = resizeCanvas();
+      ctx.save();
+
+      ctx.fillStyle = '#010406';
+      ctx.fillRect(0, 0, w, h);
+
+      const cx = w * 0.50;
+      const cy = h * 0.52;
+      const scale = Math.min(w, h) * 0.85;
+
+      // ── 1. Floor Grid & Bounding Box ──
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.14)';
+      ctx.lineWidth = 1;
+      for (let gx = -2.0; gx <= 2.05; gx += 0.8) {
+        const pA = project3D(gx, boxMinY, boxMinZ, cx, cy, scale);
+        const pB = project3D(gx, boxMinY, boxMaxZ, cx, cy, scale);
+        if (pA && pB) {
+          ctx.beginPath(); ctx.moveTo(pA.x, pA.y); ctx.lineTo(pB.x, pB.y); ctx.stroke();
+        }
+      }
+      for (let gz = -2.0; gz <= 2.05; gz += 0.8) {
+        const pA = project3D(boxMinX, boxMinY, gz, cx, cy, scale);
+        const pB = project3D(boxMaxX, boxMinY, gz, cx, cy, scale);
+        if (pA && pB) {
+          ctx.beginPath(); ctx.moveTo(pA.x, pA.y); ctx.lineTo(pB.x, pB.y); ctx.stroke();
+        }
+      }
+
+      // Box edges
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.45)';
+      ctx.lineWidth = 1.6;
+      boxEdges.forEach(edge => {
+        const pA = project3D(edge[0][0], edge[0][1], edge[0][2], cx, cy, scale);
+        const pB = project3D(edge[1][0], edge[1][1], edge[1][2], cx, cy, scale);
+        if (pA && pB) {
+          ctx.beginPath(); ctx.moveTo(pA.x, pA.y); ctx.lineTo(pB.x, pB.y); ctx.stroke();
+        }
+      });
+
+      const pDim = project3D(boxMinX, boxMaxY, boxMaxZ, cx, cy, scale);
+      if (pDim) {
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.85)';
+        ctx.font = '11px monospace';
+        ctx.fillText('6.00 u', pDim.x + 4, pDim.y - 4);
+      }
+
+      // ── 2. Tilted Bottle Wireframe ──
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+      ctx.lineWidth = 1.6;
+      for (let ringStep = 0; ringStep <= 4; ringStep++) {
+        const f = ringStep / 4;
+        const ringCenter = {
+          x: 1.1 * (1 - f) + 2.1 * f,
+          y: 0.9 * (1 - f) + 1.8 * f,
+          z: -0.1 * (1 - f) + -0.6 * f
+        };
+        const ringRad = 0.22 + f * 0.28;
+        ctx.beginPath();
+        for (let s = 0; s <= 12; s++) {
+          const ang = (s / 12) * Math.PI * 2;
+          const rx = ringCenter.x + Math.cos(ang) * ringRad * 0.6;
+          const ry = ringCenter.y + Math.sin(ang) * ringRad;
+          const rz = ringCenter.z + Math.cos(ang) * ringRad * 0.8;
+          const pr = project3D(rx, ry, rz, cx, cy, scale);
+          if (pr) {
+            if (s === 0) ctx.moveTo(pr.x, pr.y);
+            else ctx.lineTo(pr.x, pr.y);
+          }
+        }
+        ctx.stroke();
+      }
+
+      // Axis Gizmo
+      const pGizmo = project3D(2.1, 1.8, -0.6, cx, cy, scale);
+      const pGizmoX = project3D(2.45, 1.8, -0.6, cx, cy, scale);
+      const pGizmoY = project3D(2.1, 2.15, -0.6, cx, cy, scale);
+      const pGizmoZ = project3D(2.1, 1.8, -0.25, cx, cy, scale);
+      if (pGizmo && pGizmoX && pGizmoY && pGizmoZ) {
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#FF3366'; ctx.beginPath(); ctx.moveTo(pGizmo.x, pGizmo.y); ctx.lineTo(pGizmoX.x, pGizmoX.y); ctx.stroke();
+        ctx.strokeStyle = '#39FF14'; ctx.beginPath(); ctx.moveTo(pGizmo.x, pGizmo.y); ctx.lineTo(pGizmoY.x, pGizmoY.y); ctx.stroke();
+        ctx.strokeStyle = '#00F0FF'; ctx.beginPath(); ctx.moveTo(pGizmo.x, pGizmo.y); ctx.lineTo(pGizmoZ.x, pGizmoZ.y); ctx.stroke();
+      }
+
+      // ── 3. Calculate Projected Particles ──
+      const allProjected = [];
+      organicParticles.forEach(p => {
+        const pt = getOrganicParticlePos(p, simTime);
+        const proj = project3D(pt.x, pt.y, pt.z, cx, cy, scale);
+        if (proj) {
+          allProjected.push({ proj, pt, p, isPool: p.zone === 'pool' });
+        }
+      });
+      allProjected.sort((a, b) => b.proj.z - a.proj.z);
+
+      // ── 4. RENDER ACTIVE MODE ──
+
+      // ── MODE 1: PARTÍCULAS SPH ORGÁNICAS (Natural Fine Spray & Liquid Pool) ──
+      if (currentFluidMode === 1) {
+        allProjected.forEach(item => {
+          const pr = item.proj;
+          const rad = Math.max(1.4, item.p.radius * pr.fov * 1.8);
+
+          // Soft organic glow body
+          ctx.fillStyle = item.isPool ? 'rgba(0, 210, 255, 0.72)' : 'rgba(0, 240, 255, 0.85)';
+          ctx.beginPath();
+          ctx.arc(pr.x, pr.y, rad, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Tiny specular liquid core highlight
+          ctx.fillStyle = '#FFFFFF';
+          ctx.beginPath();
+          ctx.arc(pr.x - rad * 0.28, pr.y - rad * 0.28, rad * 0.35, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      // ── MODE 2: PLEXUS (Dynamic 3D Mesh connecting organic nodes) ──
+      else if (currentFluidMode === 2) {
+        ctx.lineWidth = 1;
+        const maxDist = 0.42;
+        const stride = 2;
+        for (let i = 0; i < allProjected.length; i += stride) {
+          const ptA = allProjected[i].pt;
+          const prA = allProjected[i].proj;
+          for (let j = i + 1; j < allProjected.length; j += stride) {
+            const ptB = allProjected[j].pt;
+            const prB = allProjected[j].proj;
+            const dx = ptA.x - ptB.x;
+            const dy = ptA.y - ptB.y;
+            const dz = ptA.z - ptB.z;
+            const d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            if (d < maxDist) {
+              const alpha = (1 - d / maxDist) * 0.65;
+              ctx.strokeStyle = allProjected[i].isPool ? 'rgba(57, 255, 20, ' + alpha + ')' : 'rgba(0, 240, 255, ' + alpha + ')';
+              ctx.beginPath();
+              ctx.moveTo(prA.x, prA.y);
+              ctx.lineTo(prB.x, prB.y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        allProjected.forEach(item => {
+          const pr = item.proj;
+          const rad = Math.max(1.2, item.p.radius * pr.fov * 0.8);
+          ctx.fillStyle = item.isPool ? '#39FF14' : '#00F0FF';
+          ctx.beginPath();
+          ctx.arc(pr.x, pr.y, rad, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      // ── MODE 3: MALLA SUPERFICIE (Marching Cubes Volumetric Liquid Mesh) ──
+      else if (currentFluidMode === 3) {
+        const quads = createSurfaceMesh(simTime);
+        const projQuads = [];
+        quads.forEach(q => {
+          const pr1 = project3D(q.p1.x, q.p1.y, q.p1.z, cx, cy, scale);
+          const pr2 = project3D(q.p2.x, q.p2.y, q.p2.z, cx, cy, scale);
+          const pr3 = project3D(q.p3.x, q.p3.y, q.p3.z, cx, cy, scale);
+          const pr4 = project3D(q.p4.x, q.p4.y, q.p4.z, cx, cy, scale);
+          if (pr1 && pr2 && pr3 && pr4) {
+            const avgZ = (pr1.z + pr2.z + pr3.z + pr4.z) * 0.25;
+            projQuads.push({ pr1, pr2, pr3, pr4, avgZ, isPool: q.isPool });
+          }
+        });
+        projQuads.sort((a, b) => b.avgZ - a.avgZ);
+
+        projQuads.forEach(q => {
+          ctx.fillStyle = q.isPool ? 'rgba(0, 180, 240, 0.35)' : 'rgba(0, 240, 255, 0.45)';
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(q.pr1.x, q.pr1.y);
+          ctx.lineTo(q.pr2.x, q.pr2.y);
+          ctx.lineTo(q.pr3.x, q.pr3.y);
+          ctx.lineTo(q.pr4.x, q.pr4.y);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+        });
+      }
+
+      // ── MODE 4: VECTORES (Surface Mesh + 3D Velocity Directional Arrows) ──
+      else if (currentFluidMode === 4) {
+        // Draw underlying subtle surface mesh for reference
+        const quads = createSurfaceMesh(simTime);
+        quads.forEach((q, idx) => {
+          if (idx % 3 === 0) {
+            const pr1 = project3D(q.p1.x, q.p1.y, q.p1.z, cx, cy, scale);
+            const pr2 = project3D(q.p2.x, q.p2.y, q.p2.z, cx, cy, scale);
+            const pr3 = project3D(q.p3.x, q.p3.y, q.p3.z, cx, cy, scale);
+            if (pr1 && pr2 && pr3) {
+              ctx.strokeStyle = 'rgba(0, 240, 255, 0.15)';
+              ctx.lineWidth = 0.6;
+              ctx.beginPath();
+              ctx.moveTo(pr1.x, pr1.y); ctx.lineTo(pr2.x, pr2.y); ctx.lineTo(pr3.x, pr3.y);
+              ctx.stroke();
+            }
+          }
+        });
+
+        // 3D Velocity vector arrows
+        allProjected.forEach((item, idx) => {
+          if (idx % 2 === 0) {
+            const pr = item.proj;
+            const pt = item.pt;
+            let angle = Math.PI * 0.5;
+            let arrowLen = Math.max(8, Math.min(26, pt.speed * 4.2));
+
+            if (!item.isPool) {
+              // Plunging stream
+              angle = Math.PI * 0.42 + (pt.x - cx) * 0.001;
+            } else {
+              // Pool circulation
+              angle = Math.atan2(pt.z - pImpact.z, pt.x - pImpact.x) + Math.PI * 0.5;
+            }
+
+            const color = getJetColor(pt.speed, 0.95);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.8;
+            ctx.beginPath();
+            ctx.moveTo(pr.x, pr.y);
+            const tipX = pr.x + Math.cos(angle) * arrowLen;
+            const tipY = pr.y + Math.sin(angle) * arrowLen;
+            ctx.lineTo(tipX, tipY);
+            ctx.stroke();
+
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(tipX, tipY);
+            ctx.lineTo(tipX - Math.cos(angle - 0.4) * 4.5, tipY - Math.sin(angle - 0.4) * 4.5);
+            ctx.lineTo(tipX - Math.cos(angle + 0.4) * 4.5, tipY - Math.sin(angle + 0.4) * 4.5);
+            ctx.closePath();
+            ctx.fill();
+          }
+        });
+      }
+
+      // ── MODE 5: LÍNEAS FLUJO (Continuous Streamlines from Bottle to Pool) ──
+      else if (currentFluidMode === 5) {
+        const numStreamlines = 16;
+        for (let lineIdx = 0; lineIdx < numStreamlines; lineIdx++) {
+          const radOff = ((lineIdx % 4) / 4) * 0.65;
+          const radAng = (lineIdx / numStreamlines) * Math.PI * 2;
+          const steps = 30;
+          ctx.beginPath();
+          let started = false;
+          for (let st = 0; st <= steps; st++) {
+            const t = st / steps;
+            const u = 1 - t;
+            const bx = u * u * pNozzle.x + 2 * u * t * pMid.x + t * t * pImpact.x;
+            const by = u * u * pNozzle.y + 2 * u * t * pMid.y + t * t * pImpact.y;
+            const bz = u * u * pNozzle.z + 2 * u * t * pMid.z + t * t * pImpact.z;
+            const spread = 0.05 + t * 0.16;
+            const px = bx + Math.cos(radAng) * spread * radOff;
+            const py = by + Math.sin(radAng) * spread * radOff * 0.8;
+            const pz = bz + Math.sin(radAng) * spread * radOff;
+
+            const pr = project3D(px, py, pz, cx, cy, scale);
+            if (pr) {
+              if (!started) { ctx.moveTo(pr.x, pr.y); started = true; }
+              else ctx.lineTo(pr.x, pr.y);
+            }
+          }
+          const col = getJetColor(1.2 + (lineIdx / numStreamlines) * 4.8, 0.85);
+          ctx.strokeStyle = col;
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+        }
+
+        // Animated particles along the streamlines
+        allProjected.forEach((item, idx) => {
+          if (idx % 3 === 0) {
+            const pr = item.proj;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(pr.x, pr.y, 1.8, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        });
+      }
+
+      // ── MODE 6: MAPA CFD SOBRE MALLA DE SUPERFICIE (Jet Colormap on Surface Mesh) ──
+      else if (currentFluidMode === 6) {
+        // Build 3D Surface Mesh
+        const quads = createSurfaceMesh(simTime);
+        const projQuads = [];
+
+        quads.forEach(q => {
+          const pr1 = project3D(q.p1.x, q.p1.y, q.p1.z, cx, cy, scale);
+          const pr2 = project3D(q.p2.x, q.p2.y, q.p2.z, cx, cy, scale);
+          const pr3 = project3D(q.p3.x, q.p3.y, q.p3.z, cx, cy, scale);
+          const pr4 = project3D(q.p4.x, q.p4.y, q.p4.z, cx, cy, scale);
+          if (pr1 && pr2 && pr3 && pr4) {
+            const avgZ = (pr1.z + pr2.z + pr3.z + pr4.z) * 0.25;
+            projQuads.push({ pr1, pr2, pr3, pr4, speed: q.speed, avgZ });
+          }
+        });
+        projQuads.sort((a, b) => b.avgZ - a.avgZ);
+
+        // Render each polygonal facet of the surface mesh with Jet Colormap shading
+        projQuads.forEach(q => {
+          const col = getJetColor(q.speed, 0.92);
+          ctx.fillStyle = col;
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+          ctx.lineWidth = 0.65;
+          ctx.beginPath();
+          ctx.moveTo(q.pr1.x, q.pr1.y);
+          ctx.lineTo(q.pr2.x, q.pr2.y);
+          ctx.lineTo(q.pr3.x, q.pr3.y);
+          ctx.lineTo(q.pr4.x, q.pr4.y);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+        });
+
+        // Add break-off splash polygon droplets in high-velocity plunge zone
+        for (let dp = 0; dp < 18; dp++) {
+          const dAng = (dp / 18) * Math.PI * 2 + simTime * 1.5;
+          const dDist = 0.2 + ((dp * 7) % 10) * 0.05;
+          const dropX = pImpact.x + Math.cos(dAng) * dDist;
+          const dropY = -1.70 + Math.sin(simTime * 4 + dp) * 0.12;
+          const dropZ = pImpact.z + Math.sin(dAng) * dDist;
+          const prDrop = project3D(dropX, dropY, dropZ, cx, cy, scale);
+          if (prDrop) {
+            const dropSpeed = 4.2 + (dp % 5) * 0.4;
+            ctx.fillStyle = getJetColor(dropSpeed, 0.95);
+            ctx.beginPath();
+            ctx.arc(prDrop.x, prDrop.y, 2.4, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      }
+
+      ctx.restore();
+      simAnimFrameId = requestAnimationFrame(renderLoop);
+    }
+
+    if (simAnimFrameId) cancelAnimationFrame(simAnimFrameId);
+    renderLoop(performance.now());
+
     const urlParams = new URLSearchParams(window.location.search);
     const initMode = parseInt(urlParams.get('mode'), 10);
     switchMode(initMode >= 1 && initMode <= 6 ? initMode : 1);
@@ -1056,6 +1650,8 @@
     initBackgroundCanvas();
     setupEvents();
     startPitchTimer();
+    // Auto-init 3D fluid simulator on load
+    try { initFluidModeSimulator(); } catch (e) {}
 
     // Check URL hash (#slide-5) or query param (?slide=5)
     let initialSlide = 0;
