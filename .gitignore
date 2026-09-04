@@ -1,4 +1,4 @@
-﻿# OS generated files
+# OS generated files
 .DS_Store
 Thumbs.db
 
@@ -12,3 +12,8 @@ Thumbs.db
 node_modules/
 dist/
 build/
+
+# Presentation, Broadcast & Docs
+broadcast/
+docs/
+presentation/

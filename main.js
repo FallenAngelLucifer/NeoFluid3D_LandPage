@@ -578,19 +578,3 @@ function renderAllMathOnPage() {
 })();
 
 
-
-/* ── 16. Presentation Interactive Deck Launcher (Zero Block Guarantee) ── */
-(function setupDeckLauncher() {
-  const launchBtn = document.getElementById('btn-open-deck-genesis');
-  if (launchBtn) {
-    launchBtn.addEventListener('click', (e) => {
-      // Allow natural anchor navigation, but enforce fallback in local file:/// scenarios
-      try {
-        const opened = window.open('presentation/index.html#slide-3', '_blank');
-        if (opened) {
-          e.preventDefault();
-        }
-      } catch (err) {}
-    });
-  }
-})();
